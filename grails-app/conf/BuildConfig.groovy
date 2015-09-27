@@ -82,9 +82,20 @@ grails.project.dependency.resolution = {
 
         // Cobertura
         test ":code-coverage:2.0.3-3"
+        compile ":codenarc:0.24.1"
     }
     coverage {
         enabledByDefault = false
         xml = true
+    }
+    codenarc.reportType='xml'
+    codenarc.reportName='target/codenarc.xml'
+
+    codenarc.reports = {
+        xml.enabled = true
+        MyXmlReport('xml') {                    // The report name "MyXmlReport" is user-defined; Report type is 'xml'
+            outputFile = 'CodeNarc-Report.xml'  // Set the 'outputFile' property of the (XML) Report
+            title = 'Sample Report'             // Set the 'title' property of the (XML) Report
+        }
     }
 }
