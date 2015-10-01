@@ -8,13 +8,33 @@ import spock.lang.Specification
  */
 @TestFor(Group)
 class GroupSpec extends Specification {
+    void "A group is valid"() {
+        when: "A new group is created"
+        def group = new Group(name: aName, description: aDescription)
+        then: "The validation gives..."
+        group.validate()
 
-    def setup() {
+        where: "The group is valid"
+        aName             |   aDescription
+        "A super group"  |  "a group description"
+
     }
 
-    def cleanup() {
-    }
+    void "A group is unvalid"() {
+        when: "A new group is created"
+        def group = new Group(name: aName, description: aDescription)
+        then: "The validation gives..."
+        !group.validate()
 
-    void "test something"() {
+        where: "The group is unvalid"
+        aName             | aDescription
+        "A super group"  |  null
+        null             |  "A description"
+        ""               |  "Another description"
+        "Another group"  |  ""
+        ""               |  ""
+        null             |  ""
+        null             |  null
+
     }
 }
