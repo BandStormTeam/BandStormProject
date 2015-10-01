@@ -1,5 +1,11 @@
 package bandstorm
 
+/**
+ * Represent the event an user can organize or participate to.
+ * Basically, for the first version of the product an event is a Concert or Festival.
+ * In the future we can imagine event to also be a collaborative music project development
+ * or crowdfunding musical projects and so on. */
+
 class Event {
 
     String name
