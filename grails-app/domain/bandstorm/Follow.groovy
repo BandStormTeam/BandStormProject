@@ -2,9 +2,9 @@ package bandstorm
 
 class Follow {
 
-    Date dateCreated;
-
-    static hasOne = [follower : User, followed : User]
+    Date dateCreated
+    User follower
+    User followed
 
     static constraints = {
     }
