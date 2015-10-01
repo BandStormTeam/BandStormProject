@@ -7,10 +7,4 @@ script: ./grailsw refresh-dependencies
   && ./grailsw refresh-dependencies
   && ./grailsw "test-app functional:"
 
-deploy:
-      provider: heroku
-            api_key:
-                secure: cdcfb04e-c7ce-4983-a932-654045db6e54 
-                          app:
-                              master: m2dl-bandstorm 
 
