@@ -1,5 +1,10 @@
 package bandstorm
 
+/**
+ * Domain class that represents users,
+ * and different event, lights and groups related
+ * to them
+ */
 class User {
 
     String username
