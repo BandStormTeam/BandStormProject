@@ -1,8 +1,11 @@
 package bandstorm
 
+/**
+ * A domain class who link an user and a group
+ */
 class GroupMember {
 
-    Date dateCreated;
+    Date dateCreated
     Group group
     User user
 
