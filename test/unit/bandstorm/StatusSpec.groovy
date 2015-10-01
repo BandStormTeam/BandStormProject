@@ -15,6 +15,37 @@ class StatusSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    void "status is valid"() {
+
+        when: "a new status is created"
+        Status status = new Status(url:url,content:content,lightCount:lightCount)
+
+        then: "the validation gives..."
+        status.validate()
+
+        where: "parameters are ok"
+        url                 | content           |lightCount
+        "www.google.fr"     | "Bonjour"         |555
+        ""                  | "l"               |99999
+
+    }
+
+
+    void "status is not valid"() {
+
+        when: "a new status is created"
+        Status status = new Status(url:url,content:content,lightCount:lightCount)
+
+        then: "the validation gives..."
+        !status.validate()
+
+        where: "parameters are not ok"
+        url                     | content               |lightCount
+        "www.google.fr"         | "Bonjour"             |-2
+        "www.facebook.fr"       | "l"                   |100001
+        ""                      | "l"                   |100001
+        "www.facebook.fr"       | ""                    |1000
+
+
     }
 }
