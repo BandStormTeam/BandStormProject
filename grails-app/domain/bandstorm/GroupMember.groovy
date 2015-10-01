@@ -3,8 +3,8 @@ package bandstorm
 class GroupMember {
 
     Date dateCreated;
-
-    static hasOne = [group : Group, user : User]
+    Group group
+    User user
 
     static constraints = {
     }
