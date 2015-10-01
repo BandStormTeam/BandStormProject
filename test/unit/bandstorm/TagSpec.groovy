@@ -9,12 +9,31 @@ import spock.lang.Specification
 @TestFor(Tag)
 class TagSpec extends Specification {
 
-    def setup() {
+    void "A tag is valid"() {
+        when: "A new tag is created"
+        def tag = new Tag(name: aName)
+        then: "The validation gives..."
+        tag.validate() == isOk
+
+        where: "The tag is valid"
+        aName              |  isOk
+        "A super tag"      |  true
+        "aaaaaaaaaaaaaaaa"  | true // 16 char string
     }
 
-    def cleanup() {
+    void "A tag is unvalid"() {
+        when: "A new tag is created"
+        def tag = new Tag(name: aName)
+
+        then: "The validation gives..."
+        tag.validate() == isOk
+        where: "The tag is valid"
+        aName        | isOk
+        ""           | false
+        null         | false
+        "aaaaaaaaaaaaaaaaa" | false // 17 chars string
+
+
     }
 
-    void "test something"() {
-    }
 }
