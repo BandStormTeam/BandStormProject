@@ -1,4 +1,6 @@
 # BandStormProject
+![](https://travis-ci.org/BandStormTeam/BandStormProject.svg?branch=V0.1)
+
 Bandstorm est un réseau social pour des amateurs de musique. Celui-ci a pour but de mettre en relations des utilisateurs par le biais de communautés. Ces communautés sont constitués en fonction de préférences musicales. 
 
 Les utilisateurs peuvent proposer aux membres de leurs communautés des liens vers des  morceaux de musique, des évènements ou des concerts.
