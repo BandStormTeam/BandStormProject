@@ -4,10 +4,11 @@ class UrlMappings {
         "/$controller/$action?/$id?(.$format)?"{
             constraints {
                 // apply constraints here
+
             }
         }
 
-        "/"(view:"/index")
+        "/" (controller: "User", action: "homepage")
         "500"(view:'/error')
 	}
 }
