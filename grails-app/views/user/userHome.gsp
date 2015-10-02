@@ -79,7 +79,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{resource(dir: 'images', file: 'r.jpg')}"
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'r.jpg')}"
                                      data-holder-rendered="true" style="width: 64px; height: 64px;">
 
                             </a>
@@ -108,7 +108,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{resource(dir: 'images', file: 'a.jpg')}"
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'a.jpg')}"
                                      data-holder-rendered="true" style="width: 64px; height: 64px;">
                             </a>
                         </div>
@@ -130,7 +130,7 @@
                     </button>
 
                     <h4>Concert organisé le 12/11/2012 par <a>Bob Marley</a></h4>
-                    <img src="{resource(dir: 'images', file: 'I.jpg')}" style="width:100%;">
+                    <img src="${resource(dir: 'images', file: 'I.jpg')}" style="width:100%;">
                     <blockquote>
 
                         <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
@@ -141,7 +141,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{resource(dir: 'images', file: 'a.jpg')}"
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'a.jpg')}"
                                      data-holder-rendered="true" style="width: 64px; height: 64px;">
                             </a>
                         </div>
@@ -169,7 +169,7 @@
 
             <div class="col-sm-3  blog-sidebar" style="background-color:rgb(255,255,255);padding:15px;">
                 <div class="sidebar-module sidebar-module-inset">
-                    <img src="{resource(dir: 'images', file: 'r.jpg')}" data-holder-rendered="true" style="width: 75%;"
+                    <img src="${resource(dir: 'images', file: 'r.jpg')}" data-holder-rendered="true" style="width: 75%;"
                          style="display:inline-block !important;">
 
                     <h4>JackiChan</h4>
