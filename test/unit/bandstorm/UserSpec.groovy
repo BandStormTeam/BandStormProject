@@ -12,8 +12,9 @@ class UserSpec extends Specification {
     def "is Username valid"() {
 
         when: "we create a user instance"
+        Date date = new Date()
         User user = new User(username: userN, email: "test@mydomain.com",
-                firstName: "jon", lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty")
+                firstName: "jon", lastName: "doe", birthDate: date, country: "somewhere", password: "azerty")
 
         then: "validation..."
         user.validate() == usernameOK

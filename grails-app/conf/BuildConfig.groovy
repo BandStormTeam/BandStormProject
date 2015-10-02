@@ -73,6 +73,10 @@ grails.project.dependency.resolution = {
 
         // Cobertura
         test ":code-coverage:2.0.3-3"
+        //spring security
+        compile ":spring-security-core:2.0-RC5"
+        //spring security ui
+        compile ":spring-security-ui:1.0-RC2"
 
         // Coveralls plugin
         build(':coveralls:0.1.3', ':rest-client-builder:1.0.3') {
