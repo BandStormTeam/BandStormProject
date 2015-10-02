@@ -14,6 +14,7 @@ class User {
     Date birthDate
     String country
     Date dateCreated
+    String password
 
     static hasMany = [posts : Status, interests : Tag, participates : Event, manages : Event, groupsFollowed : Group ]
 
@@ -29,5 +30,6 @@ class User {
         participates nullable: true
         manages nullable: true
         groupsFollowed nullable: true
+        password blank: false, nullable: false, minSize: 6
     }
 }

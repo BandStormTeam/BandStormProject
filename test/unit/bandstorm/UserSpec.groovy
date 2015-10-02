@@ -9,11 +9,11 @@ import spock.lang.Specification
 @TestFor(User)
 class UserSpec extends Specification {
 
-    void "is Username valid"() {
+    def "is Username valid"() {
 
         when: "we create a user instance"
         User user = new User(username: userN, email: "test@mydomain.com",
-                firstName: "jon", lastName: "doe", birthDate: new Date(), country: "somewhere")
+                firstName: "jon", lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty")
 
         then: "validation..."
         user.validate() == usernameOK
@@ -26,11 +26,11 @@ class UserSpec extends Specification {
         null   | false
     }
 
-    void "is email valid"() {
+    def "is email valid"() {
 
         when: "we create a user instance"
         User user = new User(username: "userName", email: emailAd,
-                firstName: "jon", lastName: "doe", birthDate: new Date(), country: "somewhere")
+                firstName: "jon", lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty")
 
         then: "validation..."
         user.validate() == emailOK
@@ -43,11 +43,11 @@ class UserSpec extends Specification {
         null                | false
     }
 
-    void "is fistNameValid"() {
+    def "is fistNameValid"() {
 
         when: "we create a user instance"
         User user = new User(username: "userName", email: "test@mydomain.com",
-                firstName: fstName, lastName: "doe", birthDate: new Date(), country: "somewhere")
+                firstName: fstName, lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty")
         then: "validation..."
         user.validate() == fstNameOK
 
@@ -59,11 +59,11 @@ class UserSpec extends Specification {
         null            | false
     }
 
-    void "is Last Name Valid"() {
+    def "is Last Name Valid"() {
 
         when: "we create a user instance"
         User user = new User(username: "userName", email: "test@mydomain.com",
-                firstName: "jon", lastName: lstName, birthDate: new Date(), country: "somewhere")
+                firstName: "jon", lastName: lstName, birthDate: new Date(), country: "somewhere", password: "azerty")
         then: "validation..."
         user.validate() == lstNameOK
 
@@ -75,11 +75,11 @@ class UserSpec extends Specification {
         null            | false
     }
 
-    void "is country Valid"() {
+    def "is country Valid"() {
 
         when: "we create a user instance"
         User user = new User(username: "userName", email: "test@mydomain.com",
-                firstName: "jon", lastName: "doe", birthDate: new Date(), country: cntry)
+                firstName: "jon", lastName: "doe", birthDate: new Date(), country: cntry, password: "azerty")
         then: "validation..."
         user.validate() == cntryOK
 
@@ -91,10 +91,10 @@ class UserSpec extends Specification {
         null            | false
     }
 
-    void "is birthDate validate"() {
+    def "is birthDate validate"() {
         when: "we create a user instance"
         User user = new User(username: "userName", email: "test@mydomain.com",
-                firstName: "jon", lastName: "doe", birthDate: date, country: "Country")
+                firstName: "jon", lastName: "doe", birthDate: date, country: "Country", password: "azerty")
         then: "validation..."
         user.validate() == dateOK
 
@@ -104,5 +104,22 @@ class UserSpec extends Specification {
         Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")         | true
         Date.parse("yyyy-MM-dd hh:mm:ss", "2016-04-03 1:23:45")         | false
         null                                                            | false
+    }
+
+    def "is password validate"() {
+        when: "we create a user instance"
+        Date date = new Date()
+        User user = new User(username: "userName", email: "test@mydomain.com",
+                firstName: "jon", lastName: "doe", birthDate: date, country: "Country", password: pass)
+
+        then: "validation..."
+        user.validate() == passwordOK
+
+        where: "password and passwordOK"
+        pass    | passwordOK
+        "azerty"| true
+        "1651"  | false
+        ""      | false
+        null    | false
     }
 }
