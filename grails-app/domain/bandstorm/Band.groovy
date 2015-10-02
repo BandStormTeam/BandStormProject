@@ -5,7 +5,7 @@ package bandstorm
  * In the future this class could also represent a musical association from a town for instance.
  * */
 
-class Group {
+class Band {
     String name
     Date dateCreated
     String description

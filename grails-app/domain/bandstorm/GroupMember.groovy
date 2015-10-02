@@ -6,7 +6,7 @@ package bandstorm
 class GroupMember {
 
     Date dateCreated
-    Group group
+    Band band
     User user
 
     static constraints = {
