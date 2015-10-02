@@ -27,6 +27,10 @@ class UserController {
         respond new User(params)
     }
 
+    def userHome() {
+
+    }
+
     @Transactional
     def save(User userInstance) {
         if (userInstance == null) {
