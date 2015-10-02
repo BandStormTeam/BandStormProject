@@ -16,7 +16,7 @@ class User {
     Date dateCreated
     String password
 
-    static hasMany = [posts : Status, interests : Tag, participates : Event, manages : Event, groupsFollowed : Group ]
+    static hasMany = [posts : Status, interests : Tag, participates : Event, manages : Event, groupsFollowed : Band ]
 
     static constraints = {
         username blank: false, nullable: false, minSize: 3

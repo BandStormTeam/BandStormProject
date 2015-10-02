@@ -6,11 +6,11 @@ import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(Group)
-class GroupSpec extends Specification {
+@TestFor(Band)
+class BandSpec extends Specification {
     void "A group is valid"() {
         when: "A new group is created"
-        def group = new Group(name: aName, description: aDescription)
+        def group = new Band(name: aName, description: aDescription)
         then: "The validation gives..."
         group.validate()
 
@@ -22,7 +22,7 @@ class GroupSpec extends Specification {
 
     void "A group is unvalid"() {
         when: "A new group is created"
-        def group = new Group(name: aName, description: aDescription)
+        def group = new Band(name: aName, description: aDescription)
         then: "The validation gives..."
         !group.validate()
 
