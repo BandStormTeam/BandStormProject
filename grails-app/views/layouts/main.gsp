@@ -17,10 +17,17 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+
+
 	<style>
 		body{
 			background-image: url("${resource(dir:"images",file:"m.jpg")}");
 			background-size:cover;
+		}
+
+		.errors{
+			border-color: rgba(200,0,0,0.8) !important;
+			border-width: 2px;
 		}
 	</style>
 
