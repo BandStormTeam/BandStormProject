@@ -5,7 +5,7 @@ class SecRole implements Serializable {
     private static final long serialVersionUID = 1
 
     String authority
-
+    
     SecRole(String authority) {
         this()
         this.authority = authority

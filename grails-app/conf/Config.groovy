@@ -99,7 +99,7 @@ environments {
 
 
     // deactivate post for logout
-    grails.plugin.springsecurity.apf.postOnly = false
+    grails.plugin.springsecurity.logout.postOnly = false
 }
 
 // log4j configuration
