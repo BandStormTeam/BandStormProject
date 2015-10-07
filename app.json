@@ -1,0 +1,15 @@
+{
+  "name":"BandStormProject",
+  "scripts":{},
+  "env":{
+    "JAVA_OPTS":{
+      "required":true
+    },
+    "PATH":{
+      "required":true
+    }
+  },
+  "addons":[
+    "heroku-postgresql"
+  ]
+}
