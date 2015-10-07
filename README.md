@@ -9,3 +9,7 @@ Un utilisateur peut “lighter” les statuts (évènements, messages...)  des p
 
 ## Nouveaux développeurs
 Si vous souhaitez contribuez au projet, jetez un oeil au [workflow feature](workflow-feature.md)
+
+## Déploiement
+La branche master de l'application est déployée de façon continue et automatique, à l'aide de Heroku.
+Le site est accessible à l'adresse suivante : https://m2dl-bandstorm.herokuapp.com/
