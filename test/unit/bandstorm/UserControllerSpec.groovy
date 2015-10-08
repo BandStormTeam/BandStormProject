@@ -1,7 +1,8 @@
 package bandstorm
 
-
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
+import org.springframework.security.authentication.AuthenticationManager
 import spock.lang.*
 
 @TestFor(UserController)
@@ -149,5 +150,21 @@ class UserControllerSpec extends Specification {
         User.count() == 0
         response.redirectedUrl == '/user/index'
         flash.message != null
+    }
+
+    void "test userHome method"() {
+        given: "a valid user instance"
+        controller.authenticationManager = Mock(AuthenticationManager)
+        controller.springSecurityService = Mock(SpringSecurityService)
+        populateValidParams(params)
+        def user = new User(params)
+        controller.save(user)
+
+        when: "the userHome method is called with a user without a role"
+        controller.userHome()
+
+        then: "the authentification fails so the user is not redirected to the userHome view"
+        view != 'userHome'
+
     }
 }
