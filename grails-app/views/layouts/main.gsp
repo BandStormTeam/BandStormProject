@@ -20,15 +20,15 @@
 
 
 	<style>
-		body{
-			background-image: url("${resource(dir:"images",file:"m.jpg")}");
-			background-size:cover;
-		}
+	body{
+		background-image: url("${resource(dir:"images",file:"m.jpg")}");
+		background-size:cover;
+	}
 
-		.errors{
-			border-color: rgba(200,0,0,0.8) !important;
-			border-width: 2px;
-		}
+	.errors{
+		border-color: rgba(200,0,0,0.8) !important;
+		border-width: 2px;
+	}
 	</style>
 
 	<title><g:layoutTitle default="Grails"/></title>
@@ -40,35 +40,40 @@
 </head>
 
 
-	<body>
+<body>
 
-		<nav class="navbar navbar-default navbar-fixed-top">
-			<div style="padding:5px;margin:0;padding-top:0px;padding-bottom:0px;">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#">BandStorm</a>
-				</div>
-				<div id="navbar" class="navbar-collapse collapse">
-					<form class="navbar-form navbar-right">
-						<div class="form-group">
-							<input type="text" placeholder="Email" class="form-control">
-						</div>
-						<div class="form-group">
-							<input type="password" placeholder="Password" class="form-control">
-						</div>
-						<a  class="btn btn-success" href="${createLink(controller: 'user', action: 'userHome')}">Connexion</a>
-					</form>
-				</div><!--/.navbar-collapse -->
-			</div>
-		</nav>
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div style="padding:5px;margin:0;padding-top:0px;padding-bottom:0px;">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">BandStorm</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<g:form class="navbar-form navbar-right" method="post" controller="user">
+				<sec:ifNotLoggedIn>
+					<div class="form-group">
+						<g:textField type="text" placeholder="Email" class="form-control" name="username"/>
+					</div>
+					<div class="form-group">
+						<g:passwordField type="password" placeholder="Password" class="form-control" name="password"/>
+					</div>
+					<g:actionSubmit  class="btn btn-success" action="userHome" value="Connexion" />
+				</sec:ifNotLoggedIn>
+				<sec:ifLoggedIn>
+					<a  class="btn btn-danger" href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a>
+				</sec:ifLoggedIn>
+			</g:form>
+		</div><!--/.navbar-collapse -->
+	</div>
+</nav>
 
-		<g:layoutBody/>
+<g:layoutBody/>
 
-		<r:layoutResources />
-	</body>
+<r:layoutResources />
+</body>
 </html>

@@ -86,7 +86,7 @@
                         </div>
 
                         <div class="media-body">
-                            <h4 class="media-heading">JakiChan</h4>
+                            <h4 class="media-heading">Crazy <g:fieldValue bean="${user}" field="username"/></h4>
                             <i>Posté le 16/11/2015</i>
                         </div>
                         <br>
@@ -172,9 +172,9 @@
                     <img src="${resource(dir: 'images', file: 'r.jpg')}" data-holder-rendered="true" style="width: 75%;"
                          style="display:inline-block !important;">
 
-                    <h4>JackiChan</h4>
+                    <h4>Crazy <g:fieldValue bean="${user}" field="username"/></h4>
 
-                    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.<br><br>
+                    <p> <em>"Merry"</em> Christmas, May the season be fun joyful and especialy crazy!! :P<br><br>
 
                     </p>
 
@@ -194,8 +194,8 @@
                     <h4>Elsewhere</h4>
                     <ol class="list-unstyled">
 
-                        <li><a href="#">https://twitter.com/jackichan</a></li>
-                        <li><a href="#">https://facebook.com/jackichan</a></li>
+                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
+                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
                     </ol>
                 </div>
             </div><!-- /.blog-sidebar -->
