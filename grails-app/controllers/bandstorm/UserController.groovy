@@ -17,6 +17,10 @@ class UserController {
     }
 
     def show(User userInstance) {
+        if(userInstance == null) {
+            return response.sendError(404)
+        }
+        
         respond userInstance
     }
 
