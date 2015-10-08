@@ -28,5 +28,7 @@ class SecUserSecRoleSpec extends Specification {
         resultEqual == false
         resultRemove == false
         test.validate() == false
+        secUserSecRole.equals(secUserSecRole)
+        !secUserSecRole.equals(null)
     }
 }
