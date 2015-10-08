@@ -57,6 +57,10 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
+
+        //spring security
+        compile ':spring-security-core:2.0-RC5'
+
         // plugins for the build system only
         build ":tomcat:7.0.54"
 
