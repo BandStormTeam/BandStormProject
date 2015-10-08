@@ -12,8 +12,11 @@
     </div>
     <div class="col-sm-3  blog-sidebar" style="background-color:rgb(255,255,255);padding:15px;">
         <div class="sidebar-module sidebar-module-inset">
-          <!--  <img src="${resource(dir: 'images', file: 'r.jpg')}" data-holder-rendered="true" style="width: 75%;"
-                 style="display:inline-block !important;">-->
+        <g:if test="${userInstance.urlAvatar != null}">
+              <img src="${userInstance.urlAvatar}" data-holder-rendered="true" style="width: 75%;"
+                 style="display:inline-block !important;">
+            </g:if>
+
             <h4>${userInstance.username} <small>${userInstance.firstName} ${userInstance.lastName}</small></h4>
             <ul style="list-style-type: none">
                 <li><i class="glyphicon glyphicon-calendar"></i>&nbsp;Né le <g:formatDate format="dd/MM/yyyy" date="${userInstance.birthDate}"/></li>

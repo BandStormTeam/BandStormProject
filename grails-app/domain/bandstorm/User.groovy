@@ -15,6 +15,7 @@ class User {
     String country
     Date dateCreated
     String password
+    String urlAvatar
 
     static hasMany = [posts : Status, interests : Tag, participates : Event, manages : Event, groupsFollowed : Band ]
 
@@ -31,5 +32,6 @@ class User {
         manages nullable: true
         groupsFollowed nullable: true
         password blank: false, nullable: false, minSize: 6
+        urlAvatar blank: true, nullable: true, url: true, minSize: 0
     }
 }

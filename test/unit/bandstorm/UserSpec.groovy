@@ -122,4 +122,22 @@ class UserSpec extends Specification {
         ""      | false
         null    | false
     }
+
+    def "is url validate"() {
+        when: "we create a user instance"
+        Date date = new Date()
+        User user = new User(username: "userName", email: "test@mydomain.com",
+                firstName: "jon", lastName: "doe", birthDate: date, country: "Country", password: "toto1234", urlAvatar: avatar)
+
+        then: "validation..."
+        user.validate() == avatarOk
+
+        where: "password and passwordOK"
+        avatar              | avatarOk
+        "azerty"            | false
+        "http://google.fr"  | true
+        " "                 | true
+        null                | true
+    }
+
 }
