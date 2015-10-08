@@ -3,8 +3,16 @@ jdk:
   - oraclejdk7
 
 script: 
-  - ./grailsw refresh-dependencies && ./grailsw "test-app unit:" && ./grailsw refresh-dependencies && ./grailsw "test-app functional:"
+  - ./grailsw refresh-dependencies
   - ./grailsw "test-app -coverage -xml"
 
 after_success:
   - ./grailsw coveralls
+
+deploy:
+    provider: heroku
+    api_key:
+        secure: cdcfb04e-c7ce-4983-a932-654045db6e54
+    on: V0.1
+    app: m2dl-bandstorm
+
