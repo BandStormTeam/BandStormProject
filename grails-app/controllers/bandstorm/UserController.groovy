@@ -35,7 +35,6 @@ class UserController {
     def userHome() {
         if (!springSecurityService.isLoggedIn()) {
             try {
-                println(params)
                 Authentication newAuthentification = new UsernamePasswordAuthenticationToken(params?.username, params?.password)
                 Authentication result = authenticationManager.authenticate(newAuthentification)
                 SecurityContextHolder.getContext().setAuthentication(result)
