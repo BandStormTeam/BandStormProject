@@ -1,16 +1,24 @@
 package bandstorm
-
-
+import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
+@Secured("permitAll")
 class UserController {
 
+    def springSecurityService
+    def logoutHandlers
+    AuthenticationManager authenticationManager
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
 
+    @Secured("ROLE_ADMIN")
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond User.list(params), model:[userInstanceCount: User.count()]
@@ -25,7 +33,31 @@ class UserController {
     }
 
     def userHome() {
+        if (!springSecurityService.isLoggedIn()) {
+            try {
+                println(params)
+                Authentication newAuthentification = new UsernamePasswordAuthenticationToken(params?.username, params?.password)
+                Authentication result = authenticationManager.authenticate(newAuthentification)
+                SecurityContextHolder.getContext().setAuthentication(result)
+                User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                render(view: "userHome", model: [user : user])
+            } catch (AuthenticationException) {
+                redirect(uri: "/")
+            }
+        } else {
+            User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+            render(view: "userHome", model: [user : user])
+        }
+    }
 
+    def logout() {
+        Authentication auth = SecurityContextHolder.context.authentication
+        if (auth) {
+            logoutHandlers.each  { handler->
+                handler.logout(request,response,auth)
+            }
+        }
+        redirect(uri : "/")
     }
 
     @Transactional
