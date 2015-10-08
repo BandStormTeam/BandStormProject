@@ -5,7 +5,7 @@ package bandstorm
  * and different event, lights and groups related
  * to them
  */
-class User extends SecUser{
+class User extends SecUser {
 
     String email
     String firstName
@@ -13,6 +13,7 @@ class User extends SecUser{
     Date birthDate
     String country
     Date dateCreated
+    String urlAvatar
 
     static hasMany = [posts : Status, interests : Tag, participates : Event, manages : Event, groupsFollowed : Band ]
 
@@ -28,20 +29,19 @@ class User extends SecUser{
         participates nullable: true
         manages nullable: true
         groupsFollowed nullable: true
+        urlAvatar blank: true, nullable: true, url: true, minSize: 0
         password blank: false, nullable: false, minSize: 6
     }
 
     User(String username, String password, String email,
          String firstName, String lastName,
-         Date birthDate, String country) {
-
+         Date birthDate, String country, String urlavatar) {
         super(username, password)
-        this.username = username
-        this.password = password
         this.email = email
         this.firstName = firstName
         this.lastName = lastName
         this.birthDate = birthDate
         this.country = country
+        this.urlAvatar = urlAvatar;
     }
 }

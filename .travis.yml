@@ -13,10 +13,6 @@ deploy:
     provider: heroku
     api_key:
         secure: cdcfb04e-c7ce-4983-a932-654045db6e54
-<<<<<<< HEAD
-    on: V0.1
-=======
     on: master
->>>>>>> f74698b0b7968c5e256807e25bf918886669f966
     app: m2dl-bandstorm
 

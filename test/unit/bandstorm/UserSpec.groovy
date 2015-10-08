@@ -12,7 +12,7 @@ class UserSpec extends Specification {
     def "is Username valid"() {
 
         when: "we create a user instance"
-        User user = new User(userN, "azerty", "test@mydomain.com", "jon", "doe", new Date(), "somewhere")
+        User user = new User(userN, "azerty", "test@mydomain.com", "jon", "doe", new Date(), "somewhere", "http://google.fr")
 
         then: "validation..."
         user.validate() == usernameOK
@@ -29,7 +29,8 @@ class UserSpec extends Specification {
 
         when: "we create a user instance"
         User user = new User(username: "userName", email: emailAd,
-                firstName: "jon", lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty")
+                firstName: "jon", lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty",
+                urlAvatar: "http://toto.fr")
 
         then: "validation..."
         user.validate() == emailOK
@@ -46,7 +47,8 @@ class UserSpec extends Specification {
 
         when: "we create a user instance"
         User user = new User(username: "userName", email: "test@mydomain.com",
-                firstName: fstName, lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty")
+                firstName: fstName, lastName: "doe", birthDate: new Date(), country: "somewhere", password: "azerty",
+        urlAvatar: "")
         then: "validation..."
         user.validate() == fstNameOK
 
@@ -62,7 +64,7 @@ class UserSpec extends Specification {
 
         when: "we create a user instance"
         User user = new User(username: "userName", email: "test@mydomain.com",
-                firstName: "jon", lastName: lstName, birthDate: new Date(), country: "somewhere", password: "azerty")
+                firstName: "jon", lastName: lstName, birthDate: new Date(), country: "somewhere", password: "azerty", urlAvatar: "")
         then: "validation..."
         user.validate() == lstNameOK
 
@@ -121,4 +123,22 @@ class UserSpec extends Specification {
         ""      | false
         null    | false
     }
+
+    def "is url validate"() {
+        when: "we create a user instance"
+        Date date = new Date()
+        User user = new User(username: "userName", email: "test@mydomain.com",
+                firstName: "jon", lastName: "doe", birthDate: date, country: "Country", password: "toto1234", urlAvatar: avatar)
+
+        then: "validation..."
+        user.validate() == avatarOk
+
+        where: "password and passwordOK"
+        avatar              | avatarOk
+        "azerty"            | false
+        "http://google.fr"  | true
+        " "                 | true
+        null                | true
+    }
+
 }
