@@ -11,8 +11,8 @@
 <html lang="en">
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'event.label', default: 'Event')}" />
-    <title><g:message code="default.list.label" args="[entityName]" /></title>
+    <g:set var="entityName" value="${message(code: 'event.label', default: 'Event')}"/>
+    <title><g:message code="default.list.label" args="[entityName]"/></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,6 +38,7 @@
         background: url("${resource(dir: 'images', file: 'm.jpg')}") fixed;
         background-size: cover;
     }
+
     </style>
 </head>
 
@@ -55,19 +56,38 @@
 
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        <g:form url="[resource: statusInstance, action: 'save']" name="statusForm">
 
-                        <g:form url="[resource:statusInstance, action:'save']" >
+                            <g:textField id="contentField"
+                                         class="form-control ${hasErrors(bean: statusInstance, field: 'content', 'errors')}"
+                                         placeholder="Partagez votre actualité." name="content"
+                                         value="${statusInstance.content}" style="height:60px;"></g:textField><bR>
 
-                            <g:textField class="form-control ${hasErrors(bean:statusInstance,field:'content','errors')}" placeholder="Partagez votre actualité." name="content" value="${statusInstance.content}" style="height:60px;"> </g:textField><bR>
-
-                            <g:textField class="form-control ${hasErrors(bean:statusInstance,field:'url','errors')}" placeholder="Un lien à partager ?" name="url" value="${statusInstance.url}" style="height:20px;"> </g:textField><bR>
+                            <g:textField id="urlField"
+                                         class="form-control ${hasErrors(bean: statusInstance, field: 'url', 'errors')}"
+                                         placeholder="Un lien à partager ?" name="url" value="${statusInstance.url}"
+                                         style="height:30px;"></g:textField><bR>
 
                             <g:hiddenField name="lightCount" value="${statusInstance.lightCount = 0}"/>
                             <div style="text-align: right">
-                                <g:submitButton name="publish" class="btn btn-success" action="save" controller="status" value="Publier" />
+                                <g:submitToRemote name="publish" class="btn btn-success" action="save"
+                                                  controller="status" value="Publier" onSuccess="clearFields()"/>
                             </div>
 
+                            <g:javascript>
+                                function clearFields() {
+                                    $("#contentField").fadeOut(500);
+                                    $("#urlField").fadeOut(500);
+                                    setTimeout(function () {
+                                        document.getElementById("contentField").value = "";
+                                        document.getElementById("urlField").value = "";
+                                    }, 300);
+                                    $("#contentField").fadeIn(500);
+                                    $("#urlField").fadeIn(500);
+                                }
+                            </g:javascript>
                         </g:form>
+
                     </div>
                 </div>
 
@@ -86,7 +106,8 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'r.jpg')}"
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                     src="${resource(dir: 'images', file: 'r.jpg')}"
                                      data-holder-rendered="true" style="width: 64px; height: 64px;">
 
                             </a>
@@ -115,7 +136,8 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'a.jpg')}"
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                     src="${resource(dir: 'images', file: 'a.jpg')}"
                                      data-holder-rendered="true" style="width: 64px; height: 64px;">
                             </a>
                         </div>
@@ -148,7 +170,8 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'a.jpg')}"
+                                <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                     src="${resource(dir: 'images', file: 'a.jpg')}"
                                      data-holder-rendered="true" style="width: 64px; height: 64px;">
                             </a>
                         </div>
@@ -181,7 +204,7 @@
 
                     <h4>Crazy <g:fieldValue bean="${user}" field="username"/></h4>
 
-                    <p> <em>"Merry"</em> Christmas, May the season be fun joyful and especialy crazy!! :P<br><br>
+                    <p><em>"Merry"</em> Christmas, May the season be fun joyful and especialy crazy!! :P<br><br>
 
                     </p>
 
@@ -201,8 +224,10 @@
                     <h4>Elsewhere</h4>
                     <ol class="list-unstyled">
 
-                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
-                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
+                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
+                        </li>
+                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
+                        </li>
                     </ol>
                 </div>
             </div><!-- /.blog-sidebar -->
@@ -215,3 +240,6 @@
 
 </body>
 </html>
+
+
+<script src="javascript_functions.js"></script>
