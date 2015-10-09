@@ -1,9 +1,7 @@
 package bandstorm
+import bandstorm.service.UserService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
@@ -13,8 +11,8 @@ import static org.springframework.http.HttpStatus.*
 class UserController {
 
     def springSecurityService
-    def logoutHandlers
-    AuthenticationManager authenticationManager
+    UserService userService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
 
@@ -28,7 +26,7 @@ class UserController {
         if(userInstance == null) {
             return response.sendError(404)
         }
-        
+
         respond userInstance
     }
 
@@ -39,11 +37,10 @@ class UserController {
     def userHome() {
         if (!springSecurityService.isLoggedIn()) {
             try {
-                Authentication newAuthentification = new UsernamePasswordAuthenticationToken(params?.username, params?.password)
-                Authentication result = authenticationManager.authenticate(newAuthentification)
-                SecurityContextHolder.getContext().setAuthentication(result)
+                userService.logIn(params?.username, params?.password)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                render(view: "userHome", model: [user : user])
+                Status status = new Status()
+                render(view: "userHome", model: [user : user, statusInstance: status])
             } catch (AuthenticationException) {
                 redirect(uri: "/")
             }
@@ -54,12 +51,7 @@ class UserController {
     }
 
     def logout() {
-        Authentication auth = SecurityContextHolder.context.authentication
-        if (auth) {
-            logoutHandlers.each  { handler->
-                handler.logout(request,response,auth)
-            }
-        }
+        userService.logout(request, response)
         redirect(uri : "/")
     }
 
