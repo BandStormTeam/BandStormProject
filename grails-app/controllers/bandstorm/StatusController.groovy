@@ -49,10 +49,11 @@ class StatusController {
         if (!springSecurityService.isLoggedIn()) {
             //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
             User user = User.findByUsername("Abel")
-            //user.posts.clear()
+            user.posts.clear()
             userService.addStatusToUser(user, statusInstance)
-            //System.out.println("TRACE : ")
-           //System.out.println(user.getPosts().content)
+            System.out.println("TRACE : ")
+            System.out.println(user.getPosts().content)
+            redirect(controller: "status", action: "index")
         }
     }
 
