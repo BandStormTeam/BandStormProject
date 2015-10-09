@@ -1,12 +1,14 @@
 package bandstorm
 
-
+import bandstorm.dao.UserDaoService
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class UserController {
+
+    UserDaoService userDaoService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -40,7 +42,7 @@ class UserController {
             return
         }
 
-        userInstance.save flush:true
+        userDaoService.create(userInstance)
 
         request.withFormat {
             form multipartForm {
