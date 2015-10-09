@@ -55,12 +55,19 @@
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <textarea class="form-control" style="height:60px;"
-                                  placeholder="Partagez votre actualité."></textarea>
 
-                        <div style="text-align:right;padding-top:5px;"><button type="button"
-                                                                               class="btn btn-default btn-xs">Publier</button>
-                        </div>
+                        <g:form url="[resource:statusInstance, action:'save']" >
+
+                            <g:textField class="form-control ${hasErrors(bean:statusInstance,field:'content','errors')}" placeholder="Partagez votre actualité." name="content" value="${statusInstance.content}" style="height:60px;"> </g:textField><bR>
+
+                            <g:textField class="form-control ${hasErrors(bean:statusInstance,field:'url','errors')}" placeholder="Un lien à partager ?" name="url" value="${statusInstance.url}" style="height:20px;"> </g:textField><bR>
+
+                            <g:hiddenField name="lightCount" value="${statusInstance.lightCount = 0}"/>
+                            <div style="text-align: right">
+                                <g:submitButton name="publish" class="btn btn-success" action="save" controller="status" value="Publier" />
+                            </div>
+
+                        </g:form>
                     </div>
                 </div>
 
