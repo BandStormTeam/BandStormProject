@@ -1,5 +1,6 @@
 package bandstorm
 
+import bandstorm.service.UserService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
 import org.springframework.security.authentication.AuthenticationManager
@@ -154,7 +155,8 @@ class UserControllerSpec extends Specification {
 
     void "test userHome method"() {
         given: "a valid user instance"
-        controller.authenticationManager = Mock(AuthenticationManager)
+        controller.userService = Mock(UserService)
+        controller.userService.authenticationManager = Mock(AuthenticationManager)
         controller.springSecurityService = Mock(SpringSecurityService)
         populateValidParams(params)
         def user = new User(params)
