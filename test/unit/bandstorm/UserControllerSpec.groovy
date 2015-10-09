@@ -1,6 +1,6 @@
 package bandstorm
 
-
+import bandstorm.dao.UserDaoService
 import grails.test.mixin.*
 import spock.lang.*
 
@@ -39,11 +39,19 @@ class UserControllerSpec extends Specification {
 
     void "Test the save action correctly persists an instance"() {
 
+        given: "The service dao for user is created"
+        populateValidParams(params)
+        User user = new User(params)
+        user.save()
+        controller.userDaoService = Mock(UserDaoService) {
+            create(_) >> user
+        }
+
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
-        def user = new User()
-        user.validate()
-        controller.save(user)
+        def userBad = new User()
+        userBad.validate()
+        controller.save(userBad)
 
         then: "The create view is rendered again with the correct model"
         model.userInstance != null
@@ -51,10 +59,10 @@ class UserControllerSpec extends Specification {
 
         when: "The save action is executed with a valid instance"
         response.reset()
-        populateValidParams(params)
-        user = new User(params)
 
-        controller.save(user)
+        def userGood = new User(params)
+
+        controller.save(userGood)
 
         then: "A redirect is issued to the show action"
         response.redirectedUrl == '/user/show/1'

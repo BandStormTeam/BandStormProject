@@ -42,7 +42,7 @@ class UserController {
             return
         }
 
-        userDaoService.create(userInstance)
+        userInstance = userDaoService.create(userInstance)
 
         request.withFormat {
             form multipartForm {
