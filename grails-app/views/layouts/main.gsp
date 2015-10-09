@@ -62,7 +62,7 @@
 					<div class="form-group">
 						<g:passwordField type="password" placeholder="Password" class="form-control" name="password"/>
 					</div>
-					<g:actionSubmit  class="btn btn-success" action="userHome" value="Connexion" />
+					<g:actionSubmit  class="btn btn-success" action="connection" value="Connexion" />
 				</sec:ifNotLoggedIn>
 				<sec:ifLoggedIn>
 					<a  class="btn btn-danger" href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a>

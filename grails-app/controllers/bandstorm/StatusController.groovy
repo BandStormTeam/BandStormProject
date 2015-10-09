@@ -1,12 +1,20 @@
 package bandstorm
 
+import bandstorm.service.UserService
+import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
+@Secured("permitAll")
 class StatusController {
 
+    def springSecurityService
+    UserService userService
+    def logoutHandlers
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -29,6 +37,7 @@ class StatusController {
             return
         }
 
+
         if (statusInstance.hasErrors()) {
             respond statusInstance.errors, view: 'create'
             return
@@ -36,12 +45,14 @@ class StatusController {
 
         statusInstance.save flush: true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'status.label', default: 'Status'), statusInstance.id])
-                redirect statusInstance
-            }
-            '*' { respond statusInstance, [status: CREATED] }
+
+        if (!springSecurityService.isLoggedIn()) {
+            //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+            User user = User.findByUsername("Abel")
+            //user.posts.clear()
+            userService.addStatusToUser(user, statusInstance)
+            //System.out.println("TRACE : ")
+           //System.out.println(user.getPosts().content)
         }
     }
 

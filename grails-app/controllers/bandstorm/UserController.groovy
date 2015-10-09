@@ -34,10 +34,25 @@ class UserController {
         respond new User(params)
     }
 
-    def userHome() {
+    def connection() {
         if (!springSecurityService.isLoggedIn()) {
             try {
                 userService.logIn(params?.username, params?.password)
+                User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                Status status = new Status()
+                render(view: "userHome", model: [user : user, statusInstance: status])
+            } catch (AuthenticationException) {
+                redirect(uri: "/")
+            }
+        } else {
+            User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+            render(view: "userHome", model: [user : user])
+        }
+    }
+
+    def userHome() {
+        if (!springSecurityService.isLoggedIn()) {
+            try {
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 Status status = new Status()
                 render(view: "userHome", model: [user : user, statusInstance: status])
