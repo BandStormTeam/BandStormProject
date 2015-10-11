@@ -2,6 +2,7 @@ package bandstorm
 
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.SpringSecurityService
+import bandstorm.dao.UserDaoService
 import grails.test.mixin.*
 import org.springframework.security.authentication.AuthenticationManager
 import spock.lang.*
@@ -19,6 +20,7 @@ class UserControllerSpec extends Specification {
         params["country"] = "France"
         params["password"] = "123456"
         params["birthDate"] = Mock(Date)
+        params["urlAvatar"] = "http://toto.com"
     }
 
     void "Test the index action returns the correct model"() {
@@ -41,11 +43,19 @@ class UserControllerSpec extends Specification {
 
     void "Test the save action correctly persists an instance"() {
 
+        given: "The service dao for user is created"
+        populateValidParams(params)
+        User user = new User(params)
+        user.save()
+        controller.userDaoService = Mock(UserDaoService) {
+            create(_) >> user
+        }
+
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
-        def user = new User()
-        user.validate()
-        controller.save(user)
+        def userBad = new User()
+        userBad.validate()
+        controller.save(userBad)
 
         then: "The create view is rendered again with the correct model"
         model.userInstance != null
@@ -53,10 +63,10 @@ class UserControllerSpec extends Specification {
 
         when: "The save action is executed with a valid instance"
         response.reset()
-        populateValidParams(params)
-        user = new User(params)
 
-        controller.save(user)
+        def userGood = new User(params)
+
+        controller.save(userGood)
 
         then: "A redirect is issued to the show action"
         response.redirectedUrl == '/user/show/1'
@@ -155,11 +165,14 @@ class UserControllerSpec extends Specification {
 
     void "test userHome method"() {
         given: "a valid user instance"
-        controller.userService = Mock(UserService)
-        controller.userService.authenticationManager = Mock(AuthenticationManager)
+        def user = new User(params)
+
+        controller.userDaoService = Mock(UserDaoService) {
+            create(_) >> user
+        }
+        controller.userDaoService.authenticationManager = Mock(AuthenticationManager)
         controller.springSecurityService = Mock(SpringSecurityService)
         populateValidParams(params)
-        def user = new User(params)
         controller.save(user)
 
         when: "the userHome method is called with a user without a role"

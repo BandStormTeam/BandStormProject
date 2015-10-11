@@ -1,17 +1,19 @@
 package bandstorm
+
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.security.core.context.SecurityContextHolder
+import bandstorm.dao.UserDaoService
 
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
 @Secured("permitAll")
 class UserController {
-
     def springSecurityService
     UserService userService
+    UserDaoService userDaoService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -66,7 +68,7 @@ class UserController {
             return
         }
 
-        userInstance.save flush:true
+        userInstance = userDaoService.create(userInstance)
 
         request.withFormat {
             form multipartForm {

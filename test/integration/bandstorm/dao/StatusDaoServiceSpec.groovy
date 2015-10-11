@@ -1,13 +1,14 @@
 package bandstorm.dao
 
 import bandstorm.Status
+import grails.test.mixin.TestFor
 import spock.lang.*
 
 /**
  * Created by Dylan on 08/10/2015.
  */
+@TestFor(Status)
 class StatusDaoServiceSpec extends Specification {
-
     StatusDaoService statusDaoService
 
     void "test StatusDaoService creation method"(){
