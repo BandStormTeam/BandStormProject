@@ -1,4 +1,6 @@
 package bandstorm
+
+import bandstorm.service.StatusService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
@@ -15,6 +17,7 @@ class UserController {
     def springSecurityService
     def logoutHandlers
     AuthenticationManager authenticationManager
+    StatusService statusService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
 
@@ -43,13 +46,15 @@ class UserController {
                 Authentication result = authenticationManager.authenticate(newAuthentification)
                 SecurityContextHolder.getContext().setAuthentication(result)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                render(view: "userHome", model: [user : user])
+                def statusList = statusService.getStatusForTimeline()
+                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
             } catch (AuthenticationException) {
                 redirect(uri: "/")
             }
         } else {
             User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-            render(view: "userHome", model: [user : user])
+            def statusList = statusService.getStatusForTimeline()
+            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
         }
     }
 

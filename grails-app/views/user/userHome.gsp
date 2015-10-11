@@ -75,94 +75,34 @@
                                 class="badge">492</span></a></li>
                     </ul>
 
+                    <g:each in="${statusList}" var="status">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'r.jpg')}"
+                                         data-holder-rendered="true" style="width: 64px; height: 64px;">
 
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'r.jpg')}"
-                                     data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                </a>
+                            </div>
 
-                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">Crazy <g:fieldValue bean="${user}" field="username"/></h4>
+                                <i>Posté le ${status.dateCreated}</i>
+                            </div>
+                            <br>
                         </div>
 
-                        <div class="media-body">
-                            <h4 class="media-heading">Crazy <g:fieldValue bean="${user}" field="username"/></h4>
-                            <i>Posté le 16/11/2015</i>
-                        </div>
-                        <br>
-                    </div>
+                        <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
+                                                                                   aria-hidden="true"></span> Light (${status.lightCount})
+                        </button>
+                        <br><br>
+                        <blockquote>
+                            <p id="content${status.id}">${status.content}</p>
+                        </blockquote>
 
-                    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
-                                                                               aria-hidden="true"></span> Light (5)
-                    </button>
-                    <br><br>
-                    <blockquote>
-                        <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                        </p>
-                    </blockquote>
+                        </br>
+                    </g:each>
 
-                </BR>
-
-
-
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'a.jpg')}"
-                                     data-holder-rendered="true" style="width: 64px; height: 64px;">
-                            </a>
-                        </div>
-
-                        <div class="media-body">
-                            <h4 class="media-heading">Golum</h4>
-                            <i>Posté le 16/11/2015</i>
-                        </div>
-                        <br>
-                    </div>
-                    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"
-                                                                               aria-hidden="true"></span> Suivre
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
-                                                                               aria-hidden="true"></span> Light (5098)
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-headphones"
-                                                                               aria-hidden="true"></span> Participer (176)
-                    </button>
-
-                    <h4>Concert organisé le 12/11/2012 par <a>Bob Marley</a></h4>
-                    <img src="${resource(dir: 'images', file: 'I.jpg')}" style="width:100%;">
-                    <blockquote>
-
-                        <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                        </p>
-                    </blockquote>
-                </BR>
-
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'a.jpg')}"
-                                     data-holder-rendered="true" style="width: 64px; height: 64px;">
-                            </a>
-                        </div>
-
-                        <div class="media-body">
-                            <h4 class="media-heading">Golum</h4>
-                            <i>Posté le 16/11/2015</i>
-                        </div>
-                        <br>
-                    </div>
-                    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"
-                                                                               aria-hidden="true"></span> Suivre
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
-                                                                               aria-hidden="true"></span> Light (5098)
-                    </button><br><br>
-                    <blockquote>
-                        <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                        </p>
-                    </blockquote>
-                </BR></BR>
 
                 </div><!-- /.blog-userHomePage -->
             </div><!-- /.blog-userHomePage -->
