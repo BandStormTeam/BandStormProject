@@ -8,14 +8,14 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="${resource(dir:"css/bootstrap",file:"bootstrap.min.css")}">
+	<link rel="stylesheet" href="${resource(dir:"css/bootstrap",file:"bootstrap-theme.min.css")}">
 
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="${resource(dir:"js",file:"jquery-1.11.3.min.js")}"></script>
+	<script src="${resource(dir:"js/bootstrap",file:"bootstrap.min.js")}"></script>
 
 
 
@@ -54,15 +54,17 @@
 			<a class="navbar-brand" href="#">BandStorm</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
-			<g:form class="navbar-form navbar-right" method="post" controller="user">
+			<div class="navbar-form navbar-right">
 				<sec:ifNotLoggedIn>
-					<div class="form-group">
-						<g:textField type="text" placeholder="Email" class="form-control" name="username"/>
-					</div>
-					<div class="form-group">
-						<g:passwordField type="password" placeholder="Password" class="form-control" name="password"/>
-					</div>
-					<g:actionSubmit  class="btn btn-success" action="userHome" value="Connexion" />
+					<g:form  method="post" controller="user">
+						<div class="form-group">
+							<g:textField type="text" placeholder="username" class="form-control" name="username"/>
+						</div>
+						<div class="form-group">
+							<g:passwordField type="password" placeholder="password" class="form-control" name="password"/>
+						</div>
+						<g:actionSubmit  class="btn btn-success" action="userHome" value="Connexion" />
+					</g:form>
 				</sec:ifNotLoggedIn>
 				<sec:ifLoggedIn>
 
@@ -72,13 +74,13 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<li><a href="#">Paramétrage</a></li>
+							<li><a href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
 							<li><a href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
 						</ul>
 					</div>
 
 				</sec:ifLoggedIn>
-			</g:form>
+			</div>
 		</div><!--/.navbar-collapse -->
 	</div>
 </nav>

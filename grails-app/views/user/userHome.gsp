@@ -1,51 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Julian
-  Date: 02/10/2015
-  Time: 15:19
---%>
-
 <%@ page import="bandstorm.User" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<meta name="layout" content="main"/>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'event.label', default: 'Event')}" />
-    <title><g:message code="default.list.label" args="[entityName]" /></title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>Jumbotron Template for Bootstrap</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-    <style>
-
-    body {
-        background: url("${resource(dir: 'images', file: 'm.jpg')}") fixed;
-        background-size: cover;
-    }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-    <br><br><br><br>
-
+<div class="container" style="padding-top: 100px;">
 
     <div class="container">
 
