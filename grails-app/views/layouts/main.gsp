@@ -55,6 +55,7 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<div class="navbar-form navbar-right">
+
 				<sec:ifNotLoggedIn>
 					<g:form  method="post" controller="user">
 						<div class="form-group">
@@ -67,8 +68,11 @@
 					</g:form>
 				</sec:ifNotLoggedIn>
 				<sec:ifLoggedIn>
+					<a href="<g:createLink controller="user" action="show" />/${sec.loggedInUserInfo(field: 'id')}" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+					<a href="<g:createLink controller="user" action="userHome"/>" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-globe" aria-hidden="true" ></span></a>
 
-					<div  class="dropdown">
+
+					<div  class="dropdown" style="display: inline-block">
 						<button style="width:120px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 							<span class="glyphicon glyphicon-user" aria-hidden="true"></span> <sec:username/>
 							<span class="caret"></span>

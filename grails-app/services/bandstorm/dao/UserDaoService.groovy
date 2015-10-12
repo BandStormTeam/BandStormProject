@@ -23,7 +23,7 @@ class UserDaoService implements IGenericDao<User> {
 
     @Override
     User update(User user) {
-        user.save()
+        user.save(flush:true)
         return user
     }
 }

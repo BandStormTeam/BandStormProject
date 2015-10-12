@@ -8,21 +8,21 @@
 
     <g:form url="[resource:userInstance, action:'update']" >
 
-    <g:hiddenField name="page" value="profilSettings"></g:hiddenField>
+        <g:hiddenField name="page" value="profilSettings"></g:hiddenField>
 
-    <div class="row">
+        <div class="row">
 
-        <h2 style="color: white;"> Bienvenue ${userInstance.email}</h2>
-        <br>
-        <div class="col-xs-2">
+            <h2 style="color: white;"> Bienvenue ${userInstance.email}</h2>
+            <br>
+            <div class="col-xs-2">
 
-            <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
-                <li role="presentation" class="active"><a href="#">Profile</a></li>
-                <li role="presentation"><a href="#">Mot de passe</a></li>
-            </ul>
+                <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
+                    <li role="presentation" class="active" ><a href="<g:createLink controller="user" action="profilSettings"/>">Profile</a></li>
+                    <li role="presentation"><a href="<g:createLink controller="user" action="passwordSettings"/>">Mot de passe</a></li>
+                </ul>
 
-        </div>
-        <div class="col-xs-6" >
+            </div>
+            <div class="col-xs-6" >
                 <strong style="color:white;">Pseudo :</strong><br>
                 <g:textField class="form-control ${hasErrors(bean:userInstance,field:'username','errors')}" placeholder="Pseudo" name="username" value="${userInstance.username}">  </g:textField><bR>
 
@@ -47,8 +47,8 @@
 
 
 
+            </div>
         </div>
-    </div>
 
     </g:form>
 </div>

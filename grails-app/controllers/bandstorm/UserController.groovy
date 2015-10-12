@@ -46,6 +46,15 @@ class UserController {
         respond userInstance
     }
 
+    @Secured("ROLE_USER")
+    def passwordSettings(User userInstance){
+
+        if (userInstance == null){
+            userInstance = springSecurityService.getCurrentUser()
+        }
+        respond userInstance
+    }
+
     def userHome() {
         if (!springSecurityService.isLoggedIn()) {
             try {
@@ -82,6 +91,7 @@ class UserController {
         redirect (action:"index")
     }
 
+    @Secured("ROLE_USER")
     def update(User userInstance,String page) {
         if (userInstance == null) {
             notFound()

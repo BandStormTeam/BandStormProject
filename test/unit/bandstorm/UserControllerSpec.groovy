@@ -41,6 +41,25 @@ class UserControllerSpec extends Specification {
         model.userInstance != null
     }
 
+
+    void "Test the passwordSettings action returns the correct model"() {
+
+        given: "The security service for user is created"
+        populateValidParams(params)
+        User user = new User(params)
+        user.save()
+        controller.springSecurityService = Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        when: "The passwordSettings action is executed"
+        controller.passwordSettings()
+
+        then: "The model is correctly created"
+        model.userInstance != null
+    }
+
+
     void "Test the profilSettings action returns the correct model"() {
 
         given: "The security service for user is created"
