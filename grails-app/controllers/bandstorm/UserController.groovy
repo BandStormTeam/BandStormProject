@@ -36,6 +36,10 @@ class UserController {
         respond new User(params)
     }
 
+    def profilSettings(){
+        respond new User(params)
+    }
+
     def userHome() {
         if (!springSecurityService.isLoggedIn()) {
             try {

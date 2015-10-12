@@ -65,7 +65,18 @@
 					<g:actionSubmit  class="btn btn-success" action="userHome" value="Connexion" />
 				</sec:ifNotLoggedIn>
 				<sec:ifLoggedIn>
-					<a  class="btn btn-danger" href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a>
+
+					<div  class="dropdown">
+						<button style="width:120px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							<span class="glyphicon glyphicon-user" aria-hidden="true"></span> <sec:username/>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li><a href="#">Paramétrage</a></li>
+							<li><a href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
+						</ul>
+					</div>
+
 				</sec:ifLoggedIn>
 			</g:form>
 		</div><!--/.navbar-collapse -->

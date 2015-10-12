@@ -41,6 +41,14 @@ class UserControllerSpec extends Specification {
         model.userInstance != null
     }
 
+    void "Test the profilSettings action returns the correct model"() {
+        when: "The profilSettings action is executed"
+        controller.profilSettings()
+
+        then: "The model is correctly created"
+        model.userInstance != null
+    }
+
     void "Test the save action correctly persists an instance"() {
 
         given: "The service dao for user is created"
