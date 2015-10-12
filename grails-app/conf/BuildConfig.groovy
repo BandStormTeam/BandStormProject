@@ -58,9 +58,6 @@ grails.project.dependency.resolution = {
 
     plugins {
 
-        //spring security
-        compile ':spring-security-core:2.0-RC5'
-
         // plugins for the build system only
         build ":tomcat:7.0.54"
 
@@ -86,6 +83,9 @@ grails.project.dependency.resolution = {
         //compile ":less-asset-pipeline:1.5.3"
         //compile ":coffee-asset-pipeline:1.5.0"
         //compile ":handlebars-asset-pipeline:1.3.0.1"
+
+        //spring security
+        compile ':spring-security-core:2.0-RC5'
 
         // Cobertura
         test ":code-coverage:2.0.3-3"

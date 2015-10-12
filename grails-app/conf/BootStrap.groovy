@@ -20,6 +20,10 @@ class BootStrap {
         assert User.count() == 2
         assert SecRole.count() == 2
         assert SecUserSecRole.count() == 2
+
+        for(int i=1; i<=10; i++){
+            def status = new Status(content: "My status "+i, lightCount: 0).save()
+        }
     }
     def destroy = {
     }

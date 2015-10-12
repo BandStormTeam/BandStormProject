@@ -1,10 +1,11 @@
 package bandstorm
 
 import bandstorm.service.UserService
+import bandstorm.service.StatusService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-import org.springframework.security.core.context.SecurityContextHolder
 import bandstorm.dao.UserDaoService
+import org.springframework.security.authentication.AuthenticationManager;
 
 import static org.springframework.http.HttpStatus.*
 
@@ -12,11 +13,14 @@ import static org.springframework.http.HttpStatus.*
 @Secured("permitAll")
 class UserController {
     def springSecurityService
+    def logoutHandlers
+    AuthenticationManager authenticationManager
+
     UserService userService
     UserDaoService userDaoService
+    StatusService statusService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
 
     @Secured("ROLE_ADMIN")
     def index(Integer max) {
@@ -41,13 +45,15 @@ class UserController {
             try {
                 userService.logIn(params?.username, params?.password)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                render(view: "userHome", model: [user : user])
+                def statusList = statusService.getStatusForTimeline()
+                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
             } catch (AuthenticationException) {
                 redirect(uri: "/")
             }
         } else {
             User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-            render(view: "userHome", model: [user : user])
+            def statusList = statusService.getStatusForTimeline()
+            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
         }
     }
 
