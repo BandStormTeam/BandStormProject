@@ -46,7 +46,7 @@ class StatusController {
         statusInstance.save flush: true
 
 
-        if (!springSecurityService.isLoggedIn()) {
+        //if (!springSecurityService.isLoggedIn()) {
             //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
             User user = User.findByUsername("Abel")
             user.posts.clear()
@@ -54,7 +54,7 @@ class StatusController {
             System.out.println("TRACE : ")
             System.out.println(user.getPosts().content)
             redirect(controller: "status", action: "index")
-        }
+        //}
     }
 
     def edit(Status statusInstance) {
