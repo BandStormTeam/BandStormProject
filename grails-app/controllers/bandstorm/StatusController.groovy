@@ -1,9 +1,10 @@
 package bandstorm
 
 import bandstorm.service.UserService
+
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-import org.springframework.security.core.Authentication
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
@@ -14,9 +15,12 @@ class StatusController {
 
     def springSecurityService
     UserService userService
-    def logoutHandlers
+    UserController userController = new UserController()
+    AuthenticationManager authenticationManager
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    @Secured("ROLE_ADMIN")
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Status.list(params), model: [statusInstanceCount: Status.count()]
@@ -43,18 +47,31 @@ class StatusController {
             return
         }
 
+        //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+
+        addStatus(statusInstance)
+
+
         statusInstance.save flush: true
 
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'status.label', default: 'Status'), statusInstance.id])
+            }
+            '*' { respond statusInstance, [status: CREATED] }
+        }
+    }
 
-        //if (!springSecurityService.isLoggedIn()) {
-            //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+    def addStatus(Status status) {
+        try {
             User user = User.findByUsername("Abel")
-            user.posts.clear()
-            userService.addStatusToUser(user, statusInstance)
+            userService.addStatusToUser(user, status)
             System.out.println("TRACE : ")
             System.out.println(user.getPosts().content)
             redirect(controller: "status", action: "index")
-        //}
+        } catch (AuthenticationException) {
+            redirect(controller: "status", action: "index")
+        }
     }
 
     def edit(Status statusInstance) {

@@ -71,7 +71,7 @@
                             <g:hiddenField name="lightCount" value="${statusInstance.lightCount = 0}"/>
                             <div style="text-align: right">
                                 <g:submitToRemote name="publish" class="btn btn-success" action="save"
-                                                  controller="status" value="Publier" onSuccess="clearFields()"/>
+                                                  controller="status" value="Publier" onComplete="clearFields()"/>
                             </div>
 
                             <g:javascript>

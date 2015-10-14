@@ -1,11 +1,12 @@
 package bandstorm
 
-
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
+import org.springframework.security.authentication.AuthenticationManager
 import spock.lang.*
 
 @TestFor(StatusController)
-@Mock(Status)
+@Mock([Status, User])
 class StatusControllerSpec extends Specification {
 
     def populateValidParams(params) {
@@ -53,7 +54,7 @@ class StatusControllerSpec extends Specification {
         controller.save(status)
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/status/show/1'
+        response.redirectedUrl == '/status/index'
         controller.flash.message != null
         Status.count() == 1
     }
