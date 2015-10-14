@@ -4,6 +4,9 @@ import bandstorm.service.UserService
 import bandstorm.service.StatusService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+import org.codehaus.groovy.grails.web.mapping.UrlMapping
+import org.springframework.security.core.context.SecurityContextHolder
+
 import bandstorm.dao.UserDaoService
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -20,14 +23,15 @@ class UserController {
     UserDaoService userDaoService
     StatusService statusService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_USER")
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond User.list(params), model:[userInstanceCount: User.count()]
     }
 
+    @Secured("ROLE_USER")
     def show(User userInstance) {
         if(userInstance == null) {
             return response.sendError(404)
@@ -38,6 +42,24 @@ class UserController {
 
     def create() {
         respond new User(params)
+    }
+
+    @Secured("ROLE_USER")
+    def profilSettings(User userInstance){
+
+        if (userInstance == null){
+            userInstance = springSecurityService.getCurrentUser()
+        }
+        respond userInstance
+    }
+
+    @Secured("ROLE_USER")
+    def passwordSettings(User userInstance){
+
+        if (userInstance == null){
+            userInstance = springSecurityService.getCurrentUser()
+        }
+        respond userInstance
     }
 
     def userHome() {
@@ -62,7 +84,6 @@ class UserController {
         redirect(uri : "/")
     }
 
-    @Transactional
     def save(User userInstance) {
         if (userInstance == null) {
             notFound()
@@ -76,40 +97,24 @@ class UserController {
 
         userInstance = userDaoService.create(userInstance)
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-                redirect userInstance
-            }
-            '*' { respond userInstance, [status: CREATED] }
-        }
+        redirect (action:"index")
     }
 
-    def edit(User userInstance) {
-        respond userInstance
-    }
-
-    @Transactional
-    def update(User userInstance) {
+    @Secured("ROLE_USER")
+    def update(User userInstance,String page) {
         if (userInstance == null) {
             notFound()
             return
         }
 
         if (userInstance.hasErrors()) {
-            respond userInstance.errors, view:'edit'
+            respond userInstance.errors, view:page
             return
         }
 
-        userInstance.save flush:true
+        userInstance = userDaoService.update(userInstance)
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'User.label', default: 'User'), userInstance.id])
-                redirect userInstance
-            }
-            '*'{ respond userInstance, [status: OK] }
-        }
+        redirect(action: page)
     }
 
     @Transactional

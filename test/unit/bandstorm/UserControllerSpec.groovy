@@ -41,6 +41,42 @@ class UserControllerSpec extends Specification {
         model.userInstance != null
     }
 
+
+    void "Test the passwordSettings action returns the correct model"() {
+
+        given: "The security service for user is created"
+        populateValidParams(params)
+        User user = new User(params)
+        user.save()
+        controller.springSecurityService = Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        when: "The passwordSettings action is executed"
+        controller.passwordSettings()
+
+        then: "The model is correctly created"
+        model.userInstance != null
+    }
+
+
+    void "Test the profilSettings action returns the correct model"() {
+
+        given: "The security service for user is created"
+        populateValidParams(params)
+        User user = new User(params)
+        user.save()
+        controller.springSecurityService = Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        when: "The profilSettings action is executed"
+        controller.profilSettings()
+
+        then: "The model is correctly created"
+        model.userInstance != null
+    }
+
     void "Test the save action correctly persists an instance"() {
 
         given: "The service dao for user is created"
@@ -69,8 +105,7 @@ class UserControllerSpec extends Specification {
         controller.save(userGood)
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/user/show/1'
-        controller.flash.message != null
+        response.redirectedUrl == '/user/index'
         User.count() == 1
     }
 
@@ -90,26 +125,19 @@ class UserControllerSpec extends Specification {
         model.userInstance == user
     }
 
-    void "Test that the edit action returns the correct model"() {
-        when: "The edit action is executed with a null domain"
-        controller.edit(null)
-
-        then: "A 404 error is returned"
-        response.status == 404
-
-        when: "A domain instance is passed to the edit action"
-        populateValidParams(params)
-        def user = new User(params)
-        controller.edit(user)
-
-        then: "A model is populated containing the domain instance"
-        model.userInstance == user
-    }
-
     void "Test the update action performs an update on a valid domain instance"() {
+
+        given: "The service dao for user is created"
+        populateValidParams(params)
+        User user = new User(params)
+        user.save()
+        controller.userDaoService = Mock(UserDaoService) {
+            update(_) >> user
+        }
+
         when: "Update is called for a domain instance that doesn't exist"
         request.contentType = FORM_CONTENT_TYPE
-        controller.update(null)
+        controller.update(null,"profilSettings")
 
         then: "A 404 error is returned"
         response.redirectedUrl == '/user/index'
@@ -118,22 +146,22 @@ class UserControllerSpec extends Specification {
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
-        def user = new User()
-        user.validate()
-        controller.update(user)
+        def userBad = new User()
+        userBad.validate()
+        controller.update(userBad,"profilSettings")
 
         then: "The edit view is rendered again with the invalid instance"
-        view == 'edit'
-        model.userInstance == user
+        view == 'profilSettings'
+        model.userInstance == userBad
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        user = new User(params).save(flush: true)
-        controller.update(user)
+        userBad = new User(params).save(flush: true)
+        controller.update(userBad,"profilSettings")
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/user/show/$user.id"
+        response.redirectedUrl == "/user/index"
         flash.message != null
     }
 
@@ -173,7 +201,7 @@ class UserControllerSpec extends Specification {
         controller.userDaoService.authenticationManager = Mock(AuthenticationManager)
         controller.springSecurityService = Mock(SpringSecurityService)
         populateValidParams(params)
-        controller.save(user)
+
 
         when: "the userHome method is called with a user without a role"
         controller.userHome()

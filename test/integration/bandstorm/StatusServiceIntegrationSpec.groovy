@@ -1,11 +1,13 @@
 package bandstorm
 
 import bandstorm.service.StatusService
+import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
  * Created by Dylan on 09/10/2015.
  */
+@TestFor(Status)
 class StatusServiceIntegrationSpec extends Specification {
 
     StatusService statusService
@@ -21,7 +23,7 @@ class StatusServiceIntegrationSpec extends Specification {
         println statusList.toString()
 
         then: "we get all status"
-        statusList.size() == 12
+        statusList.size() == 2
 
     }
 }

@@ -23,8 +23,6 @@
                 <g:textField class="form-control ${hasErrors(bean:userInstance,field:'country','errors')}"  placeholder="Votre pays" name="country" value="${userInstance.country}">  </g:textField><bR>
                 <strong style="color:white;">Date de naissance :</strong>
                 <g:datePicker class="form-control ${hasErrors(bean:userInstance,field:'birthDate','errors')}" name="birthDate" precision="day"  value="${userInstance?.birthDate}"  /><bR><bR>
-                <strong style="color:white;">Lien vers votre photo de profil :</strong>
-                <g:textField class="form-control ${hasErrors(bean:userInstance,field:'urlAvatar','errors')}" name="urlAvatar" value="${userInstance?.urlAvatar}"  /><bR><bR>
 
 
 				<div style="text-align: right">
