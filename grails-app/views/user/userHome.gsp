@@ -14,12 +14,37 @@
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <textarea class="form-control" style="height:60px;"
-                                  placeholder="Partagez votre actualité."></textarea>
+                        <g:form url="[resource: statusInstance,controller: 'status', action: 'save']" name="statusForm">
 
-                        <div style="text-align:right;padding-top:5px;"><button type="button"
-                                                                               class="btn btn-default btn-xs">Publier</button>
-                        </div>
+                            <g:textField id="contentField"
+                                         class="form-control ${hasErrors(bean: statusInstance, field: 'content', 'errors')}"
+                                         placeholder="Partagez votre actualité." name="content"
+                                         value="${statusInstance.content}" style="height:60px;"></g:textField><bR>
+
+                            <g:textField id="urlField"
+                                         class="form-control ${hasErrors(bean: statusInstance, field: 'url', 'errors')}"
+                                         placeholder="Un lien à partager ?" name="url" value="${statusInstance.url}"
+                                         style="height:30px;"></g:textField><bR>
+
+                            <g:hiddenField name="lightCount" value="${statusInstance.lightCount = 0}"/>
+                            <div style="text-align: right">
+                                <g:submitToRemote name="publish" class="btn btn-success" action="save"
+                                                  controller="status" value="Publier" onComplete="clearFields()"/>
+                            </div>
+
+                            <g:javascript>
+                                function clearFields() {
+                                    $("#contentField").fadeOut(500);
+                                    $("#urlField").fadeOut(500);
+                                    setTimeout(function () {
+                                        document.getElementById("contentField").value = "";
+                                        document.getElementById("urlField").value = "";
+                                    }, 300);
+                                    $("#contentField").fadeIn(500);
+                                    $("#urlField").fadeIn(500);
+                                }
+                            </g:javascript>
+                        </g:form>
                     </div>
                 </div>
 

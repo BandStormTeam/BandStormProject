@@ -68,14 +68,16 @@ class UserController {
                 userService.logIn(params?.username, params?.password)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 def statusList = statusService.getStatusForTimeline()
-                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+                Status status = new Status()
+                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size(), statusInstance: status])
             } catch (AuthenticationException) {
                 redirect(uri: "/")
             }
         } else {
             User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
             def statusList = statusService.getStatusForTimeline()
-            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+            Status status = new Status()
+            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size(), statusInstance: status])
         }
     }
 
