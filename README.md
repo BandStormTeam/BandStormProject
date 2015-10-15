@@ -1,5 +1,5 @@
 # BandStormProject
-![](https://travis-ci.org/BandStormTeam/BandStormProject.svg?branch=V0.1) [![Coverage Status](https://coveralls.io/repos/BandStormTeam/BandStormProject/badge.svg?branch=V0.1&service=github)](https://coveralls.io/github/BandStormTeam/BandStormProject?branch=V0.1)
+![](https://travis-ci.org/BandStormTeam/BandStormProject.svg?branch=V0.2) [![Coverage Status](https://coveralls.io/repos/BandStormTeam/BandStormProject/badge.svg?branch=V0.2&service=github)](https://coveralls.io/github/BandStormTeam/BandStormProject?branch=V0.1)
 
 Bandstorm est un réseau social pour des amateurs de musique. Celui-ci a pour but de mettre en relations des utilisateurs par le biais de communautés. Ces communautés sont constitués en fonction de préférences musicales. 
 
