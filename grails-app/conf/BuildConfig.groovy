@@ -7,19 +7,19 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
-grails.project.fork = [
-    // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
-    //  compile: [maxMemory: 256, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
-
-    // configure settings for the test-app JVM, uses the daemon by default
-    test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
-    // configure settings for the run-app JVM
-    run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
-    // configure settings for the run-war JVM
-    war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
-    // configure settings for the Console UI JVM
-    console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
-]
+//grails.project.fork = [
+//    // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
+//    //  compile: [maxMemory: 256, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
+//
+//    // configure settings for the test-app JVM, uses the daemon by default
+//    test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
+//    // configure settings for the run-app JVM
+//    run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
+//    // configure settings for the run-war JVM
+//    war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
+//    // configure settings for the Console UI JVM
+//    console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
+//]
 
 grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
@@ -51,9 +51,13 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.27'
         // runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0-grails-2.3"
+        build 'org.apache.httpcomponents:httpcore:4.3.2'
+        build 'org.apache.httpcomponents:httpclient:4.3.2'
+        build 'org.apache.httpcomponents:httpmime:4.3.3'
     }
 
     plugins {
+
         // plugins for the build system only
         build ":tomcat:7.0.54"
 
@@ -80,7 +84,37 @@ grails.project.dependency.resolution = {
         //compile ":coffee-asset-pipeline:1.5.0"
         //compile ":handlebars-asset-pipeline:1.3.0.1"
 
+        //spring security
+        compile ':spring-security-core:2.0-RC5'
+
         // Cobertura
         test ":code-coverage:2.0.3-3"
+        compile ":codenarc:0.24.1"
+        // Coveralls plugin
+        build(':coveralls:0.1.3', ':rest-client-builder:1.0.3') {
+            export = false
+        }
+        coveralls {
+            // Cobertura XML coverage report path
+            // report = 'path/to/cobertura.xml' // if not defined, default to 'target/test-reports/cobertura/coverage.xml'
+            // Coveralls repo token, not required for Travis CI public repo (required for Travis Pro with private repo or other CI).
+            token = 'A2UqggsCNwtlzBB9LB7obVcpVeao9ihsD'
+            // CI Service name (not required for Travis, automatically detected for 'travis-ci' and 'travis-pro')
+            // service = 'other'
+        }
+    }
+    coverage {
+        enabledByDefault = false
+        xml = true
+    }
+    codenarc.reportType='xml'
+    codenarc.reportName='target/codenarc.xml'
+
+    codenarc.reports = {
+        xml.enabled = true
+        MyXmlReport('xml') {                    // The report name "MyXmlReport" is user-defined; Report type is 'xml'
+            outputFile = 'CodeNarc-Report.xml'  // Set the 'outputFile' property of the (XML) Report
+            title = 'Sample Report'             // Set the 'title' property of the (XML) Report
+        }
     }
 }
