@@ -1,26 +1,21 @@
 package bandstorm
 
-import bandstorm.service.UserService
+import bandstorm.dao.UserDAOService
 import bandstorm.service.StatusService
+import bandstorm.service.UserService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-import org.codehaus.groovy.grails.web.mapping.UrlMapping
 import org.springframework.security.core.context.SecurityContextHolder
 
-import bandstorm.dao.UserDaoService
-import org.springframework.security.authentication.AuthenticationManager;
-
-import static org.springframework.http.HttpStatus.*
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.NO_CONTENT
 
 @Transactional(readOnly = true)
 @Secured("permitAll")
 class UserController {
-    def springSecurityService
-    def logoutHandlers
-    AuthenticationManager authenticationManager
 
     UserService userService
-    UserDaoService userDaoService
+    UserDAOService userDAOService
     StatusService statusService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
@@ -36,7 +31,7 @@ class UserController {
         if(userInstance == null) {
             return response.sendError(404)
         }
-        
+
         respond userInstance
     }
 
@@ -46,9 +41,8 @@ class UserController {
 
     @Secured("ROLE_USER")
     def profilSettings(User userInstance){
-
         if (userInstance == null){
-            userInstance = springSecurityService.getCurrentUser()
+            userInstance = User.findByUsername(userService.springSecurityService.getCurrentUser())
         }
         respond userInstance
     }
@@ -57,27 +51,25 @@ class UserController {
     def passwordSettings(User userInstance){
 
         if (userInstance == null){
-            userInstance = springSecurityService.getCurrentUser()
+            userInstance = userService.springSecurityService.getCurrentUser()
         }
         respond userInstance
     }
 
     def userHome() {
-        if (!springSecurityService.isLoggedIn()) {
+        if (!userService.springSecurityService.isLoggedIn()) {
             try {
                 userService.logIn(params?.username, params?.password)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 def statusList = statusService.getStatusForTimeline()
-                Status status = new Status()
-                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size(), statusInstance: status])
+                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
             } catch (AuthenticationException) {
                 redirect(uri: "/")
             }
         } else {
-            User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+            User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
             def statusList = statusService.getStatusForTimeline()
-            Status status = new Status()
-            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size(), statusInstance: status])
+            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
         }
     }
 
@@ -93,13 +85,16 @@ class UserController {
         }
 
         if (userInstance.hasErrors()) {
+            params.password = params.password
             respond userInstance.errors, view:'create'
             return
         }
 
-        userInstance = userDaoService.create(userInstance)
+        userInstance = userDAOService.create(userInstance)
+        SecRole userRole = SecRole.findByAuthority('ROLE_USER')
+        SecUserSecRole.create userInstance, userRole, true
 
-        redirect (action:"index")
+        redirect(action: "userHome", params: [username: userInstance.username, password: params.pass])
     }
 
     @Secured("ROLE_USER")
@@ -114,7 +109,7 @@ class UserController {
             return
         }
 
-        userInstance = userDaoService.update(userInstance)
+        userInstance = userDAOService.update(userInstance)
 
         redirect(action: page)
     }

@@ -2,7 +2,7 @@ package bandstorm
 
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.SpringSecurityService
-import bandstorm.dao.UserDaoService
+import bandstorm.dao.UserDAOService
 import grails.test.mixin.*
 import org.springframework.security.authentication.AuthenticationManager
 import spock.lang.*
@@ -48,7 +48,8 @@ class UserControllerSpec extends Specification {
         populateValidParams(params)
         User user = new User(params)
         user.save()
-        controller.springSecurityService = Mock(SpringSecurityService) {
+        controller.userService = Mock(UserService)
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
             getCurrentUser() >> user
         }
 
@@ -66,7 +67,8 @@ class UserControllerSpec extends Specification {
         populateValidParams(params)
         User user = new User(params)
         user.save()
-        controller.springSecurityService = Mock(SpringSecurityService) {
+        controller.userService = Mock(UserService)
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
             getCurrentUser() >> user
         }
 
@@ -83,7 +85,7 @@ class UserControllerSpec extends Specification {
         populateValidParams(params)
         User user = new User(params)
         user.save()
-        controller.userDaoService = Mock(UserDaoService) {
+        controller.userDAOService = Mock(UserDAOService) {
             create(_) >> user
         }
 
@@ -131,7 +133,7 @@ class UserControllerSpec extends Specification {
         populateValidParams(params)
         User user = new User(params)
         user.save()
-        controller.userDaoService = Mock(UserDaoService) {
+        controller.userDAOService = Mock(UserDAOService) {
             update(_) >> user
         }
 
@@ -195,11 +197,12 @@ class UserControllerSpec extends Specification {
         given: "a valid user instance"
         def user = new User(params)
 
-        controller.userDaoService = Mock(UserDaoService) {
+        controller.userDAOService = Mock(UserDAOService) {
             create(_) >> user
         }
-        controller.userDaoService.authenticationManager = Mock(AuthenticationManager)
-        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.userService = Mock(UserService)
+        controller.userService.authenticationManager = Mock(AuthenticationManager)
+        controller.userService.springSecurityService >> Mock(SpringSecurityService)
         populateValidParams(params)
 
 
