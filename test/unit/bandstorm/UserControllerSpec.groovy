@@ -73,7 +73,7 @@ class UserControllerSpec extends Specification {
         }
 
         when: "The profilSettings action is executed"
-        controller.profilSettings()
+        controller.profilSettings(user)
 
         then: "The model is correctly created"
         model.userInstance != null
@@ -87,6 +87,9 @@ class UserControllerSpec extends Specification {
         user.save()
         controller.userDAOService = Mock(UserDAOService) {
             create(_) >> user
+        }
+        controller.userService = Mock(UserService) {
+            setUserRole(_) >> true
         }
 
         when: "The save action is executed with an invalid instance"
@@ -107,7 +110,7 @@ class UserControllerSpec extends Specification {
         controller.save(userGood)
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/user/index'
+        response.redirectedUrl == '/user/userHome?username=toto&password='
         User.count() == 1
     }
 

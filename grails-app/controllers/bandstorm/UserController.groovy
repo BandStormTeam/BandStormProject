@@ -91,8 +91,7 @@ class UserController {
         }
 
         userInstance = userDAOService.create(userInstance)
-        SecRole userRole = SecRole.findByAuthority('ROLE_USER')
-        SecUserSecRole.create userInstance, userRole, true
+        userService.setUserRole(userInstance)
 
         redirect(action: "userHome", params: [username: userInstance.username, password: params.pass])
     }

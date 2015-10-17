@@ -1,5 +1,8 @@
 package bandstorm.service
 
+import bandstorm.SecRole
+import bandstorm.SecUserSecRole
+import bandstorm.User
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -26,5 +29,10 @@ class UserService {
                 handler.logout(request,response,auth)
             }
         }
+    }
+
+    def setUserRole(User userInstance) {
+        SecRole userRole = SecRole.findByAuthority('ROLE_USER')
+        SecUserSecRole.create userInstance, userRole, true
     }
 }
