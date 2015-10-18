@@ -70,7 +70,7 @@
                             </div>
 
                             <div class="media-body">
-                                <h4 class="media-heading">Crazy <g:fieldValue bean="${user}" field="username"/></h4>
+                                <h4 class="media-heading"><a href="${createLink(action: 'show',controller: 'user', id: status.author.id)}">${status.author.username}</a></h4>
                                 <i>Posté le ${status.dateCreated}</i>
                             </div>
                             <br>

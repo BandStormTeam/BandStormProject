@@ -1,6 +1,7 @@
 package bandstorm.dao
 
 import bandstorm.Status
+import bandstorm.User
 import grails.test.mixin.TestFor
 import spock.lang.*
 
@@ -13,7 +14,9 @@ class StatusDaoServiceSpec extends Specification {
 
     void "test StatusDaoService creation method"(){
         given: "a status"
-        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0)
+        User user = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty")
+        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user)
 
         when: "I want to save this status"
         Status statusRes = statusDaoService.create(status)
@@ -27,7 +30,9 @@ class StatusDaoServiceSpec extends Specification {
 
     void "test StatusDaoService update method"(){
         given: "a status"
-        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0)
+        User user = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty")
+        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user)
         status = statusDaoService.create(status)
 
         when: "I want to update this status"
@@ -42,7 +47,9 @@ class StatusDaoServiceSpec extends Specification {
 
     void "test StatusDaoService delete method"(){
         given: "a status"
-        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0)
+        User user = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty")
+        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user)
         status = statusDaoService.create(status)
 
         when: "I want to delete this status"

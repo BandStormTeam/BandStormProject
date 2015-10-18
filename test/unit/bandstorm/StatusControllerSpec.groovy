@@ -13,6 +13,7 @@ class StatusControllerSpec extends Specification {
         params["url"] = 'statusUrl'
         params["content"] = 'statusContent'
         params["lightCount"] = 10
+        params["author"] = Mock(User)
     }
 
     void "Test the index action returns the correct model"() {

@@ -7,6 +7,7 @@ class Status {
     Integer lightCount
     Date dateCreated
     Date lastUpdated
+    User author
 
     static constraints = {
         content maxSize: 300,minSize: 1, nullable: false
