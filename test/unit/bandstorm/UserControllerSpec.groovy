@@ -33,6 +33,16 @@ class UserControllerSpec extends Specification {
         model.userInstanceCount == 0
     }
 
+    void "Test the searchUser action returns a user list"() {
+
+        when: "The index action is executed"
+        controller.searchUser("John")
+
+        then: "The userList is correct"
+        !model.userList
+
+    }
+
     void "Test the create action returns the correct model"() {
         when: "The create action is executed"
         controller.create()

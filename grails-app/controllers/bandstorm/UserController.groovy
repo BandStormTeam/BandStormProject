@@ -44,6 +44,18 @@ class UserController {
         respond new User(params)
     }
 
+    /**
+     * Return a list of users corresponding whit keywords
+     * @param keywords : inputs for the research
+     * @return list of User
+     */
+    def searchUser(String keywords){
+
+        List<User> userList = new ArrayList<User>()
+
+        respond userList
+    }
+
     @Secured("ROLE_USER")
     def profilSettings(User userInstance){
 
