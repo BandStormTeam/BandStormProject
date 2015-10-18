@@ -1,5 +1,6 @@
 package bandstorm.service
 
+import bandstorm.Follow
 import bandstorm.Status
 import bandstorm.User
 import bandstorm.dao.StatusDaoService
@@ -37,5 +38,16 @@ class UserService {
         user.addToPosts(status)
         statusDaoService.create(status)
         userDaoService.update(user)
+    }
+
+    Follow followUser(User follower, User followed){
+        Follow myFollow = new Follow(followed: followed,follower: follower)
+        myFollow.save()
+        myFollow
+    }
+
+    def unfollowUser(User follower, User followed){
+        Follow myFollow = Follow.findByFollowerAndFollowed(follower,followed)
+        myFollow.delete()
     }
 }
