@@ -1,83 +1,93 @@
 package bandstorm
 
-import bandstorm.service.UserService
+import bandstorm.dao.UserDAOService
 import bandstorm.service.StatusService
+import bandstorm.service.UserService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-import org.codehaus.groovy.grails.web.mapping.UrlMapping
 import org.springframework.security.core.context.SecurityContextHolder
 
-import bandstorm.dao.UserDaoService
-import org.springframework.security.authentication.AuthenticationManager;
-
-import static org.springframework.http.HttpStatus.*
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.NO_CONTENT
 
 @Transactional(readOnly = true)
 @Secured("permitAll")
 class UserController {
-    def springSecurityService
-    def logoutHandlers
-    AuthenticationManager authenticationManager
 
     UserService userService
-    UserDaoService userDaoService
+    UserDAOService userDAOService
     StatusService statusService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond User.list(params), model:[userInstanceCount: User.count()]
     }
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def show(User userInstance) {
         if(userInstance == null) {
             return response.sendError(404)
         }
-        
+
         respond userInstance
+    }
+
+    def urlRedirect() {
+        if(userService.springSecurityService.isLoggedIn()) {
+            redirect (action: "userHome")
+        } else {
+            redirect(uri: "/index")
+        }
     }
 
     def create() {
         respond new User(params)
     }
 
-    @Secured("ROLE_USER")
-    def profilSettings(User userInstance){
+    def activateAccount() {
+        User userInstance = User.findByUsername(params.username)
+        userService.setUserRole(userInstance)
+        if(userService.springSecurityService.isLoggedIn()) {
+            redirect(action: "logout")
+        }
+        render (view: "successCreation", model: [type: "activation"])
+    }
 
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
+    def profilSettings(User userInstance){
         if (userInstance == null){
-            userInstance = springSecurityService.getCurrentUser()
+            userInstance = User.findByUsername(userService.springSecurityService.getCurrentUser())
         }
         respond userInstance
     }
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def passwordSettings(User userInstance){
 
         if (userInstance == null){
-            userInstance = springSecurityService.getCurrentUser()
+            userInstance = userService.springSecurityService.getCurrentUser()
         }
         respond userInstance
     }
 
     def userHome() {
-        if (!springSecurityService.isLoggedIn()) {
+        if (!userService.springSecurityService.isLoggedIn()) {
             try {
                 userService.logIn(params?.username, params?.password)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 def statusList = statusService.getStatusForTimeline()
-                Status status = new Status()
-                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size(), statusInstance: status])
+                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
             } catch (AuthenticationException) {
+                flash.message = "Invalid username or password"
                 redirect(uri: "/")
             }
         } else {
-            User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+            User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
             def statusList = statusService.getStatusForTimeline()
-            Status status = new Status()
-            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size(), statusInstance: status])
+            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
         }
     }
 
@@ -97,12 +107,13 @@ class UserController {
             return
         }
 
-        userInstance = userDaoService.create(userInstance)
+        userInstance = userDAOService.create(userInstance)
+        userService.contactUser(userInstance.email, userInstance.username)
 
-        redirect (action:"index")
+        render (view: "successCreation", model: [username: userInstance.username, type:"success"])
     }
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def update(User userInstance,String page) {
         if (userInstance == null) {
             notFound()
@@ -114,7 +125,7 @@ class UserController {
             return
         }
 
-        userInstance = userDaoService.update(userInstance)
+        userInstance = userDAOService.update(userInstance)
 
         redirect(action: page)
     }

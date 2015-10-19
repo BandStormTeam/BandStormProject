@@ -1,9 +1,8 @@
 package bandstorm.dao
 
-import bandstorm.BandController
 import bandstorm.User
-import grails.test.mixin.*
-import spock.lang.*
+import grails.test.mixin.TestFor
+import spock.lang.Specification
 
 /**
  * Test for UserDaoService
@@ -11,7 +10,7 @@ import spock.lang.*
 @TestFor(User)
 class UserDaoServiceIntegrationSpec extends Specification {
 
-    UserDaoService userDaoService
+    UserDAOService userDAOService
 
     void "test the creation of user"() {
 
@@ -29,7 +28,7 @@ class UserDaoServiceIntegrationSpec extends Specification {
 
 
         when: "the user is created by the service"
-        user = userDaoService.create(user)
+        user = userDAOService.create(user)
 
         then: "user is correct"
         !user.hasErrors()
@@ -54,13 +53,13 @@ class UserDaoServiceIntegrationSpec extends Specification {
                 country: "France",
                 password: "aaaaaaaa")
 
-        user = userDaoService.create(user)
+        user = userDAOService.create(user)
 
 
         when: "the user is update by the service"
         user.setFirstName("Robert")
         user.setCountry("Allemagne")
-        user = userDaoService.update(user)
+        user = userDAOService.update(user)
 
         then: "user is correct"
         !user.hasErrors()
@@ -89,11 +88,11 @@ class UserDaoServiceIntegrationSpec extends Specification {
                 country: "France",
                 password: "aaaaaaaa")
 
-        user = userDaoService.create(user)
+        user = userDAOService.create(user)
         Long userId = user.getId()
 
         when: "the user is delete by the service"
-        userDaoService.delete(user)
+        userDAOService.delete(user)
 
         then: "user exist in the base"
         User.findById(userId) == null

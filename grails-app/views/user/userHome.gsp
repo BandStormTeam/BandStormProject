@@ -19,14 +19,14 @@
                             <g:textField id="contentField"
                                          class="form-control ${hasErrors(bean: statusInstance, field: 'content', 'errors')}"
                                          placeholder="Partagez votre actualité." name="content"
-                                         value="${statusInstance.content}" style="height:60px;"></g:textField><bR>
+                                         value="${statusInstance?.content}" style="height:60px;"></g:textField><bR>
 
                             <g:textField id="urlField"
                                          class="form-control ${hasErrors(bean: statusInstance, field: 'url', 'errors')}"
-                                         placeholder="Un lien à partager ?" name="url" value="${statusInstance.url}"
+                                         placeholder="Un lien à partager ?" name="url" value="${statusInstance?.url}"
                                          style="height:30px;"></g:textField><bR>
 
-                            <g:hiddenField name="lightCount" value="${statusInstance.lightCount = 0}"/>
+                            <g:hiddenField name="lightCount" value="${statusInstance?.lightCount = 0}"/>
                             <div style="text-align: right">
                                 <g:submitToRemote name="publish" class="btn btn-success" action="save"
                                                   controller="status" value="Publier" onComplete="clearFields()"/>
