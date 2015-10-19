@@ -38,4 +38,11 @@ class UserService {
         statusDaoService.create(status)
         userDaoService.update(user)
     }
+
+    def getAllUsersByKeywords(String keywords,Integer page){
+        List<User> userList = new ArrayList<User>();
+
+        return userList;
+    }
+
 }

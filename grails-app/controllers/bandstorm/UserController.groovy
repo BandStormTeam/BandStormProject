@@ -53,7 +53,13 @@ class UserController {
 
         List<User> userList = new ArrayList<User>()
 
-        respond userList
+        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
+        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
+        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
+        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
+
+
+        render(view: "searchUser", model:[userList: userList,keywords:keywords] )
     }
 
     @Secured("ROLE_USER")

@@ -39,7 +39,8 @@ class UserControllerSpec extends Specification {
         controller.searchUser("John")
 
         then: "The userList is correct"
-        !model.userList
+        model.userList
+        model.keywords
 
     }
 

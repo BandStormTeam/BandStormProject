@@ -1,5 +1,6 @@
 package bandstorm.service
 
+import bandstorm.User
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
@@ -9,12 +10,17 @@ import spock.lang.Specification
 @TestFor(UserService)
 class UserServiceSpec extends Specification {
 
-    def setup() {
+    void "test getAllUserByKeywords method"() {
+
+        given: "userService is inititalised"
+        UserService userService = Mock(UserService)
+
+        when: "The service call getAllUserByKeywords"
+        userService.getAllUsersByKeywords("keywords here",0)
+
+        then: "getAllUserByKeywords is called"
+        1 * userService.getAllUsersByKeywords("keywords here",0)
+
     }
 
-    def cleanup() {
-    }
-
-    void "test something"() {
-    }
 }
