@@ -35,6 +35,14 @@ class UserController {
         respond userInstance
     }
 
+    def urlRedirect() {
+        if(userService.springSecurityService.isLoggedIn()) {
+            redirect (action: "userHome")
+        } else {
+            redirect(uri: "/index")
+        }
+    }
+
     def create() {
         respond new User(params)
     }

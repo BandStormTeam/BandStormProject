@@ -8,7 +8,7 @@ class UrlMappings {
             }
         }
 
-        "/" (view: 'index')
+        "/" (controller: "user", action: "urlRedirect")
 
 
         "500"(view:'/error')
