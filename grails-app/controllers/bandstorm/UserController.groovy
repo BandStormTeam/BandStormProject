@@ -20,13 +20,13 @@ class UserController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond User.list(params), model:[userInstanceCount: User.count()]
     }
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def show(User userInstance) {
         if(userInstance == null) {
             return response.sendError(404)
@@ -39,7 +39,7 @@ class UserController {
         respond new User(params)
     }
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def profilSettings(User userInstance){
         if (userInstance == null){
             userInstance = User.findByUsername(userService.springSecurityService.getCurrentUser())
@@ -47,7 +47,7 @@ class UserController {
         respond userInstance
     }
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def passwordSettings(User userInstance){
 
         if (userInstance == null){
@@ -64,6 +64,7 @@ class UserController {
                 def statusList = statusService.getStatusForTimeline()
                 render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
             } catch (AuthenticationException) {
+                flash.message = "Invalid username or password"
                 redirect(uri: "/")
             }
         } else {
@@ -96,7 +97,7 @@ class UserController {
         redirect(action: "userHome", params: [username: userInstance.username, password: params.pass])
     }
 
-    @Secured("ROLE_USER")
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
     def update(User userInstance,String page) {
         if (userInstance == null) {
             notFound()

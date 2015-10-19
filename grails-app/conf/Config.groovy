@@ -197,15 +197,14 @@ jqueryValidationUi {
 }
 
 
-
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'bandstorm.SecUser'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'bandstorm.SecUserSecRole'
 grails.plugin.springsecurity.authority.className = 'bandstorm.SecRole'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                ['permitAll'],
-	'/index':           ['permitAll'],
-	'/index.gsp':       ['permitAll'],
+	'/index':           ["ROLE_USER","ROLE_ADMIN"],
+	'/index.gsp':       ["ROLE_USER","ROLE_ADMIN"],
 	'/assets/**':       ['permitAll'],
 	'/**/js/**':        ['permitAll'],
 	'/**/css/**':       ['permitAll'],
