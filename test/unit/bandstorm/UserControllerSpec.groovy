@@ -109,8 +109,9 @@ class UserControllerSpec extends Specification {
 
         controller.save(userGood)
 
-        then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/user/userHome?username=toto&password='
+        then: "the success creation view is rendred"
+        model.type == 'success'
+        view == '/user/successCreation'
         User.count() == 1
     }
 

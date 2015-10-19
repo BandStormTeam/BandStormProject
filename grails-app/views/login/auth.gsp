@@ -1,9 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Steve
-  Date: 02/10/2015
-  Time: 10:56
---%>
+
 <%@ page import="bandstorm.User" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <meta name="layout" content="main"/>

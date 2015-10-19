@@ -39,6 +39,15 @@ class UserController {
         respond new User(params)
     }
 
+    def activateAccount() {
+        User userInstance = User.findByUsername(params.username)
+        userService.setUserRole(userInstance)
+        if(userService.springSecurityService.isLoggedIn()) {
+            redirect(action: "logout")
+        }
+        render (view: "successCreation", model: [type: "activation"])
+    }
+
     @Secured(["ROLE_USER","ROLE_ADMIN"])
     def profilSettings(User userInstance){
         if (userInstance == null){
@@ -86,15 +95,14 @@ class UserController {
         }
 
         if (userInstance.hasErrors()) {
-            params.password = params.password
             respond userInstance.errors, view:'create'
             return
         }
 
         userInstance = userDAOService.create(userInstance)
-        userService.setUserRole(userInstance)
+        userService.contactUser(userInstance.email, userInstance.username)
 
-        redirect(action: "userHome", params: [username: userInstance.username, password: params.pass])
+        render (view: "successCreation", model: [username: userInstance.username, type:"success"])
     }
 
     @Secured(["ROLE_USER","ROLE_ADMIN"])

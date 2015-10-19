@@ -15,6 +15,7 @@ class UserService {
     def springSecurityService
     AuthenticationManager authenticationManager
     def logoutHandlers
+    def mailService
 
     def logIn(String username, String password) throws AuthenticationException {
         Authentication newAuthentification = new UsernamePasswordAuthenticationToken(username, password)
@@ -34,5 +35,15 @@ class UserService {
     def setUserRole(User userInstance) {
         SecRole userRole = SecRole.findByAuthority('ROLE_USER')
         SecUserSecRole.create userInstance, userRole, true
+    }
+
+    def contactUser(String email, String username) {
+        mailService.sendMail {
+            to email
+            subject "Account validation"
+            html view: "/email/validation", model: [username: username]
+            //body "testing"
+
+        }
     }
 }

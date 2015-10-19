@@ -87,6 +87,9 @@ grails.project.dependency.resolution = {
         //spring security
         compile ':spring-security-core:2.0-RC5'
 
+        //mail support
+        compile ":mail:1.0.7"
+
         // Cobertura
         test ":code-coverage:2.0.3-3"
         compile ":codenarc:0.24.1"
