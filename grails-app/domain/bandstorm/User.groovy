@@ -44,4 +44,17 @@ class User extends SecUser {
         this.country = country
         this.urlAvatar = urlAvatar;
     }
+
+    /**
+     * Check if a follow relation exist between two users
+     * @param follower User follower
+     * @return true if relation exist else false
+     */
+    def isFollowed(User follower){
+        boolean res = false
+        if(Follow.findByFollowerAndFollowed(follower,this)){
+            res = true
+        }
+        res
+    }
 }

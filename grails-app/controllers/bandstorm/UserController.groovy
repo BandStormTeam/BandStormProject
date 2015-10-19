@@ -36,8 +36,9 @@ class UserController {
         if(userInstance == null) {
             return response.sendError(404)
         }
+        def currentUser = springSecurityService.currentUser
         
-        respond userInstance
+      respond userInstance, model: [currentUser: currentUser]
     }
 
     def create() {
@@ -146,5 +147,15 @@ class UserController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    def followUser(User user){
+        def follow = userService.followUser(springSecurityService.currentUser, user)
+        redirect(action: "show", params: params)
+    }
+
+    def unfollowUser(User user){
+        userService.unfollowUser(springSecurityService.currentUser, user)
+        redirect(action: "show", params: params)
     }
 }

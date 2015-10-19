@@ -38,6 +38,8 @@ class UserServiceIntegrationSpec extends Specification {
 
         and:"user1 follow user2"
         Follow myFollow = userService.followUser(user1,user2)
+        println user1.id
+        println myFollow.id
 
         when:"user1 want to unfollow user2"
         userService.unfollowUser(user1,user2)
