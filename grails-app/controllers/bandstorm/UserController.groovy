@@ -1,5 +1,6 @@
 package bandstorm
 
+import bandstorm.service.BandService
 import bandstorm.service.UserService
 import bandstorm.service.StatusService
 import grails.plugin.springsecurity.annotation.Secured
@@ -22,6 +23,7 @@ class UserController {
     UserService userService
     UserDaoService userDaoService
     StatusService statusService
+    BandService bandService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
@@ -42,6 +44,18 @@ class UserController {
 
     def create() {
         respond new User(params)
+    }
+
+    /**
+     * Return a list of bands corresponding whit keywords
+     * @param keywords : inputs for the research
+     * @return list of Band
+     */
+    def searchBand(String keywords,Integer max,Integer offset){
+        def bandList = new ArrayList<Band>()
+        bandList.push(new Band())
+
+        render(view: "searchBand", model:[bandList: bandList,keywords:keywords,bandCount:10] )
     }
 
     /**

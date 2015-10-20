@@ -1,5 +1,6 @@
 package bandstorm
 
+import bandstorm.service.BandService
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.SpringSecurityService
 import bandstorm.dao.UserDaoService
@@ -31,6 +32,30 @@ class UserControllerSpec extends Specification {
         then: "The model is correct"
         !model.userInstanceList
         model.userInstanceCount == 0
+    }
+
+
+    void "Test the searchBand action returns a band list"() {
+
+        given: "BandService exist"
+        List bandList = new ArrayList<Band>()
+        bandList.push(new Band())
+
+        Map searchResult = new HashMap()
+        searchResult.bandList = bandList
+        searchResult.bandsCount = 10
+
+        controller.bandService = Mock(BandService) {
+            getAllBandsByKeywords(_,_,_) >> searchResult
+        }
+
+        when: "The searchBand action is executed"
+        controller.searchBand("Bob",10,0)
+
+        then: "The bandList is correct and keywords too"
+        model.bandList
+        model.keywords == "Bob"
+
     }
 
     void "Test the searchUser action returns a user list"() {
