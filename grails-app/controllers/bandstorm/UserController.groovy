@@ -49,17 +49,21 @@ class UserController {
      * @param keywords : inputs for the research
      * @return list of User
      */
-    def searchUser(String keywords){
+    def searchUser(String keywords,Integer max,Integer offset){
 
-        List<User> userList = new ArrayList<User>()
+        if (!max){
+            max = 10
+        }
+        if (!offset){
+            offset = 0
+        }
+        if (!keywords){
+            keywords = ""
+        }
 
-        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
-        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
-        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
-        userList.push(new User(username:"bob",country:"Bordeaux",firstName:"Pierre",lastName:"Anthoine"))
+        def searchResult = userService.getAllUsersByKeywords(keywords,max,offset)
 
-
-        render(view: "searchUser", model:[userList: userList,keywords:keywords] )
+        render(view: "searchUser", model:[userList:searchResult.userList ,keywords:keywords,userCount:searchResult.totalOfUser] )
     }
 
     @Secured("ROLE_USER")

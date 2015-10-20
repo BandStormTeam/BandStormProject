@@ -59,8 +59,10 @@
 				<div class="navbar-form navbar-left">
 
 					<div class="form-group">
-						<g:textField type="text" placeholder="Trouvez un ami ou un groupe" class="form-control" name="username" style="width:400px;"/>
-						<g:actionSubmit  class="btn btn-success" action="userHome" value="Rechercher" />
+						<g:form  method="get" controller="user" action="searchUser">
+							<input type="text" placeholder="Trouvez un ami ou un groupe" class="form-control" name="keywords" value="${keywords}" style="width:400px;"/>
+							<input type="submit" class="btn btn-success" value="Rechercher" />
+						</g:form >
 					</div>
 				</div>
 			</sec:ifLoggedIn>

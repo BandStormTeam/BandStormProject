@@ -35,12 +35,24 @@ class UserControllerSpec extends Specification {
 
     void "Test the searchUser action returns a user list"() {
 
-        when: "The index action is executed"
-        controller.searchUser("John")
+        given: "UserService exist"
+        List userList = new ArrayList<User>()
+        userList.push(new User(firstName:"John"))
 
-        then: "The userList is correct"
+        Map searchResult = new HashMap()
+        searchResult.userList = userList
+        searchResult.userCount = 10
+
+        controller.userService = Mock(UserService) {
+            getAllUsersByKeywords(_,_,_) >> searchResult
+        }
+
+        when: "The searchUser action is executed"
+        controller.searchUser("John",10,0)
+
+        then: "The userList is correct and keywords too"
         model.userList
-        model.keywords
+        model.keywords == "John"
 
     }
 
