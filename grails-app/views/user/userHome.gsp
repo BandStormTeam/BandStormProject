@@ -32,16 +32,24 @@
                                                   controller="status" value="Publier" onComplete="clearFields()"/>
                             </div>
 
+
                             <g:javascript>
                                 function clearFields() {
-                                    $("#contentField").fadeOut(500);
-                                    $("#urlField").fadeOut(500);
+
+                                    if (document.getElementById("contentField").value != "") {
+                                        $("#contentField").fadeOut(500);
+                                        $("#contentField").fadeIn(500);
+                                    }
+
+                                    if (document.getElementById("urlField").value != "") {
+                                        $("#urlField").fadeOut(500);
+                                        $("#urlField").fadeIn(500);
+                                    }
+
                                     setTimeout(function () {
                                         document.getElementById("contentField").value = "";
                                         document.getElementById("urlField").value = "";
                                     }, 300);
-                                    $("#contentField").fadeIn(500);
-                                    $("#urlField").fadeIn(500);
                                 }
                             </g:javascript>
                         </g:form>
