@@ -12,14 +12,11 @@ class UserServiceSpec extends Specification {
 
     void "test getAllUserByKeywords method"() {
 
-        given: "userService is inititalised"
-        UserService userService = Mock(UserService)
-
         when: "The service call getAllUserByKeywords"
-        userService.getAllUsersByKeywords("keywords here",0)
+        service.getAllUsersByKeywords("keywords here",10,0)
 
         then: "getAllUserByKeywords is called"
-        1 * userService.getAllUsersByKeywords("keywords here",0)
+        1 * service.getAllUsersByKeywords("keywords here",10,0)
 
     }
 

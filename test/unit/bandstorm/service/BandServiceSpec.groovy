@@ -12,10 +12,10 @@ class BandServiceSpec extends Specification {
     void "test getAllBandsByKeywords method"() {
 
         when: "The service call getAllBandsByKeywords"
-        service.getAllBandsByKeywords()("keywords here",0)
+        service.getAllBandsByKeywords()("keywords here",10,0)
 
         then: "getAllUserByKeywords is called"
-        1 * service.getAllBandsByKeywords("keywords here",0)
+        1 * service.getAllBandsByKeywords("keywords here",10,0)
 
     }
 }
