@@ -9,12 +9,13 @@ import spock.lang.Specification
 @TestFor(BandService)
 class BandServiceSpec extends Specification {
 
-    def setup() {
-    }
+    void "test getAllBandsByKeywords method"() {
 
-    def cleanup() {
-    }
+        when: "The service call getAllBandsByKeywords"
+        service.getAllBandsByKeywords()("keywords here",0)
 
-    void "test something"() {
+        then: "getAllUserByKeywords is called"
+        1 * service.getAllBandsByKeywords("keywords here",0)
+
     }
 }
