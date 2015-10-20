@@ -10,17 +10,7 @@
 
         <div class="row">
 
-
-
-            <div class="col-sm-3  blog-sidebar" style="background-color:rgb(255,255,255);padding:15px;">
-                <h2>Filtrage</h2>
-                <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
-                    <li role="presentation" class="active"><a href="#">Utilisateurs</a></li>
-                    <li role="presentation"><a href="#">Groupes</a></li>
-                    <li role="presentation"><a href="#">Evenements</a></li>
-                </ul>
-            </div><!-- /.blog-sidebar -->
-
+            <g:include view="layouts/searchFilter.gsp"></g:include>
 
 
             <div class="col-sm-8 blog-main" style="background-color:rgb(255,255,255);padding:15px;margin-left: 10px;">
