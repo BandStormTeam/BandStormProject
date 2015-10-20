@@ -1,12 +1,14 @@
 package bandstorm.service
 
 import bandstorm.Band
+import bandstorm.User
 import grails.transaction.Transactional
 
-@Transactional
+
 /**
  * Service for all Band object
  */
+@Transactional
 class BandService {
 
 
@@ -19,6 +21,33 @@ class BandService {
      */
     Map getAllBandsByKeywords(String keywords,Integer maxItemsForSearch,Integer page){
 
-        return null
+        Integer max = maxItemsForSearch*page+maxItemsForSearch
+        Integer offset =(maxItemsForSearch*page)
+
+        def resultsList = Band.createCriteria().list {
+            or {
+                keywords.split(" ").each { keyword ->
+                    ilike("name", "%" + keyword + "%")
+                    ilike("description", "%" + keyword + "%")
+                }
+            }
+            maxResults(max)
+            firstResult(offset)
+        }
+
+        def resultsCount = Band.createCriteria().count() {
+            or {
+                keywords.split(" ").each { keyword ->
+                    ilike("name", "%" + keyword + "%")
+                    ilike("description", "%" + keyword + "%")
+                }
+            }
+        }
+
+        def result = new HashMap()
+        result.bandCount = resultsCount.toInteger()
+        result.bandList = resultsList.toList()
+
+        return result;
     }
 }

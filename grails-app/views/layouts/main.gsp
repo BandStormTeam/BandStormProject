@@ -23,6 +23,7 @@
 	body{
 		background-image: url("${resource(dir:"images",file:"m.jpg")}");
 		background-size:cover;
+		background-attachment: fixed;
 	}
 
 	.errors{

@@ -51,11 +51,21 @@ class UserController {
      * @param keywords : inputs for the research
      * @return list of Band
      */
+    @Secured("ROLE_USER")
     def searchBand(String keywords,Integer max,Integer offset){
-        def bandList = new ArrayList<Band>()
-        bandList.push(new Band())
+        if (!max){
+            max = 10
+        }
+        if (!offset){
+            offset = 0
+        }
+        if (!keywords){
+            keywords = ""
+        }
 
-        render(view: "searchBand", model:[bandList: bandList,keywords:keywords,bandCount:10] )
+        def searchResult = bandService.getAllBandsByKeywords(keywords,max,offset)
+
+        render(view: "searchBand", model:[bandList:searchResult.bandList ,keywords:keywords,bandCount:searchResult.bandCount] )
     }
 
     /**
@@ -63,6 +73,7 @@ class UserController {
      * @param keywords : inputs for the research
      * @return list of User
      */
+    @Secured("ROLE_USER")
     def searchUser(String keywords,Integer max,Integer offset){
 
         if (!max){
