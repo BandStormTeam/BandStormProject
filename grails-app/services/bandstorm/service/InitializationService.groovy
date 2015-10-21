@@ -3,6 +3,7 @@ package bandstorm.service
 import bandstorm.SecRole
 import bandstorm.SecUserSecRole
 import bandstorm.Status
+import bandstorm.Tag
 import bandstorm.User
 import bandstorm.Event
 import grails.transaction.Transactional
@@ -29,10 +30,9 @@ class InitializationService {
 
         for(int i=1; i<=10; i++){
             def status = new Status(content: "My status "+i, lightCount: 0).save()
+            def event = new Event(name:"My Event "+i, address:"Palm street Nbr " + i, description:"my " + i + "th event. please participate").save()
+            def tag = new Tag(name: "Tag" + i).save()
         }
 
-        for(int i=1; i<=10; i++){
-            def event = new Event(name:"My Event "+i, address:"Palm street Nbr " + i, description:"my " + i + "th event. please participate").save()
-        }
     }
 }

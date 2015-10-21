@@ -12,11 +12,12 @@
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="${resource(dir:"css/bootstrap",file:"bootstrap.min.css")}">
 	<link rel="stylesheet" href="${resource(dir:"css/bootstrap",file:"bootstrap-theme.min.css")}">
+	<link rel="stylesheet" href="${resource(dir:"css/sweetAlert",file:"sweetalert.css")}">
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="${resource(dir:"js",file:"jquery-1.11.3.min.js")}"></script>
 	<script src="${resource(dir:"js/bootstrap",file:"bootstrap.min.js")}"></script>
-
+	<script src="${resource(dir:"js/sweetAlert",file:"sweetalert.min.js")}"></script>
 
 
 	<style>
@@ -88,7 +89,7 @@
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 							<li><a href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
-							<li><a href="${createLink(controller: 'event', action: 'index')}">Mes evennements</a></li>
+							<li><a href="${createLink(controller: 'event', action: 'index')}">Mes événements</a></li>
 							<li><a href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
 						</ul>
 					</div>

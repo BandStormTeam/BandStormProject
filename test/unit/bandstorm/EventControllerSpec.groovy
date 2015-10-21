@@ -1,6 +1,6 @@
 package bandstorm
 
-
+import bandstorm.dao.EventDAOService
 import grails.test.mixin.*
 import spock.lang.*
 
@@ -39,23 +39,29 @@ class EventControllerSpec extends Specification {
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         def event = new Event()
-        event.validate()
+        controller.eventDAOService = Mock(EventDAOService)
+        controller.params.evName = "r"
+        controller.params.evAddress = "r"
+        controller.params.evDescription = "r"
         controller.save(event)
 
         then: "The create view is rendered again with the correct model"
-        model.eventInstance != null
-        view == 'create'
+        Event.count() == 0
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
         event = new Event(params)
+        controller.params.evName = "a name"
+        controller.params.evAddress = "a longue addresse"
+        controller.params.evDescription = "a description"
+        controller.eventDAOService = Mock(EventDAOService) {
+            create(_) >> new Event(name: "name", address: "home sweet home", description: "there isn't much to say").save()
+        }
 
         controller.save(event)
 
-        then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/event/show/1'
-        controller.flash.message != null
+        then: "A new event was successfully added"
         Event.count() == 1
     }
 
@@ -115,10 +121,13 @@ class EventControllerSpec extends Specification {
         response.reset()
         populateValidParams(params)
         event = new Event(params).save(flush: true)
+        event.address = "une très longue adresse"
+        controller.eventDAOService = Mock(EventDAOService){
+            update(_) >> event
+        }
         controller.update(event)
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/event/show/$event.id"
         flash.message != null
     }
 
@@ -140,6 +149,9 @@ class EventControllerSpec extends Specification {
         Event.count() == 1
 
         when: "The domain instance is passed to the delete action"
+        controller.eventDAOService = Mock(EventDAOService) {
+            delete(_) >> event.delete()
+        }
         controller.delete(event)
 
         then: "The instance is deleted"

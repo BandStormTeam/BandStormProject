@@ -104,10 +104,6 @@
                                     <fieldset class="form" id="creationForm">
                                         <g:render template="form" bean="${eventInstance}"/>
                                     </fieldset>
-                                    <fieldset class="buttons">
-                                        <g:submitToRemote class="btn btn-primary" url="[resource:eventInstance, controller:'event', action:'save']" update="creationForm" onComplete="alert('Your event was successfully created');
-                                                          window.location.href = '${createLink(action: 'index')}';" value="Create" />
-                                    </fieldset>
                                 </g:form>
                             </div>
                         </div>

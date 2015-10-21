@@ -10,7 +10,7 @@
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 					aria-hidden="true">&times;</span></button>
-			<strong>You must specify a name wiht a length between 3 and 35 characters</strong>
+			<strong>You must specify a name with a length between 3 and 35 characters</strong>
 		</div>
 	</g:hasErrors>
 </div>
@@ -45,7 +45,13 @@
 
 <div class="form-group">
 	<label for="eventTags">Tags</label>
-	<g:textField name="evTags" class="form-control" id="eventTags"/>
+	<g:textField name="evTags" class="form-control" id="eventTags" placeholder="insert relevant tags separated by a coma"/>
 </div>
+
+<div>
+	<h1 style="display: none" id="head">${(status) ? status :'empty'}</h1>
+</div>
+
+<g:submitToRemote class="btn btn-primary" url="[resource:eventInstance, controller:'event', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Success!',text: 'Your Event was created!',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Create" />
 
 

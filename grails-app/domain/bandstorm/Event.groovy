@@ -17,8 +17,8 @@ class Event {
 
     static constraints = {
         name blank: false, maxSize: 35, minSize: 3
-        address maxSize: 200, minSize: 10
-        description minSize: 2
+        address maxSize: 200, minSize: 10, blank: false
+        description minSize: 2, blank: false
         tags nullable: true
     }
 }

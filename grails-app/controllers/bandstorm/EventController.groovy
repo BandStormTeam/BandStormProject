@@ -43,12 +43,24 @@ class EventController {
         eventInstance.validate()
 
         if (eventInstance.hasErrors()) {
-            render template: 'form', model: [eventInstance:eventInstance]
+            render template: 'form', model: [eventInstance:eventInstance, status: "KO"]
             return
         }
 
+        try {
+            if(params.evTags) {
+                def paramTags = params.evTags.tokenize(';')
+                eventInstance.tags = new ArrayList<Tag>()
+                paramTags.eachWithIndex { item, index ->
+                    def tag = new Tag(name: item).save()
+                    eventInstance.tags.add(tag)
+            }
+            }
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
         eventDAOService.create(eventInstance)
-        render template: 'form', model: [eventInstance:eventInstance]
+        render template: 'form', model: [eventInstance:eventInstance, status: "OK"]
     }
 
     def edit(Event eventInstance) {
