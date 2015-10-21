@@ -39,27 +39,4 @@ class UserService {
         statusDaoService.create(status)
         userDaoService.update(user)
     }
-
-    /**
-     * Allow an user to follow an other
-     * @param follower User who want to follow
-     * @param followed User followed
-     * @return the follow between the users
-     */
-    Follow followUser(User follower, User followed){
-        Follow myFollow = new Follow(followed: followed,follower: follower)
-        myFollow.save()
-        myFollow
-    }
-
-    /**
-     * Allow an user to unfollow an other
-     * @param follower User who want to unfollow
-     * @param followed User to unfollow
-     * @return
-     */
-    def unfollowUser(User follower, User followed){
-        Follow myFollow = Follow.findByFollowerAndFollowed(follower,followed)
-        myFollow.delete()
-    }
 }

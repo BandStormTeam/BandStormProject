@@ -1,14 +1,11 @@
 package bandstorm.dao
 
+import bandstorm.Follow
 import bandstorm.User
 import grails.transaction.Transactional
 
 @Transactional
 class UserDaoService implements IGenericDao<User> {
-
-    def serviceMethod() {
-
-    }
 
     @Override
     User create(User user) {
@@ -23,5 +20,28 @@ class UserDaoService implements IGenericDao<User> {
     @Override
     User update(User user) {
         user.save()
+    }
+
+    /**
+     * Allow an user to follow an other
+     * @param follower User who want to follow
+     * @param followed User followed
+     * @return the follow between the users
+     */
+    Follow followUser(User follower, User followed){
+        Follow myFollow = new Follow(followed: followed,follower: follower)
+        myFollow.save(flush: true)
+        myFollow
+    }
+
+    /**
+     * Allow an user to unfollow an other
+     * @param follower User who want to unfollow
+     * @param followed User to unfollow
+     * @return
+     */
+    def unfollowUser(User follower, User followed){
+        Follow myFollow = Follow.findByFollowerAndFollowed(follower,followed)
+        myFollow.delete(flush: true)
     }
 }

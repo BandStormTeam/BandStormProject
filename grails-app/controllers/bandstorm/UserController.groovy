@@ -150,12 +150,13 @@ class UserController {
     }
 
     def followUser(User user){
-        def follow = userService.followUser(springSecurityService.currentUser, user)
+        def follow = userDaoService.followUser(springSecurityService.currentUser, user)
         redirect(action: "show", params: params)
     }
 
     def unfollowUser(User user){
-        userService.unfollowUser(springSecurityService.currentUser, user)
+        userDaoService.unfollowUser(springSecurityService.currentUser, user)
+        println "coucou"
         redirect(action: "show", params: params)
     }
 }
