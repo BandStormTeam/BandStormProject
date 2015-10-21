@@ -55,7 +55,6 @@ class UserService {
 
     def addStatusToUser(User user, Status status) {
         user.addToPosts(status)
-        statusDaoService.create(status)
-        userDaoService.update(user)
+        user.save(flush:true)
     }
 }
