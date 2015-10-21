@@ -11,8 +11,9 @@ import grails.test.mixin.Mock
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification
+
 @TestFor(UserService)
-@Mock([User,Status])
+@Mock([User, Status])
 class UserServiceSpec extends Specification {
 
     void "test if a status is added"() {
@@ -29,22 +30,22 @@ class UserServiceSpec extends Specification {
 
         Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
 
-        User user = new User(username:"jack",
+        User user = new User(username: "jack",
                 email: "jack@gmail.com",
                 firstName: "Paul",
                 lastName: "DuBois",
-                birthDate:birthDate,
+                birthDate: birthDate,
                 country: "France",
                 password: "aaaaaaaa").save()
 
-        Status status = new Status(url:"www.toto.fr",content:"Coucou", lightCount:0).save()
+        Status status = new Status(url: "www.toto.fr", content: "Coucou", lightCount: 0).save()
 
         when: "the status is added to the user"
-        service.addStatusToUser(user,status)
+        service.addStatusToUser(user, status)
 
         then: "the status is added to the user"
-        1*service.statusDaoService.create(status)
-        1*service.userDaoService.update(user)
+        1 * service.statusDaoService.create(status)
+        1 * service.userDaoService.update(user)
         user.posts.first() == status
 
     }
