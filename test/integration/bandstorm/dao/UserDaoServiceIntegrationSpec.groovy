@@ -100,4 +100,47 @@ class UserDaoServiceIntegrationSpec extends Specification {
 
     }
 
+    void "test if getAllUsersByKeywords is functionnal"() {
+
+        given: "users are ready to be search"
+
+        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
+        
+        User user1 = new User(   username:"merry",
+                email: "jack@gmail.com",
+                firstName: "Paul",
+                lastName: "DuBois",
+                birthDate:birthDate,
+                country: "France",
+                password: "aaaaaaaa")
+
+        User user2 = new User(   username:"jack",
+                email: "jack@gmail.com",
+                firstName: "Paul",
+                lastName: "DuBois",
+                birthDate:birthDate,
+                country: "France",
+                password: "aaaaaaaa")
+
+
+        user1 = userDaoService.create(user1)
+        user2 = userDaoService.create(user2)
+
+        when: "research of all users containing the keywords"
+        Map resultMap = userDaoService.getAllUsersByKeywords("mer",0,10)
+        List<User> userList = resultMap.userList
+
+        then: "user contains keywords"
+        resultMap.totalOfUser == 1
+        userList.contains(user1)
+
+        when: "research of all users containing the keywords"
+        resultMap = userDaoService.getAllUsersByKeywords("mer",0,10)
+        userList = resultMap.userList
+
+        then: "user does not contain keywords"
+        resultMap.totalOfUser == 1
+        !userList.contains(user2)
+
+    }
 }

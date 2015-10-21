@@ -10,14 +10,6 @@ import spock.lang.Specification
 @TestFor(UserService)
 class UserServiceSpec extends Specification {
 
-    void "test getAllUserByKeywords method"() {
 
-        when: "The service call getAllUserByKeywords"
-        service.getAllUsersByKeywords("keywords here",10,0)
-
-        then: "getAllUserByKeywords is called"
-        1 * service.getAllUsersByKeywords("keywords here",10,0)
-
-    }
 
 }

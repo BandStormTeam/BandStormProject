@@ -1,16 +1,13 @@
-package bandstorm.service
+package bandstorm.dao
 
 import bandstorm.Band
-import bandstorm.User
 import grails.transaction.Transactional
 
-
-/**
- * Service for all Band object
- */
 @Transactional
-class BandService {
-
+/**
+ * Service Dao pour les Groupes
+ */
+class BandDaoService {
 
     /**
      * Get all bands corresponding to keywords
@@ -50,4 +47,5 @@ class BandService {
 
         return result;
     }
+
 }
