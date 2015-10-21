@@ -1,17 +1,25 @@
 package bandstorm
 
+import bandstorm.dao.EventDAOService
+import grails.plugin.springsecurity.annotation.Secured
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+@Secured(["ROLE_USER","ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class EventController {
+
+    EventDAOService eventDAOService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Event.list(params), model: [eventInstanceCount: Event.count()]
+        params.max = Math.min(max ?: 5, 100)
+        params.sort = "dateCreated"
+        params.order = "desc"
+        Event event = new Event(name: "", description: "", address: "")
+        respond Event.list(params), model: [eventInstance: event,eventInstanceCount: Event.count()]
     }
 
     def show(Event eventInstance) {
@@ -29,20 +37,18 @@ class EventController {
             return
         }
 
+        eventInstance.name = params.evName
+        eventInstance.address = params.evAddress
+        eventInstance.description = params.evDescription
+        eventInstance.validate()
+
         if (eventInstance.hasErrors()) {
-            respond eventInstance.errors, view: 'create'
+            render template: 'form', model: [eventInstance:eventInstance]
             return
         }
 
-        eventInstance.save flush: true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'event.label', default: 'Event'), eventInstance.id])
-                redirect eventInstance
-            }
-            '*' { respond eventInstance, [status: CREATED] }
-        }
+        eventDAOService.create(eventInstance)
+        render template: 'form', model: [eventInstance:eventInstance]
     }
 
     def edit(Event eventInstance) {
@@ -61,15 +67,7 @@ class EventController {
             return
         }
 
-        eventInstance.save flush: true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Event.label', default: 'Event'), eventInstance.id])
-                redirect eventInstance
-            }
-            '*' { respond eventInstance, [status: OK] }
-        }
+        eventDAOService.update(eventInstance)
     }
 
     @Transactional
@@ -80,7 +78,7 @@ class EventController {
             return
         }
 
-        eventInstance.delete flush: true
+        eventDAOService.delete(eventInstance)
 
         request.withFormat {
             form multipartForm {

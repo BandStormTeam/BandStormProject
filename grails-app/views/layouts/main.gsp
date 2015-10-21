@@ -20,6 +20,15 @@
 
 
 	<style>
+
+	.centered {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		/* bring your own prefixes */
+		transform: translate(-50%, -50%);
+	}
+
 	body{
 		background-image: url("${resource(dir:"images",file:"m.jpg")}");
 		background-size:cover;
@@ -79,6 +88,7 @@
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 							<li><a href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
+							<li><a href="${createLink(controller: 'event', action: 'index')}">Mes evennements</a></li>
 							<li><a href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
 						</ul>
 					</div>

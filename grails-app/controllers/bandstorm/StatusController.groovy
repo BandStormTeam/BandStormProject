@@ -10,17 +10,13 @@ import org.springframework.security.core.context.SecurityContextHolder
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
-@Secured("permitAll")
+@Secured(["ROLE_USER","ROLE_ADMIN"])
 class StatusController {
 
-    def springSecurityService
     UserService userService
-    UserController userController = new UserController()
-    AuthenticationManager authenticationManager
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    @Secured("ROLE_ADMIN")
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Status.list(params), model: [statusInstanceCount: Status.count()]
@@ -46,8 +42,6 @@ class StatusController {
             respond statusInstance.errors, view: 'create'
             return
         }
-
-        //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
 
         addStatus(statusInstance)
 

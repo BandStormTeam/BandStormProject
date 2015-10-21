@@ -210,6 +210,7 @@ grails {
 	}
 }
 
+grails.plugins.twitterbootstrap.fixtaglib = true
 
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'bandstorm.SecUser'
