@@ -62,6 +62,7 @@ class StatusController {
         try {
             User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
             userService.addStatusToUser(user, status)
+            sleep(1000)
             redirect(controller: "user", action: "reload")
 
         } catch (AuthenticationException) {

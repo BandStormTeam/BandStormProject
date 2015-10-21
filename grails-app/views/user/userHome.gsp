@@ -29,7 +29,7 @@
                             <g:hiddenField name="lightCount" value="${statusInstance?.lightCount = 0}"/>
                             <div style="text-align: right">
                                 <g:submitButton name="publish" class="btn btn-success" action="save"
-                                                controller="status" value="Publier" onComplete="clearFields()"/>
+                                                controller="status" value="Publier" onClick="clearFields()"/>
                             </div>
 
 
