@@ -9,9 +9,9 @@ import spock.lang.Specification
 /**
  * Test for BandDaoService
  */
-@TestFor(BandDaoService)
-@Mock(Band)
+
 class BandDaoServiceIntegrationSpec  extends Specification {
+    BandDaoService bandDaoService
 
     void "test if getAllBandByKeywords is functionnal"() {
 
@@ -20,14 +20,14 @@ class BandDaoServiceIntegrationSpec  extends Specification {
         def band2 = new Band(name: "Les trois fromages",description: "J'ai un peu faim").save()
 
         when: "research of all bands containing the keywords"
-        Map resultMap = service.getAllBandsByKeywords("groovy",0,10)
+        Map resultMap = bandDaoService.getAllBandsByKeywords("groovy",10,0)
         List<Band> bandList = resultMap.bandList
 
         then: "band1 contains the keywords"
         bandList.contains(band1)
 
         when: "research of all bands containing the keywords"
-        resultMap = service.getAllBandsByKeywords("groovy",0,10)
+        resultMap = bandDaoService.getAllBandsByKeywords("groovy",10,0)
         bandList = resultMap.bandList
 
         then: "band2 does not contain keywords"

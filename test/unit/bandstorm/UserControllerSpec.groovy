@@ -164,6 +164,10 @@ class UserControllerSpec extends Specification {
     }
 
     void "Test that the show action returns the correct model"() {
+        given:"current user"
+        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.springSecurityService.currentUser >> new User()
+
         when: "The show action is executed with a null domain"
         controller.show(null)
 

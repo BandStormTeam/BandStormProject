@@ -37,8 +37,10 @@ class UserController {
         if(userInstance == null) {
             return response.sendError(404)
         }
-
-        respond userInstance
+        
+        def currentUser = springSecurityService.currentUser
+        
+      respond userInstance, model: [currentUser: currentUser]
     }
     
     def urlRedirect() {
@@ -48,8 +50,7 @@ class UserController {
             redirect(uri: "/index")
         }
     }
-
-
+    
     def create() {
         respond new User(params)
     }
@@ -200,5 +201,15 @@ class UserController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    def followUser(User user){
+        def follow = userDaoService.followUser(springSecurityService.currentUser, user)
+        redirect(action: "show", params: params)
+    }
+
+    def unfollowUser(User user){
+        userDaoService.unfollowUser(springSecurityService.currentUser, user)
+        redirect(action: "show", params: params)
     }
 }

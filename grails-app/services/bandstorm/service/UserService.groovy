@@ -1,5 +1,7 @@
 package bandstorm.service
 
+import bandstorm.Follow
+import bandstorm.Status
 import bandstorm.SecRole
 import bandstorm.SecUserSecRole
 import bandstorm.User

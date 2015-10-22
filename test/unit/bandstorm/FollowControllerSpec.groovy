@@ -4,16 +4,14 @@ package bandstorm
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(StatusController)
-@Mock(Status)
-class StatusControllerSpec extends Specification {
+@TestFor(FollowController)
+@Mock(Follow)
+class FollowControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        params["url"] = 'statusUrl'
-        params["content"] = 'statusContent'
-        params["lightCount"] = 10
-        params["author"] = Mock(User)
+        params["follower"] = Mock(User)
+        params["followed"] = Mock(User)
     }
 
     void "Test the index action returns the correct model"() {
@@ -22,8 +20,8 @@ class StatusControllerSpec extends Specification {
         controller.index()
 
         then: "The model is correct"
-        !model.statusInstanceList
-        model.statusInstanceCount == 0
+        !model.followInstanceList
+        model.followInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -31,32 +29,32 @@ class StatusControllerSpec extends Specification {
         controller.create()
 
         then: "The model is correctly created"
-        model.statusInstance != null
+        model.followInstance != null
     }
 
     void "Test the save action correctly persists an instance"() {
 
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
-        def status = new Status()
-        status.validate()
-        controller.save(status)
+        def follow = new Follow()
+        follow.validate()
+        controller.save(follow)
 
         then: "The create view is rendered again with the correct model"
-        model.statusInstance != null
+        model.followInstance != null
         view == 'create'
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
-        status = new Status(params)
+        follow = new Follow(params)
 
-        controller.save(status)
+        controller.save(follow)
 
         then: "A redirect is issued to the show action"
-        //response.redirectedUrl == '/status/show/1'
-        //controller.flash.message != null
-        Status.count() == 1
+        response.redirectedUrl == '/follow/show/1'
+        controller.flash.message != null
+        Follow.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -68,11 +66,11 @@ class StatusControllerSpec extends Specification {
 
         when: "A domain instance is passed to the show action"
         populateValidParams(params)
-        def status = new Status(params)
-        controller.show(status)
+        def follow = new Follow(params)
+        controller.show(follow)
 
         then: "A model is populated containing the domain instance"
-        model.statusInstance == status
+        model.followInstance == follow
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -84,11 +82,11 @@ class StatusControllerSpec extends Specification {
 
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
-        def status = new Status(params)
-        controller.edit(status)
+        def follow = new Follow(params)
+        controller.edit(follow)
 
         then: "A model is populated containing the domain instance"
-        model.statusInstance == status
+        model.followInstance == follow
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -97,28 +95,28 @@ class StatusControllerSpec extends Specification {
         controller.update(null)
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/status/index'
+        response.redirectedUrl == '/follow/index'
         flash.message != null
 
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
-        def status = new Status()
-        status.validate()
-        controller.update(status)
+        def follow = new Follow()
+        follow.validate()
+        controller.update(follow)
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.statusInstance == status
+        model.followInstance == follow
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        status = new Status(params).save(flush: true)
-        controller.update(status)
+        follow = new Follow(params).save(flush: true)
+        controller.update(follow)
 
         then: "A redirect is issues to the show action"
-        //response.redirectedUrl == "/status/show/$status.id"
+        response.redirectedUrl == "/follow/show/$follow.id"
         flash.message != null
     }
 
@@ -128,23 +126,23 @@ class StatusControllerSpec extends Specification {
         controller.delete(null)
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/status/index'
+        response.redirectedUrl == '/follow/index'
         flash.message != null
 
         when: "A domain instance is created"
         response.reset()
         populateValidParams(params)
-        def status = new Status(params).save(flush: true)
+        def follow = new Follow(params).save(flush: true)
 
         then: "It exists"
-        Status.count() == 1
+        Follow.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        controller.delete(status)
+        controller.delete(follow)
 
         then: "The instance is deleted"
-        Status.count() == 0
-        response.redirectedUrl == '/status/index'
+        Follow.count() == 0
+        response.redirectedUrl == '/follow/index'
         flash.message != null
     }
 }
