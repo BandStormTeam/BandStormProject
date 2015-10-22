@@ -3,7 +3,6 @@
 <meta name="layout" content="main"/>
 
 
-
 <div class="container" style="padding-top: 100px;">
 
     <div class="container">
@@ -14,7 +13,8 @@
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <g:form url="[resource: statusInstance,controller: 'status', action: 'save']" name="statusForm">
+                        <g:form url="[resource: statusInstance, controller: 'status', action: 'save']"
+                                name="statusForm">
 
                             <g:textField id="contentField"
                                          class="form-control ${hasErrors(bean: statusInstance, field: 'content', 'errors')}"
@@ -28,20 +28,28 @@
 
                             <g:hiddenField name="lightCount" value="${statusInstance?.lightCount = 0}"/>
                             <div style="text-align: right">
-                                <g:submitToRemote name="publish" class="btn btn-success" action="save"
-                                                  controller="status" value="Publier" onComplete="clearFields()"/>
+                                <g:submitButton name="publish" class="btn btn-success" action="save"
+                                                controller="status" value="Publier" onClick="clearFields()"/>
                             </div>
+
 
                             <g:javascript>
                                 function clearFields() {
-                                    $("#contentField").fadeOut(500);
-                                    $("#urlField").fadeOut(500);
+
+                                    if (document.getElementById("contentField").value != "") {
+                                        $("#contentField").fadeOut(500);
+                                        $("#contentField").fadeIn(500);
+                                    }
+
+                                    if (document.getElementById("urlField").value != "") {
+                                        $("#urlField").fadeOut(500);
+                                        $("#urlField").fadeIn(500);
+                                    }
+
                                     setTimeout(function () {
                                         document.getElementById("contentField").value = "";
                                         document.getElementById("urlField").value = "";
                                     }, 300);
-                                    $("#contentField").fadeIn(500);
-                                    $("#urlField").fadeIn(500);
                                 }
                             </g:javascript>
                         </g:form>
@@ -63,7 +71,8 @@
                         <div class="media">
                             <div class="media-left">
                                 <a href="#">
-                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'r.jpg')}"
+                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                         src="${resource(dir: 'images', file: 'r.jpg')}"
                                          data-holder-rendered="true" style="width: 64px; height: 64px;">
 
                                 </a>
@@ -87,7 +96,6 @@
                         </br>
                     </g:each>
 
-
                 </div><!-- /.blog-userHomePage -->
             </div><!-- /.blog-userHomePage -->
 
@@ -98,7 +106,7 @@
 
                     <h4>Crazy <g:fieldValue bean="${user}" field="username"/></h4>
 
-                    <p> <em>"Merry"</em> Christmas, May the season be fun joyful and especialy crazy!! :P<br><br>
+                    <p><em>"Merry"</em> Christmas, May the season be fun joyful and especialy crazy!! :P<br><br>
 
                     </p>
 
@@ -118,8 +126,10 @@
                     <h4>Elsewhere</h4>
                     <ol class="list-unstyled">
 
-                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
-                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
+                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
+                        </li>
+                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
+                        </li>
                     </ol>
                 </div>
             </div><!-- /.blog-sidebar -->

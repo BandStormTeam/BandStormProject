@@ -135,6 +135,12 @@ class UserController {
         }
     }
 
+    def reload() {
+        User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
+        def statusList = statusService.getStatusForTimeline()
+        render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+    }
+
     def logout() {
         userService.logout(request, response)
         redirect(uri : "/")

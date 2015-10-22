@@ -1,10 +1,11 @@
 package bandstorm.service
 
-import bandstorm.Follow
-import bandstorm.Status
 import bandstorm.SecRole
 import bandstorm.SecUserSecRole
+import bandstorm.Status
 import bandstorm.User
+import bandstorm.dao.StatusDaoService
+import bandstorm.dao.UserDaoService
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -18,6 +19,8 @@ class UserService {
     AuthenticationManager authenticationManager
     def logoutHandlers
     def mailService
+    StatusDaoService statusDaoService
+    UserDaoService userDaoService
 
     def logIn(String username, String password) throws AuthenticationException {
         Authentication newAuthentification = new UsernamePasswordAuthenticationToken(username, password)
@@ -48,7 +51,4 @@ class UserService {
 
         }
     }
-
-
-
 }

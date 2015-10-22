@@ -1,6 +1,7 @@
 package bandstorm.dao
 
 import bandstorm.Follow
+import bandstorm.Status
 import bandstorm.User
 import grails.test.mixin.TestFor
 import spock.lang.Specification
@@ -190,6 +191,30 @@ class UserDaoServiceIntegrationSpec extends Specification {
         then: "user does not contain keywords"
         resultMap.totalOfUser == 1
         !userList.contains(user2)
+    }
 
+    void "test if a status is added"() {
+
+        given: "a status is ready to be added to a user"
+
+        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
+
+        User user = new User(username: "jack",
+                email: "jack@gmail.com",
+                firstName: "Paul",
+                lastName: "DuBois",
+                birthDate: birthDate,
+                country: "France",
+                password: "aaaaaaaa").save()
+
+        Status status = new Status(url: "www.toto.fr", content: "Coucou", lightCount: 0)
+        status.save(flush:true)
+
+        when: "the status is added to the user"
+        userDaoService.addStatusToUser(user, status)
+
+        then: "the status is added to the user"
+        //1 * service.userDaoService.update(user)
+        user.posts.first() == status
     }
 }

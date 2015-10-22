@@ -1,6 +1,7 @@
 package bandstorm.dao
 
 import bandstorm.Follow
+import bandstorm.Status
 import bandstorm.User
 import grails.transaction.Transactional
 
@@ -101,6 +102,11 @@ class UserDaoService implements IGenericDao<User> {
         result.userList = resultsList.toList()
 
         return result;
+    }
+
+    def addStatusToUser(User user, Status status) {
+        user.addToPosts(status)
+        user.save(flush:true)
     }
 
 }
