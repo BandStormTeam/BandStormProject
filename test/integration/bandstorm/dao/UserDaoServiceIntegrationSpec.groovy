@@ -10,7 +10,7 @@ import spock.lang.Specification
 @TestFor(User)
 class UserDaoServiceIntegrationSpec extends Specification {
 
-    UserDAOService userDAOService
+    UserDaoService userDaoService
 
     void "test the creation of user"() {
 
@@ -28,7 +28,7 @@ class UserDaoServiceIntegrationSpec extends Specification {
 
 
         when: "the user is created by the service"
-        user = userDAOService.create(user)
+        user = userDaoService.create(user)
 
         then: "user is correct"
         !user.hasErrors()
@@ -53,13 +53,13 @@ class UserDaoServiceIntegrationSpec extends Specification {
                 country: "France",
                 password: "aaaaaaaa")
 
-        user = userDAOService.create(user)
+        user = userDaoService.create(user)
 
 
         when: "the user is update by the service"
         user.setFirstName("Robert")
         user.setCountry("Allemagne")
-        user = userDAOService.update(user)
+        user = userDaoService.update(user)
 
         then: "user is correct"
         !user.hasErrors()
@@ -88,11 +88,11 @@ class UserDaoServiceIntegrationSpec extends Specification {
                 country: "France",
                 password: "aaaaaaaa")
 
-        user = userDAOService.create(user)
+        user = userDaoService.create(user)
         Long userId = user.getId()
 
         when: "the user is delete by the service"
-        userDAOService.delete(user)
+        userDaoService.delete(user)
 
         then: "user exist in the base"
         User.findById(userId) == null

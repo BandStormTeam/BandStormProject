@@ -1,19 +1,13 @@
 package bandstorm.dao
 
-import grails.transaction.Transactional
 import bandstorm.User
+import grails.transaction.Transactional
 
-
-/**
- * Dao for user
- */
 @Transactional
 class UserDaoService implements IGenericDao<User> {
-
     @Override
     User create(User user) {
         user.save()
-        return user
     }
 
     @Override
@@ -23,10 +17,8 @@ class UserDaoService implements IGenericDao<User> {
 
     @Override
     User update(User user) {
-        user.save(flush:true)
-        return user
+        user.save(flush: true)
     }
-
 
     /**
      * Get all users corresponding to keywords
@@ -68,6 +60,4 @@ class UserDaoService implements IGenericDao<User> {
 
         return result;
     }
-
 }
-
