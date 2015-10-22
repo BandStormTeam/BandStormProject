@@ -4,7 +4,7 @@ import bandstorm.User
 import grails.transaction.Transactional
 
 @Transactional
-class UserDAOService implements IGenericDao<User> {
+class UserDaoService implements IGenericDao<User> {
 
     def serviceMethod() {
 
