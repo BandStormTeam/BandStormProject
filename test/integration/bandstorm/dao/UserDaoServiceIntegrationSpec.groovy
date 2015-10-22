@@ -1,16 +1,13 @@
 package bandstorm.dao
 
-import bandstorm.BandController
 import bandstorm.Follow
 import bandstorm.User
-import grails.test.mixin.*
+
 import spock.lang.*
 
 /**
  * Test for UserDaoService
  */
-@TestFor(User)
-@Mock(Follow)
 class UserDaoServiceIntegrationSpec extends Specification {
 
     UserDaoService userDaoService
@@ -134,5 +131,20 @@ class UserDaoServiceIntegrationSpec extends Specification {
 
         then:"the follow link is delete"
         Follow.findById(myFollow.id) == null
+    }
+
+    def "test findFollowByFollowerAndFollowed method"(){
+        given:"a Follow between 2 users"
+        User user1 = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
+        User user2 = new User(username: "user2", email: "user2@mail.com",
+                firstName: "jane", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "qsdfgh").save(flush: true)
+        userDaoService.followUser(user1,user2)
+
+        when:"I want to find the follow between users"
+        Follow myFollow = userDaoService.findFollowByFollowerAndFollowed(user1,user2)
+
+        then:"we get the follow"
+        myFollow != null
     }
 }

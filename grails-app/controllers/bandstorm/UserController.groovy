@@ -156,7 +156,6 @@ class UserController {
 
     def unfollowUser(User user){
         userDaoService.unfollowUser(springSecurityService.currentUser, user)
-        println "coucou"
         redirect(action: "show", params: params)
     }
 }

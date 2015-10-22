@@ -8,15 +8,14 @@ import spock.lang.*
 /**
  * Created by Dylan on 08/10/2015.
  */
-@TestFor(Status)
 class StatusDaoServiceSpec extends Specification {
     StatusDaoService statusDaoService
 
     void "test StatusDaoService creation method"(){
         given: "a status"
         User user = new User(username: "user1", email: "user1@mail.com",
-                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty")
-        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user)
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
+        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user).save(flush: true)
 
         when: "I want to save this status"
         Status statusRes = statusDaoService.create(status)
@@ -31,8 +30,8 @@ class StatusDaoServiceSpec extends Specification {
     void "test StatusDaoService update method"(){
         given: "a status"
         User user = new User(username: "user1", email: "user1@mail.com",
-                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty")
-        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user)
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
+        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user).save(flush: true)
         status = statusDaoService.create(status)
 
         when: "I want to update this status"
@@ -48,8 +47,8 @@ class StatusDaoServiceSpec extends Specification {
     void "test StatusDaoService delete method"(){
         given: "a status"
         User user = new User(username: "user1", email: "user1@mail.com",
-                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty")
-        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user)
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
+        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user).save(flush: true)
         status = statusDaoService.create(status)
 
         when: "I want to delete this status"

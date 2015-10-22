@@ -44,4 +44,15 @@ class UserDaoService implements IGenericDao<User> {
         Follow myFollow = Follow.findByFollowerAndFollowed(follower,followed)
         myFollow.delete(flush: true)
     }
+
+    /**
+     * Find a follow between two users if exist
+     * @param follower user follower
+     * @param followed user followed
+     * @return a follow if found else null
+     */
+    Follow findFollowByFollowerAndFollowed(User follower, User followed){
+        Follow result = Follow.findByFollowerAndFollowed(follower,followed)
+        result
+    }
 }
