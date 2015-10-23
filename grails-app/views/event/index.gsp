@@ -60,19 +60,19 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nbr</th>
                                                 <th>Event Name</th>
+                                                <th>Date Event</th>
                                                 <th>Created</th>
                                                 <th>Address</th>
                                                 <th>Description</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <g:each in="${eventInstanceList}" status="i" var="eventInstance">
+                                            <g:each in="${eventInstanceList}" var="eventInstance">
                                                 <tr>
-                                                    <td><g:remoteLink action="show" id="${(eventInstance.id)}">${(i) == 0 ? 1 : (i+1)}</g:remoteLink></td>
+                                                    <td><g:remoteLink action="show" id="${(eventInstance.id)}">${fieldValue(bean: eventInstance, field: "name")}</g:remoteLink></td>
 
-                                                    <td>${fieldValue(bean: eventInstance, field: "name")}</td>
+                                                    <td><g:formatDate date="${eventInstance.dateEvent}"/></td>
 
                                                     <td><g:formatDate date="${eventInstance.dateCreated}" /></td>
 

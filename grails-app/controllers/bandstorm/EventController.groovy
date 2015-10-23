@@ -3,6 +3,8 @@ package bandstorm
 import bandstorm.dao.EventDAOService
 import grails.plugin.springsecurity.annotation.Secured
 
+import java.text.SimpleDateFormat
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -18,7 +20,9 @@ class EventController {
         params.max = Math.min(max ?: 5, 100)
         params.sort = "dateCreated"
         params.order = "desc"
-        Event event = new Event(name: "", description: "", address: "")
+        def calendar = Calendar.getInstance()
+        calendar.set(2015,Calendar.SEPTEMBER, 01)
+        Event event = new Event(name: "",dateEvent: calendar.getTime() ,description: "", address: "")
         respond Event.list(params), model: [eventInstance: event,eventInstanceCount: Event.count()]
     }
 
@@ -37,10 +41,16 @@ class EventController {
             return
         }
 
-        eventInstance.name = params.evName
-        eventInstance.address = params.evAddress
-        eventInstance.description = params.evDescription
-        eventInstance.validate()
+        try {
+            eventInstance.name = params.evName
+            eventInstance.address = params.evAddress
+            eventInstance.description = params.evDescription
+            eventInstance.dateEvent = new SimpleDateFormat("dd.MM.yyyy").parse(params.evDate?.replaceAll('/','.'))
+            eventInstance.validate()
+        } catch (Exception e) {
+            e.printStackTrace()
+            render template: 'form', model: [eventInstance:eventInstance, status: "KO"]
+        }
 
         if (eventInstance.hasErrors()) {
             render template: 'form', model: [eventInstance:eventInstance, status: "KO"]

@@ -12,39 +12,9 @@ class UserDaoServiceIntegrationSpec extends Specification {
 
     UserDAOService userDAOService
 
-    void "test the creation of user"() {
-
-        given: "a user is ready to be created"
-
+    void "test UserDaoService creation method"(){
+        given: "a user"
         Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
-
-        User user = new User(   username:"jack",
-                                email: "jack@gmail.com",
-                                firstName: "Paul",
-                                lastName: "DuBois",
-                                birthDate:birthDate,
-                                country: "France",
-                                password: "aaaaaaaa")
-
-
-        when: "the user is created by the service"
-        user = userDAOService.create(user)
-
-        then: "user is correct"
-        !user.hasErrors()
-
-        and: "user exist in the base"
-        User.findById(user.getId()) != null
-
-
-    }
-
-    void "test user's update"() {
-
-        given: "a user is ready to be update"
-
-        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
-
         User user = new User(   username:"jack",
                 email: "jack@gmail.com",
                 firstName: "Paul",
@@ -53,33 +23,19 @@ class UserDaoServiceIntegrationSpec extends Specification {
                 country: "France",
                 password: "aaaaaaaa")
 
-        user = userDAOService.create(user)
+        when: "I want to save this user"
+        User userRes = userDAOService.create(user)
 
+        then: "The user is correctly save"
+        !userRes.hasErrors()
 
-        when: "the user is update by the service"
-        user.setFirstName("Robert")
-        user.setCountry("Allemagne")
-        user = userDAOService.update(user)
-
-        then: "user is correct"
-        !user.hasErrors()
-
-        and: "user exist in the base"
-        User.findById(user.getId()) != null
-
-        and: "user is modified"
-        user.getFirstName() == "Robert" && user.getCountry() == "Allemagne"
-
-
+        and: "we can found this user"
+        User.findById(userRes.id) != null
     }
 
-
-    void "test if user can be deleted"() {
-
-        given: "a user is ready to be deleted"
-
+    void "test userDaoService update method"(){
+        given: "a user"
         Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
-
         User user = new User(   username:"jack",
                 email: "jack@gmail.com",
                 firstName: "Paul",
@@ -87,16 +43,35 @@ class UserDaoServiceIntegrationSpec extends Specification {
                 birthDate:birthDate,
                 country: "France",
                 password: "aaaaaaaa")
-
         user = userDAOService.create(user)
-        Long userId = user.getId()
 
-        when: "the user is delete by the service"
+        when: "I want to update this user"
+        User userRes = userDAOService.update(user)
+
+        then: "The user is correctly update"
+        !userRes.hasErrors()
+
+        and: "we can found this user"
+        User.findById(userRes.id) != null
+    }
+
+    void "test userDaoService delete method"(){
+        given: "a user"
+        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
+        User user = new User(   username:"jack",
+                email: "jack@gmail.com",
+                firstName: "Paul",
+                lastName: "DuBois",
+                birthDate:birthDate,
+                country: "France",
+                password: "aaaaaaaa")
+        user = userDAOService.create(user)
+
+        when: "I want to delete this user"
         userDAOService.delete(user)
 
-        then: "user exist in the base"
-        User.findById(userId) == null
-
+        then: "The user is correctly delete"
+        User.findById(user.id) == null
     }
 
 }

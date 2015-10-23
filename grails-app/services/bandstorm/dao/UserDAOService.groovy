@@ -6,9 +6,6 @@ import grails.transaction.Transactional
 @Transactional
 class UserDAOService implements IGenericDao<User> {
 
-    def serviceMethod() {
-
-    }
 
     @Override
     User create(User user) {

@@ -42,7 +42,6 @@ class UserService {
             to email
             subject "Account validation"
             html view: "/email/validation", model: [username: username]
-            //body "testing"
 
         }
     }

@@ -107,7 +107,9 @@ grails.project.dependency.resolution = {
             // service = 'other'
         }
     }
+
     coverage {
+        exclusions = ['*','**/security/*', "**/taglib/**"]
         enabledByDefault = false
         xml = true
     }

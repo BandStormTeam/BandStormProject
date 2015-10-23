@@ -12,6 +12,7 @@ class Event {
     Date dateCreated
     String address
     String description
+    Date dateEvent
 
     static hasMany = [tags : Tag]
 
@@ -20,5 +21,8 @@ class Event {
         address maxSize: 200, minSize: 10, blank: false
         description minSize: 2, blank: false
         tags nullable: true
+        dateEvent blank: false, validator: {val, obj ->
+            return val.after(new Date())
+        }
     }
 }
