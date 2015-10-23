@@ -16,7 +16,7 @@ class EventDAOServiceIntegrationSpec extends Specification {
 
     void "test EventDaoService creation method"(){
         given: "a event"
-        Event event = new Event(name:"My Event ",dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate").save()
+        Event event = new Event(name:"My Event ",dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate")
 
         when: "I want to save this event"
         Event eventRes = eventDAOService.create(event)
@@ -30,7 +30,7 @@ class EventDAOServiceIntegrationSpec extends Specification {
 
     void "test EventDaoService update method"(){
         given: "a event"
-        Event event =  new Event(name:"My Event ", dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate").save()
+        Event event =  new Event(name:"My Event ", dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate")
         event = eventDAOService.create(event)
 
         when: "I want to update this event"
@@ -45,7 +45,7 @@ class EventDAOServiceIntegrationSpec extends Specification {
 
     void "test EventDaoService delete method"(){
         given: "a event"
-        Event event =  new Event(name:"My Event ", dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate").save()
+        Event event =  new Event(name:"My Event ", dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate")
         event = eventDAOService.create(event)
 
         when: "I want to delete this event"
