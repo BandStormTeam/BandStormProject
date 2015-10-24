@@ -203,7 +203,7 @@ class EventControllerSpec extends Specification {
         when : "the index action is called with a defined max param"
         controller.index(200)
 
-        then: "the index view is rendered and instance count is 5"
+        then: "the index view is rendered and params.max = 100"
         params.max == 100
 
     }

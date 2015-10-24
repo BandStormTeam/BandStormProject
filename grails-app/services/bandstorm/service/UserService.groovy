@@ -37,11 +37,11 @@ class UserService {
         SecUserSecRole.create userInstance, userRole, true
     }
 
-    def contactUser(String email, String username) {
+    def contactUser(String email, String username, String url) {
         mailService.sendMail {
             to email
             subject "Account validation"
-            html view: "/email/validation", model: [username: username]
+            html view: "/email/validation", model: [username: username, redirectUrl: url]
 
         }
     }

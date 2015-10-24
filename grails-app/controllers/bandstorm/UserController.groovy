@@ -108,7 +108,8 @@ class UserController {
         }
 
         userInstance = userDAOService.create(userInstance)
-        userService.contactUser(userInstance.email, userInstance.username)
+        String url = createLink([action: "activateAccount", absolute: true]).toString()
+        userService.contactUser(userInstance.email, userInstance.username, url)
 
         render (view: "successCreation", model: [username: userInstance.username, type:"success"])
     }

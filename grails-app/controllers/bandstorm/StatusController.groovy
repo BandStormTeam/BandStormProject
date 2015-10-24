@@ -54,8 +54,6 @@ class StatusController {
         try {
             User user = User.findByUsername("Abel")
             userService.addStatusToUser(user, status)
-            System.out.println("TRACE : ")
-            System.out.println(user.getPosts().content)
 
         } catch (AuthenticationException) {
 

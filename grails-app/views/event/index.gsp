@@ -7,7 +7,7 @@
 		<g:set var="entityName" value="${message(code: 'event.label', default: 'Event')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
         <style>
-            ul li {
+            .centered ul li {
                 display: inline;
                 margin: 3px;
             }
@@ -28,85 +28,76 @@
                 padding: 4.5px 10px 4.5px 10px;
             }
 
-            ul a {
+            .centered ul a {
                 color: black;
                 box-sizing: inherit;
             }
 
-            ul a:hover {
+            .centered ul a:hover {
                 text-decoration: none;
             }
 
             .alert {
                 margin-top: 5px;
             }
+
+            .tab-content {
+                background-color: whitesmoke;
+                padding: 10px;
+                padding-top:30px ;
+                margin-bottom: 30px;
+            }
         </style>
 	</head>
 	<body>
 		<div class="container centered" style=" padding-top:30px;width: 90%; min-height: 300px; background-color: rgba(245,245,245,0.95);">
             <div class="container-fluid">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    My Events
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                <div class="table-responsive" id="listedEvents">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Event Name</th>
-                                                <th>Date Event</th>
-                                                <th>Created</th>
-                                                <th>Address</th>
-                                                <th>Description</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <g:each in="${eventInstanceList}" var="eventInstance">
-                                                <tr>
-                                                    <td><g:remoteLink action="show" id="${(eventInstance.id)}">${fieldValue(bean: eventInstance, field: "name")}</g:remoteLink></td>
+                <h2>Mes Événements</h2>
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="active"><a data-toggle="tab" href="#view">View</a></li>
+                    <li><a data-toggle="tab" href="#create">Create</a></li>
+                </ul>
 
-                                                    <td><g:formatDate date="${eventInstance.dateEvent}"/></td>
+                <div class="tab-content">
+                    <div id="view" class="tab-pane fade in active">
+                        <div class="table-responsive" id="listedEvents">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date Event</th>
+                                    <th>Created</th>
+                                    <th>Address</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <g:each in="${eventInstanceList}" var="eventInstance">
+                                    <tr>
+                                        <td><g:remoteLink action="show" id="${(eventInstance.id)}">${fieldValue(bean: eventInstance, field: "name")}</g:remoteLink></td>
 
-                                                    <td><g:formatDate date="${eventInstance.dateCreated}" /></td>
+                                        <td><g:formatDate date="${eventInstance.dateEvent}"/></td>
 
-                                                    <td>${fieldValue(bean: eventInstance, field: "address")}</td>
+                                        <td><g:formatDate date="${eventInstance.dateCreated}" /></td>
 
-                                                    <td>${fieldValue(bean: eventInstance, field: "description")}</td>
-                                                </tr>
-                                            </g:each>
-                                        </tbody>
-                                    </table>
+                                        <td>${fieldValue(bean: eventInstance, field: "address")}</td>
 
-                                    <g:paginate total="${eventInstanceCount}" />
+                                        <td>${fieldValue(bean: eventInstance, field: "description")}</td>
+                                    </tr>
+                                </g:each>
+                                </tbody>
+                            </table>
 
-                                </div>
-                            </div>
+                            <g:paginate total="${eventInstanceCount}" />
+
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Add New Events
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-                                <g:form >
-                                    <fieldset class="form" id="creationForm">
-                                        <g:render template="form" bean="${eventInstance}"/>
-                                    </fieldset>
-                                </g:form>
-                            </div>
-                        </div>
+                    <div id="create" class="tab-pane fade">
+                        <g:form >
+                            <fieldset class="form" id="creationForm">
+                                <g:render template="form" bean="${eventInstance}"/>
+                            </fieldset>
+                        </g:form>
                     </div>
                 </div>
             </div>
