@@ -8,12 +8,11 @@ import bandstorm.service.UserService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
-@Secured("permitAll")
+@Secured(["ROLE_USER","ROLE_ADMIN"])
 class StatusController {
 
     def springSecurityService
@@ -25,7 +24,6 @@ class StatusController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    @Secured("ROLE_ADMIN")
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Status.list(params), model: [statusInstanceCount: Status.count()]
@@ -73,7 +71,6 @@ class StatusController {
         } catch (AuthenticationException) {
             redirect(controller: "user", action: "userHome")
         }
-
     }
 
     def edit(Status statusInstance) {

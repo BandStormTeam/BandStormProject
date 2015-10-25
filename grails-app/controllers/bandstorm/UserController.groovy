@@ -42,7 +42,7 @@ class UserController {
         
       respond userInstance, model: [currentUser: currentUser]
     }
-    
+
     def urlRedirect() {
         if(userService.springSecurityService.isLoggedIn()) {
             redirect (action: "userHome")
@@ -50,7 +50,7 @@ class UserController {
             redirect(uri: "/index")
         }
     }
-    
+
     def create() {
         respond new User(params)
     }
@@ -158,7 +158,8 @@ class UserController {
         }
 
         userInstance = userDaoService.create(userInstance)
-        userService.contactUser(userInstance.email, userInstance.username)
+        String url = createLink([action: "activateAccount", absolute: true]).toString()
+        userService.contactUser(userInstance.email, userInstance.username, url)
 
         render (view: "successCreation", model: [username: userInstance.username, type:"success"])
     }

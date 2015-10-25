@@ -5,6 +5,7 @@ import bandstorm.service.UserService
 import grails.plugin.springsecurity.SpringSecurityService
 import bandstorm.dao.UserDaoService
 import grails.test.mixin.*
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import spock.lang.*
 
@@ -20,7 +21,9 @@ class UserControllerSpec extends Specification {
         params["email"] = "toto@mail.com"
         params["country"] = "France"
         params["password"] = "123456"
-        params["birthDate"] = Mock(Date)
+        def calendar = Calendar.getInstance()
+        calendar.set(1991,GregorianCalendar.SEPTEMBER,20)
+        params["birthDate"] = calendar.getTime()
         params["urlAvatar"] = "http://toto.com"
     }
 
@@ -101,11 +104,17 @@ class UserControllerSpec extends Specification {
             getCurrentUser() >> user
         }
 
-        when: "The passwordSettings action is executed"
+        when: "The passwordSettings action is executed without a parameter"
         controller.passwordSettings()
 
         then: "The model is correctly created"
-        model.userInstance != null
+        model.userInstance == user
+
+        when: "the passwordSettings action is executed with a parameter"
+        controller.passwordSettings(user)
+
+        then: "the returned user is the one passed as a parameter"
+        model.userInstance == user
     }
 
 
@@ -163,6 +172,61 @@ class UserControllerSpec extends Specification {
         User.count() == 1
     }
 
+    void "test save method with null parameter"() {
+        when:"we try to save a null object"
+        controller.save(null)
+
+        then: "the response value is not found"
+        response.status == HttpStatus.NOT_FOUND.value()
+    }
+
+    void "test save method with null parameter with form content type"() {
+
+        when: "we try to save a null object through a form"
+        request.contentType = FORM_CONTENT_TYPE
+        controller.save(null)
+
+        then: "the response status is notfound and the redirect is to the index page"
+        response.redirectedUrl == '/user/index'
+        flash.message != null
+    }
+
+    void "test profile settings"() {
+
+        given: "used entities"
+        User user = new User(params)
+        controller.userService = Mock(UserService)
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        when: "we have a null object passed as a parameter"
+        controller.passwordSettings(null)
+
+        then: "the method returns the currently logged user"
+        model.userInstance == user
+
+        when: "we call the profile settings method with the created user"
+        controller.profilSettings(user)
+
+        then: "the response is the same created user"
+        model.userInstance == user
+    }
+
+    void "test logout method"() {
+
+        given :"the userService"
+        controller.userService = Mock(UserService) {
+            logout(_,_) >> true
+        }
+
+        when: "we call the logout method"
+        controller.logout()
+
+        then: "we are redirected to the main page"
+        response.redirectedUrl == "/"
+    }
+
     void "Test that the show action returns the correct model"() {
         given:"current user"
         controller.springSecurityService = Mock(SpringSecurityService)
@@ -211,16 +275,20 @@ class UserControllerSpec extends Specification {
         then: "The edit view is rendered again with the invalid instance"
         view == 'profilSettings'
         model.userInstance == userBad
+    }
+
+    void "update method test for a valid instance"() {
 
         when: "A valid domain instance is passed to the update action"
-        response.reset()
         populateValidParams(params)
-        userBad = new User(params).save(flush: true)
+        def userBad = new User(params).save(flush: true)
+        controller.userDaoService = Mock(UserDaoService) {
+            update(_) >> userBad
+        }
         controller.update(userBad,"profilSettings")
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/user/index"
-        flash.message != null
+        response.redirectedUrl == "/user/profilSettings"
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
@@ -268,5 +336,44 @@ class UserControllerSpec extends Specification {
         then: "the authentification fails so the user is not redirected to the userHome view"
         view != 'userHome'
 
+    }
+
+    void "test index method with max param"() {
+
+        when : "the index action is called with a defined max param"
+        controller.index(200)
+
+        then: "the index view is rendered and params.max = 100"
+        params.max == 100
+
+    }
+
+    void "test url redirect method when user is logged in"() {
+        given: "the user service"
+        controller.userService = Mock(UserService)
+
+        when: "the urlRedirect method is called"
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
+            isLoggedIn() >> true
+        }
+        controller.urlRedirect()
+
+        then: "the userHome action is called"
+        response.redirectedUrl == '/user/userHome'
+
+    }
+
+    void "test url redirect method when user is not logged in"() {
+        given: "the user service"
+        controller.userService = Mock(UserService)
+
+        when: "no user is logged in"
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
+            isLoggedIn() >> false
+        }
+        controller.urlRedirect()
+
+        then: "the user is redirected to the index page"
+        response.redirectedUrl == '/index'
     }
 }

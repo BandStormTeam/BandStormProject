@@ -1,8 +1,11 @@
 package bandstorm
 
-
+import bandstorm.dao.EventDAOService
 import grails.test.mixin.*
+import org.springframework.http.HttpStatus
 import spock.lang.*
+
+import java.text.SimpleDateFormat
 
 @TestFor(EventController)
 @Mock(Event)
@@ -14,6 +17,9 @@ class EventControllerSpec extends Specification {
         params["name"] = 'eventName'
         params["address"] = 'eventAddress'
         params["description"] = 'eventDescription'
+        def calendar  = Calendar.getInstance()
+        calendar.set(2115,10,5)
+        params["dateEvent"] = calendar.getTime()
     }
 
     void "Test the index action returns the correct model"() {
@@ -39,24 +45,62 @@ class EventControllerSpec extends Specification {
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         def event = new Event()
-        event.validate()
+        controller.eventDAOService = Mock(EventDAOService)
+        controller.params.evName = "r"
+        controller.params.evAddress = "r"
+        controller.params.evDescription = "r"
+        def calendar  = Calendar.getInstance()
+        calendar.set(2115,10,5)
+        controller.params.evDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime())
         controller.save(event)
 
         then: "The create view is rendered again with the correct model"
-        model.eventInstance != null
-        view == 'create'
+        Event.count() == 0
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
         event = new Event(params)
+        controller.params.evName = "a name"
+        controller.params.evAddress = "a longue addresse"
+        controller.params.evDescription = "a description"
+        controller.params.evDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime())
+        controller.eventDAOService = Mock(EventDAOService) {
+            create(_) >> new Event(name: "name", dateEvent:calendar.getTime() , address: "home sweet home", description: "there isn't much to say").save()
+        }
 
         controller.save(event)
 
-        then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/event/show/1'
-        controller.flash.message != null
+        then: "A new event was successfully added"
         Event.count() == 1
+    }
+
+    void "test save method with null parameter"() {
+        when:"we try to save a null object"
+        controller.save(null)
+
+        then: "the response value is not found"
+        response.status == HttpStatus.NOT_FOUND.value()
+    }
+
+    void "test save method on a complete event instance"() {
+        given: "an event that has no errors"
+        populateValidParams(params)
+        def nEvent = new Event(params)
+        controller.params.evName = "a name"
+        controller.params.evAddress = "a longue addresse"
+        controller.params.evDescription = "a description"
+        controller.params.evDate = "13/09/2120"
+        views['/event/_form.gsp'] = 'mock contents'
+        controller.eventDAOService = Mock(EventDAOService) {
+            create(_) >> nEvent
+        }
+
+        when: "we call the save method"
+        controller.save(nEvent)
+
+        then: "we create the tags and add them to the event"
+        response.text == 'mock contents'
     }
 
     void "Test that the show action returns the correct model"() {
@@ -115,10 +159,13 @@ class EventControllerSpec extends Specification {
         response.reset()
         populateValidParams(params)
         event = new Event(params).save(flush: true)
+        event.address = "une très longue adresse"
+        controller.eventDAOService = Mock(EventDAOService){
+            update(_) >> event
+        }
         controller.update(event)
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/event/show/$event.id"
         flash.message != null
     }
 
@@ -140,11 +187,24 @@ class EventControllerSpec extends Specification {
         Event.count() == 1
 
         when: "The domain instance is passed to the delete action"
+        controller.eventDAOService = Mock(EventDAOService) {
+            delete(_) >> event.delete()
+        }
         controller.delete(event)
 
         then: "The instance is deleted"
         Event.count() == 0
         response.redirectedUrl == '/event/index'
         flash.message != null
+    }
+
+    void "test index method with max param"() {
+
+        when : "the index action is called with a defined max param"
+        controller.index(200)
+
+        then: "the index view is rendered and params.max = 100"
+        params.max == 100
+
     }
 }
