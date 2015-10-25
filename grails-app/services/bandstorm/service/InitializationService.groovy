@@ -31,11 +31,12 @@ class InitializationService {
         SecUserSecRole.create testUser2, adminRole, true
 
         for(int i=1; i<=10; i++){
-            def status = new Status(content: "My status "+i, lightCount: 0,author: testUser2).save()
+            new Status(content: "A super status for Abel "+i, lightCount: 0,author: testUser2).save()
+            new Status(content: "A super status for merry "+i, lightCount: 0,author: testUser).save()
         }
 
-        def band1 = new Band(name: "Les groovy and grails",description: "Un groupe de folie").save()
-        def band2 = new Band(name: "Les trois fromages",description: "J'ai un peu faim").save()
+        def band1 = new Band(name: "Les groovy and grails", description: "Un groupe de folie").save()
+        def band2 = new Band(name: "Les trois fromages", description: "J'ai un peu faim").save() // Thanks to you, me too now !
 
         def calendar = Calendar.getInstance()
         for(int i=1; i<=10; i++){

@@ -7,7 +7,7 @@ import grails.transaction.Transactional
 @Transactional
 class StatusService {
 
-    List<Status> getStatusForTimeline(){
+    List<Status> getStatusForTimeline() {
         def criteria = Status.createCriteria()
         List<Status> res = criteria.list {
             order('dateCreated','desc')
@@ -15,7 +15,7 @@ class StatusService {
     }
 
     List<Status> getStatusOfUser(User u) {
-        Status.createCriteria().list {
+        List<Status> res = Status.createCriteria().list {
             eq("author.id", u.id)
             order('dateCreated','desc')
         }
