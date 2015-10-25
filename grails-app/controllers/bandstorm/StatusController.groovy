@@ -50,7 +50,6 @@ class StatusController {
             User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
             statusInstance.author = user
         } catch (AuthenticationException) {
-            redirect(controller: "user", action: "index")
         }
 
         statusInstance.save(flush: true)
