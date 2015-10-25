@@ -46,13 +46,15 @@ class StatusController {
             return
         }
 
+        User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
+        statusInstance.author = user
+
+        statusInstance.save(flush: true)
 
         if (statusInstance.hasErrors()) {
             redirect(controller: "user", action: "reload")
             return
         }
-
-        statusInstance.save(flush: true)
 
         addStatus(statusInstance)
 
