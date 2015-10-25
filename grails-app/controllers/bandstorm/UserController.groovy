@@ -39,8 +39,9 @@ class UserController {
         }
         
         def currentUser = springSecurityService.currentUser
-        
-      respond userInstance, model: [currentUser: currentUser]
+        def statusList = statusService.getStatusOfUser(currentUser)
+      respond userInstance, model: [currentUser: currentUser,
+                                    statusList: statusList]
     }
 
     def urlRedirect() {
