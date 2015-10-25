@@ -92,7 +92,10 @@ grails.project.dependency.resolution = {
         compile ":mail:1.0.7"
 
         // Cobertura
-        test ":code-coverage:2.0.3-3"
+        // /!\ Don't use cobertura 2.0.*, there is a bug in plugin
+        // So, you can't use exclusions argument with argument 2.0
+        // it is required for TagLib's exclusion.
+        test ":code-coverage:1.2.7"
         compile ":codenarc:0.24.1"
         // Coveralls plugin
         build(':coveralls:0.1.3', ':rest-client-builder:1.0.3') {
@@ -106,13 +109,9 @@ grails.project.dependency.resolution = {
             // CI Service name (not required for Travis, automatically detected for 'travis-ci' and 'travis-pro')
             // service = 'other'
         }
+
     }
 
-    coverage {
-        exclusions = ['*','**/security/*', "**/taglib/**"]
-        enabledByDefault = false
-        xml = true
-    }
     codenarc.reportType='xml'
     codenarc.reportName='target/codenarc.xml'
 
@@ -123,4 +122,13 @@ grails.project.dependency.resolution = {
             title = 'Sample Report'             // Set the 'title' property of the (XML) Report
         }
     }
+
+}
+
+
+coverage {
+    exclusions = [
+            '**/*TagLib*/**',
+    ]
+    xml = true
 }
