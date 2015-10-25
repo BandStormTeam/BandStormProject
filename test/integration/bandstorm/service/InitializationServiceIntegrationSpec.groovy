@@ -9,9 +9,6 @@ import spock.lang.*
  *
  */
 class InitializationServiceIntegrationSpec extends Specification {
-    /* même probllème qu'avec userServiceIntegration ou l'appel à la des méthode CRUD
-    cause des problèmes
-
 //    InitializationService initializationService
 //    void "populate method test"() {
 //

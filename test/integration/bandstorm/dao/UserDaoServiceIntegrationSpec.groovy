@@ -1,15 +1,14 @@
 package bandstorm.dao
 
+import bandstorm.Follow
+import bandstorm.Status
 import bandstorm.User
-import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
  * Test for UserDaoService
  */
-@TestFor(User)
 class UserDaoServiceIntegrationSpec extends Specification {
-
     UserDaoService userDaoService
 
     void "test the creation of user"() {

@@ -6,7 +6,6 @@ import spock.lang.Specification
 /**
  *
  */
-@TestFor(Event)
 class EventDAOServiceIntegrationSpec extends Specification {
     EventDAOService eventDAOService
     def calendar
