@@ -1,7 +1,7 @@
 package bandstorm
 
 import bandstorm.dao.StatusDaoService
-import bandstorm.dao.UserDAOService
+import bandstorm.dao.UserDaoService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
 
@@ -19,7 +19,7 @@ class StatusController {
     def springSecurityService
     UserService userService
     StatusService statusService
-    UserDAOService userDaoService
+    UserDaoService userDaoService
     StatusDaoService statusDaoService
     AuthenticationManager authenticationManager
 
