@@ -8,6 +8,8 @@ import spock.lang.*
 @Mock(Status)
 class StatusControllerSpec extends Specification {
 
+    UserController userController
+
     def populateValidParams(params) {
         assert params != null
         params["url"] = 'statusUrl'
@@ -42,20 +44,17 @@ class StatusControllerSpec extends Specification {
         status.validate()
         controller.save(status)
 
-        then: "The create view is rendered again with the correct model"
-        model.statusInstance != null
-        view == 'create'
+        then: "The status is not added"
+        Status.count() == 0
+
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
         status = new Status(params)
-
         controller.save(status)
 
-        then: "A redirect is issued to the show action"
-        //response.redirectedUrl == '/status/show/1'
-        //controller.flash.message != null
+        then: "A status is added"
         Status.count() == 1
     }
 
@@ -118,7 +117,6 @@ class StatusControllerSpec extends Specification {
         controller.update(status)
 
         then: "A redirect is issues to the show action"
-        //response.redirectedUrl == "/status/show/$status.id"
         flash.message != null
     }
 
