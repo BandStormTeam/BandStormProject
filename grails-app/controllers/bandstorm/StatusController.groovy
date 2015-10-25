@@ -1,5 +1,8 @@
 package bandstorm
 
+import bandstorm.dao.StatusDaoService
+import bandstorm.dao.UserDAOService
+import bandstorm.service.StatusService
 import bandstorm.service.UserService
 
 import grails.plugin.springsecurity.annotation.Secured
@@ -15,7 +18,9 @@ class StatusController {
 
     def springSecurityService
     UserService userService
-    UserController userController = new UserController()
+    StatusService statusService
+    UserDAOService userDaoService
+    StatusDaoService statusDaoService
     AuthenticationManager authenticationManager
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -43,29 +48,27 @@ class StatusController {
 
 
         if (statusInstance.hasErrors()) {
-            respond statusInstance.errors, view: 'create'
+            redirect(controller: "user", action: "reload")
             return
         }
 
-        //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+        statusInstance.save(flush: true)
 
         addStatus(statusInstance)
 
-        statusInstance.save flush: true
-
-        redirect (controller: "user", action:"userHome")
     }
 
     def addStatus(Status status) {
         try {
-            User user = User.findByUsername("Abel")
+            User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
             userService.addStatusToUser(user, status)
-            System.out.println("TRACE : ")
-            System.out.println(user.getPosts().content)
+            sleep(1000)
+            redirect(controller: "user", action: "reload")
 
         } catch (AuthenticationException) {
-
+            redirect(controller: "user", action: "userHome")
         }
+
     }
 
     def edit(Status statusInstance) {
