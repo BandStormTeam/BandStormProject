@@ -104,6 +104,11 @@ class UserDaoService implements IGenericDao<User> {
         return result;
     }
 
+    /**
+     * Add a status to the list of an user's status
+     * @param user : a user whom we add the status
+     * @param status : the status to be added
+     */
     def addStatusToUser(User user, Status status) {
         user.addToPosts(status)
         user.save(flush:true)

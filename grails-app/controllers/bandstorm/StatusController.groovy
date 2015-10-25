@@ -63,7 +63,7 @@ class StatusController {
     def addStatus(Status status) {
         try {
             User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
-            userService.addStatusToUser(user, status)
+            userDaoService.addStatusToUser(user, status)
             sleep(1000)
             redirect(controller: "user", action: "reload")
 

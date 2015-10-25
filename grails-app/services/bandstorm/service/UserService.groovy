@@ -51,9 +51,4 @@ class UserService {
 
         }
     }
-
-    def addStatusToUser(User user, Status status) {
-        user.addToPosts(status)
-        user.save(flush:true)
-    }
 }
