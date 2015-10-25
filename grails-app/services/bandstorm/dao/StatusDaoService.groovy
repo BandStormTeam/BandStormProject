@@ -8,16 +8,16 @@ class StatusDaoService implements IGenericDao<Status> {
 
     @Override
     Status create(Status status) {
-        status.save()
+        status.save(flush: true)
     }
 
     @Override
     void delete(Status status) {
-        status.delete()
+        status.delete(flush: true)
     }
 
     @Override
     Status update(Status status) {
-        status.save()
+        status.save(flush: true)
     }
 }

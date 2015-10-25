@@ -12,7 +12,7 @@
     </div>
     <div class="col-sm-3  blog-sidebar" style="background-color:rgb(255,255,255);padding:15px;">
         <div class="sidebar-module sidebar-module-inset">
-        <g:if test="${userInstance.urlAvatar != null}">
+            <g:if test="${userInstance.urlAvatar != null}">
               <img src="${userInstance.urlAvatar}" data-holder-rendered="true" style="width: 75%;"
                  style="display:inline-block !important;">
             </g:if>
@@ -24,15 +24,17 @@
                 <li><i class="glyphicon glyphicon-envelope"></i>&nbsp;Email: <a href="mailto:${userInstance.email}">${userInstance.email}</a></li>
                 <li><i class="glyphicon glyphicon-flag"></i>&nbsp;Pays: ${userInstance.country}</li>
             </ul>
+
+            <g:if test="${!(userInstance.id == currentUser.id)}">
+                <g:if test="${!userInstance.isFollowed(currentUser)}">
+                    <g:link controller="user" action="followUser" id="${userInstance.id}" class="btn btn-default">Follow</g:link>
+                </g:if>
+                <g:else>
+                    <g:link controller="user" action="unfollowUser" id="${userInstance.id}" class="btn btn-info">Unfollow</g:link>
+                </g:else>
+            </g:if>
         </div>
 
-
-    <!--<div class="row">
-        <div class="col-xs-2"></div>
-        <div class="col-xs-6">
-        <div class="jumbotron">
-
-        </div>-->
 
         </div>
     </div>

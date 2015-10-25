@@ -1,10 +1,12 @@
 package bandstorm
 
-import bandstorm.dao.UserDAOService
+import bandstorm.dao.BandDaoService
+import bandstorm.dao.UserDaoService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.NOT_FOUND
@@ -13,10 +15,14 @@ import static org.springframework.http.HttpStatus.NO_CONTENT
 @Transactional(readOnly = true)
 @Secured("permitAll")
 class UserController {
+    def springSecurityService
+    def logoutHandlers
+    AuthenticationManager authenticationManager
 
     UserService userService
-    UserDAOService userDAOService
+    UserDaoService userDaoService
     StatusService statusService
+    BandDaoService bandDaoService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
@@ -31,10 +37,12 @@ class UserController {
         if(userInstance == null) {
             return response.sendError(404)
         }
-
-        respond userInstance
+        
+        def currentUser = springSecurityService.currentUser
+        
+      respond userInstance, model: [currentUser: currentUser]
     }
-
+    
     def urlRedirect() {
         if(userService.springSecurityService.isLoggedIn()) {
             redirect (action: "userHome")
@@ -42,18 +50,54 @@ class UserController {
             redirect(uri: "/index")
         }
     }
-
+    
     def create() {
         respond new User(params)
     }
 
-    def activateAccount() {
-        User userInstance = User.findByUsername(params.username)
-        userService.setUserRole(userInstance)
-        if(userService.springSecurityService.isLoggedIn()) {
-            redirect(action: "logout")
+    /**
+     * Return a list of bands corresponding whit keywords
+     * @param keywords : inputs for the research
+     * @return list of Band
+     */
+    @Secured("ROLE_USER")
+    def searchBand(String keywords,Integer max,Integer offset){
+        if (!max){
+            max = 10
         }
-        render (view: "successCreation", model: [type: "activation"])
+        if (!offset){
+            offset = 0
+        }
+        if (!keywords){
+            keywords = ""
+        }
+
+        def searchResult = bandDaoService.getAllBandsByKeywords(keywords,max,offset)
+
+        render(view: "searchBand", model:[bandList:searchResult.bandList ,keywords:keywords,bandCount:searchResult.bandCount] )
+    }
+
+    /**
+     * Return a list of users corresponding whit keywords
+     * @param keywords : inputs for the research
+     * @return list of User
+     */
+    @Secured("ROLE_USER")
+    def searchUser(String keywords,Integer max,Integer offset){
+
+        if (!max){
+            max = 10
+        }
+        if (!offset){
+            offset = 0
+        }
+        if (!keywords){
+            keywords = ""
+        }
+
+        def searchResult = userDaoService.getAllUsersByKeywords(keywords,max,offset)
+
+        render(view: "searchUser", model:[userList:searchResult.userList ,keywords:keywords,userCount:searchResult.totalOfUser] )
     }
 
     @Secured(["ROLE_USER","ROLE_ADMIN"])
@@ -91,6 +135,12 @@ class UserController {
         }
     }
 
+    def reload() {
+        User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
+        def statusList = statusService.getStatusForTimeline()
+        render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+    }
+
     def logout() {
         userService.logout(request, response)
         redirect(uri : "/")
@@ -107,7 +157,7 @@ class UserController {
             return
         }
 
-        userInstance = userDAOService.create(userInstance)
+        userInstance = userDaoService.create(userInstance)
         userService.contactUser(userInstance.email, userInstance.username)
 
         render (view: "successCreation", model: [username: userInstance.username, type:"success"])
@@ -125,7 +175,7 @@ class UserController {
             return
         }
 
-        userInstance = userDAOService.update(userInstance)
+        userInstance = userDaoService.update(userInstance)
 
         redirect(action: page)
     }
@@ -157,5 +207,15 @@ class UserController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    def followUser(User user){
+        def follow = userDaoService.followUser(springSecurityService.currentUser, user)
+        redirect(action: "show", params: params)
+    }
+
+    def unfollowUser(User user){
+        userDaoService.unfollowUser(springSecurityService.currentUser, user)
+        redirect(action: "show", params: params)
     }
 }

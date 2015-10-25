@@ -3,7 +3,7 @@ package bandstorm.service
 import bandstorm.SecRole
 import bandstorm.SecUserSecRole
 import bandstorm.User
-import bandstorm.dao.UserDAOService
+import bandstorm.dao.UserDaoService
 import spock.lang.*
 
 /**

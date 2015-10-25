@@ -1,5 +1,6 @@
 package bandstorm.service
 
+import bandstorm.Band
 import bandstorm.SecRole
 import bandstorm.SecUserSecRole
 import bandstorm.Status
@@ -25,9 +26,12 @@ class InitializationService {
         SecUserSecRole.create testUser, userRole, true
         SecUserSecRole.create testUser2, adminRole, true
 
-
         for(int i=1; i<=10; i++){
-            def status = new Status(content: "My status "+i, lightCount: 0).save()
+            def status = new Status(content: "My status "+i, lightCount: 0,author: testUser2).save()
         }
+
+        def band1 = new Band(name: "Les groovy and grails",description: "Un groupe de folie").save()
+        def band2 = new Band(name: "Les trois fromages",description: "J'ai un peu faim").save()
+
     }
 }
