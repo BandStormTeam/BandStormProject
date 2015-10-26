@@ -64,6 +64,6 @@
 	<h1 style="display: none" id="head">${(status) ? status :'empty'}</h1>
 </div>
 
-<g:submitToRemote class="btn btn-primary" url="[resource:eventInstance, controller:'event', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Succès !',text: 'Votr évènement a bien été crée !',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Créer" />
+<g:submitToRemote class="btn btn-primary" url="[resource:eventInstance, controller:'event', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Succès !',text: 'Votr évènement a bien été créée !',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Créer" />
 
 

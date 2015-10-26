@@ -37,7 +37,7 @@
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 					aria-hidden="true">&times;</span></button>
-			<strong>La description du groupe est limitée à 550 caractères.</strong>
+			<strong>La description du groupe est limitée ne peut être vide (limite 550 caractères).</strong>
 		</div>
 	</g:hasErrors>
 </div>
@@ -51,6 +51,6 @@
 	<h1 style="display: none" id="head">${(status) ? status :'empty'}</h1>
 </div>
 
-<g:submitToRemote class="btn btn-primary" url="[resource:bandInstance, controller:'band', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Succès !',text: 'Votre groupe a été crée !',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Créer" />
+<g:submitToRemote class="btn btn-primary" url="[resource:bandInstance, controller:'band', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Succès !',text: 'Votre groupe a été créée !',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Créer" />
 
 
