@@ -25,7 +25,6 @@ class BandControllerSpec extends Specification {
 
         then: "The model is correct"
         !model.bandInstanceList
-        model.bandInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
