@@ -44,13 +44,13 @@
 
 <div class="form-group">
 	<label for="bandTags">Tags</label>
-	<g:textField name="bandTags" class="form-control" id="bandTags" placeholder="Insérer des tags en les séparant par un point-virgule"/>
+	<g:textField name="bandTags" class="form-control" id="bandTags" placeholder="Ajoutez des tags en les séparant par un point-virgule"/>
 </div>
 
 <div>
 	<h1 style="display: none" id="head">${(status) ? status :'empty'}</h1>
 </div>
 
-<g:submitToRemote class="btn btn-primary" url="[resource:bandInstance, controller:'band', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Success!',text: 'Your band was created!',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Créer" />
+<g:submitToRemote class="btn btn-primary" url="[resource:bandInstance, controller:'band', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Succès !',text: 'Votre groupe a été crée !',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Créer" />
 
 
