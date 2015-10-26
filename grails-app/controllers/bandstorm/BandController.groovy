@@ -20,17 +20,17 @@ class BandController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
+
+        params.max = Math.min(max ?: 10, 100)
+        params.sort = "name"
+
         try {
             User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-            params.max = Math.min(max ?: 10, 100)
-            params.sort = "name"
             respond user.groupsFollowed.toList(), model: [bandInstanceCount: user.groupsFollowed.toList().size()]
         }
         catch (AuthenticationException) {
-            params.max = Math.min(max ?: 10, 100)
-            flash.message = "User has been disconnected"
-            redirect(uri: "/")
         }
+
 
     }
 
@@ -81,13 +81,13 @@ class BandController {
             User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
             user.addToGroupsFollowed(bandInstance)
             userDaoService.update(user)
-            bandDaoService.create(bandInstance)
-            render template: 'form', model: [bandInstance: bandInstance, status: "OK"]
-
         }
         catch (AuthenticationException) {
-            render template: 'form', model: [bandInstance: bandInstance, status: "KO"]
         }
+
+
+        bandDaoService.create(bandInstance)
+        render template: 'form', model: [bandInstance: bandInstance, status: "OK"]
 
 
     }

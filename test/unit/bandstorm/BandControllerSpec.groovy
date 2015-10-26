@@ -1,6 +1,8 @@
 package bandstorm
 
 import bandstorm.dao.BandDaoService
+import bandstorm.service.UserService
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
 import org.springframework.http.HttpStatus
 import spock.lang.*
@@ -21,7 +23,13 @@ class BandControllerSpec extends Specification {
     void "Test the index action returns the correct model"() {
 
         when: "The index action is executed"
+        UserService userService = Mock(UserService)
+        User user
+        userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
         controller.index()
+
 
         then: "The model is correct"
         !model.bandInstanceList
@@ -56,6 +64,11 @@ class BandControllerSpec extends Specification {
         controller.params.nameBand = "a name"
         controller.params.addressBand = "a longue addresse"
         controller.params.descriptionBand = "a description"
+        UserService userService = Mock(UserService)
+        User user
+        userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
         controller.bandDaoService = Mock(BandDaoService) {
             create(_) >> new Band(name: "Groovy and Grails" , address: "Santa Monica", description: "anyway it is good").save()
         }
@@ -71,6 +84,25 @@ class BandControllerSpec extends Specification {
 
         then: "the response value is not found"
         response.status == HttpStatus.NOT_FOUND.value()
+    }
+
+    void "test save method on a complete band instance"() {
+        given: "an band that has no errors"
+        populateValidParams(params)
+        def aBand = new Band(params)
+        controller.params.nameBand = "The Band"
+        controller.params.addressBand = "A correct address"
+        controller.params.descriptionBand = "A good description"
+        views['/band/_form.gsp'] = 'mock contents'
+        controller.bandDaoService = Mock(BandDaoService) {
+            create(_) >> aBand
+        }
+
+        when: "we call the save method"
+        controller.save(aBand)
+
+        then: "we create the tags and add them to the event"
+        response.text == 'mock contents'
     }
 
     void "test save method with null parameter with form content type"() {
