@@ -116,7 +116,7 @@ class StatusDaoServiceSpec extends Specification {
 
         then: "the method return all follower user's status"
         statusListOfFollowed != null
-        statusListOfFollowed.size() == 20
+        statusListOfFollowed.size() == 10
 
 
     }

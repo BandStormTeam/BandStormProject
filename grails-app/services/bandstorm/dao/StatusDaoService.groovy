@@ -1,5 +1,6 @@
 package bandstorm.dao
 
+import bandstorm.Follow
 import bandstorm.Status
 import bandstorm.User
 import grails.transaction.Transactional
@@ -31,12 +32,26 @@ class StatusDaoService implements IGenericDao<Status> {
      */
     List<Status> getLastFollowedStatusOfUser(User user,Integer page){
 
-        List<Status> statusList = new ArrayList<Status>()
+        Integer maxItemsForSearch = 10
+        Integer offset =(maxItemsForSearch*page)
 
-        for(int i=1; i<=20; i++){
-            def status = new Status(content: "My status "+i, lightCount: 0)
-            statusList.add(status)
+        List<Follow> followList = Follow.findAllByFollower(user)
+
+        def resultsStatus = Status.createCriteria().list {
+
+            or {
+                followList.each { follow ->
+                    eq("author",follow.followed)
+                }
+            }
+
+            order("dateCreated")
+
+            maxResults(maxItemsForSearch)
+            firstResult(offset)
         }
+
+        List<Status> statusList = resultsStatus.toList()
 
         return statusList
     }
