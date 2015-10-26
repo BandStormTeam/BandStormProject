@@ -54,7 +54,7 @@ class EventControllerSpec extends Specification {
         controller.params.evDate = new SimpleDateFormat("yyyy.MM.dd").format(calendar.getTime())
         controller.save(event)
 
-        then: "The create view is rendered again with the correct model"
+        then: "No event is created"
         Event.count() == 0
 
         when: "The save action is executed with a valid instance"
