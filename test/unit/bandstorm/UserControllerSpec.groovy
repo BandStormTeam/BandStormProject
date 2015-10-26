@@ -1,6 +1,7 @@
 package bandstorm
 
 import bandstorm.dao.BandDaoService
+import bandstorm.service.StatusService
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.SpringSecurityService
 import bandstorm.dao.UserDaoService
@@ -241,6 +242,11 @@ class UserControllerSpec extends Specification {
         when: "A domain instance is passed to the show action"
         populateValidParams(params)
         def user = new User(params)
+        // Mock the service to avoid NullPointer…
+        controller.statusService = Mock(StatusService) {
+            show(User) >> user
+        }
+
         controller.show(user)
 
         then: "A model is populated containing the domain instance"

@@ -19,10 +19,9 @@ class UserController {
     def springSecurityService
     def logoutHandlers
     AuthenticationManager authenticationManager
-
+    StatusService statusService
     UserService userService
     UserDaoService userDaoService
-    StatusService statusService
     BandDaoService bandDaoService
     EventDAOService eventDAOService
 
