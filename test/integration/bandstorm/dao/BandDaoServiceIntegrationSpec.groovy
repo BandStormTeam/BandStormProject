@@ -1,38 +1,52 @@
 package bandstorm.dao
-
 import bandstorm.Band
-import bandstorm.User
-import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
- * Test for BandDaoService
+ *
  */
-
-class BandDaoServiceIntegrationSpec  extends Specification {
+class BandDaoServiceIntegrationSpec extends Specification {
     BandDaoService bandDaoService
 
-    void "test if getAllBandByKeywords is functionnal"() {
+    void "test BandDaoService creation method"(){
+        given: "a band"
+        Band band = new Band(name:"My Band ", address:"my long address", description:"This is my band.")
 
-        given: "bands are ready to be search"
-        def band1 = new Band(name: "Les Groovy and Grails",address: "Santa Monica", description: "Etablis non loin de Los Angeles, les Groovy and Grails font entendre leur groove sur les plages de Californie.").save()
-        def band2 = new Band(name: "Les Trois Fromages",address: "Pis-Du-Lait", description: "Que vous soyez un amateur ou un expert fromager hors-pair, découvrez le fromage en musique avec Les Trois Fromages").save()
+        when: "I want to save this band"
+        Band bandRes = bandDaoService.create(band)
 
-        when: "research of all bands containing the keywords"
-        Map resultMap = bandDaoService.getAllBandsByKeywords("groovy",10,0)
-        List<Band> bandList = resultMap.bandList
+        then: "The band is correctly save"
+        !bandRes.hasErrors()
 
-        then: "band1 contains the keywords"
-        bandList.contains(band1)
-
-        when: "research of all bands containing the keywords"
-        resultMap = bandDaoService.getAllBandsByKeywords("groovy",10,0)
-        bandList = resultMap.bandList
-
-        then: "band2 does not contain keywords"
-        !bandList.contains(band2)
-
+        and: "we can found this band"
+        Band.findById(bandRes.id) != null
     }
 
+    void "test BandDaoService update method"(){
+        given: "a band"
+        Band band = new Band(name:"My Band ", address:"my long address", description:"This is my band.")
+        band = bandDaoService.create(band)
+
+        when: "I want to update this band"
+        Band bandRes = bandDaoService.update(band)
+
+        then: "The band is correctly update"
+        !bandRes.hasErrors()
+
+        and: "we can found this band"
+        Band.findById(bandRes.id) != null
+    }
+
+    void "test BandDaoService delete method"(){
+        given: "a band"
+        Band band = new Band(name:"My Band ", address:"my long address", description:"This is my band.")
+        band = bandDaoService.create(band)
+
+        when: "I want to delete this band"
+        bandDaoService.delete(band)
+
+        then: "The band is correctly delete"
+        Band.findById(band.id) == null
+    }
 }
