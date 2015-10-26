@@ -99,6 +99,7 @@
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 							<li><a href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
 							<li><a href="${createLink(controller: 'event', action: 'index')}">Mes événements</a></li>
+							<li><a href="${createLink(controller: 'band', action: 'index')}">Mes groupes</a></li>
 							<li><a href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
 						</ul>
 					</div>

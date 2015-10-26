@@ -3,26 +3,26 @@
 <div class="form-group">
 	<div class="row">
 		<div class="col-md-6">
-			<label for="EventName">Name</label>
-			<g:textField name="evName" class="form-control" maxlength="35" id="EventName" placeholder="name"
+			<label for="EventName">Nom</label>
+			<g:textField name="evName" class="form-control" maxlength="35" id="EventName" placeholder="Nom"
 						 value="${eventInstance?.name}"/>
 			<g:hasErrors bean="${eventInstance}" field="name">
 				<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 							aria-hidden="true">&times;</span></button>
-					<strong>You must specify a name with a length between 3 and 35 characters</strong>
+					<strong>Le nom doit être compris entre 3 et 35 caractères</strong>
 				</div>
 			</g:hasErrors>
 		</div>
 
 		<div class="col-md-6">
-			<label for="EventDate">Event Date</label>
+			<label for="EventDate">Date de l'évènement</label>
 			<g:textField class="form-control" id="EventDate" name="evDate" value="${eventInstance.dateEvent.format('dd/MM/yyyy')}" placeholder="DD/MM/YYYY"/>
 			<g:hasErrors bean="${eventInstance}" field="dateEvent">
 				<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 							aria-hidden="true">&times;</span></button>
-					<strong>You must specify a future date please with a format DD/MM/YYYY</strong>
+					<strong>Vous devez indiquer une date postérieure à aujourd'hui au format DD/MM/YYYY</strong>
 				</div>
 			</g:hasErrors>
 		</div>
@@ -30,40 +30,40 @@
 </div>
 
 <div class="form-group">
-	<label for="eventAddress">Address</label>
+	<label for="eventAddress">Adresse</label>
 	<g:textField name="evAddress" class="form-control"
-				 maxlength="200" id="eventAddress" placeholder="address" value="${eventInstance?.address}"/>
+				 maxlength="200" id="eventAddress" placeholder="Adresse" value="${eventInstance?.address}"/>
 	<g:hasErrors bean="${eventInstance}" field="address">
 
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 					aria-hidden="true">&times;</span></button>
-			<strong>You must specify an address with a length between 10 and 200 characters</strong>
+			<strong>Indiquez une adresse (entre 10 et 200 caractères)</strong>
 		</div>
 	</g:hasErrors>
 </div>
 
 <div class="form-group">
 	<label for="eventDescription">Description</label>
-	<g:textArea rows="5" name="evDescription" class="form-control" id="eventDescription" placeholder="describe your event" value="${eventInstance?.description}"/>
+	<g:textArea rows="5" name="evDescription" class="form-control" id="eventDescription" placeholder="Décrivez votre évènement" value="${eventInstance?.description}"/>
 	<g:hasErrors bean="${eventInstance}" field="description">
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 					aria-hidden="true">&times;</span></button>
-			<strong>You must specify a description of at least 2 characters</strong>
+			<strong>Donnez une description</strong>
 		</div>
 	</g:hasErrors>
 </div>
 
 <div class="form-group">
 	<label for="eventTags">Tags</label>
-	<g:textField name="evTags" class="form-control" id="eventTags" placeholder="insert relevant tags separated by a coma"/>
+	<g:textField name="evTags" class="form-control" id="eventTags" placeholder="Ajoutez des tags en les séparant par un point-virgule"/>
 </div>
 
 <div>
 	<h1 style="display: none" id="head">${(status) ? status :'empty'}</h1>
 </div>
 
-<g:submitToRemote class="btn btn-primary" url="[resource:eventInstance, controller:'event', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Success!',text: 'Your Event was created!',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Create" />
+<g:submitToRemote class="btn btn-primary" url="[resource:eventInstance, controller:'event', action:'save']" update="creationForm" onSuccess="if(document.getElementById('head').innerHTML == 'OK'){swal({title:'Succès !',text: 'Votr évènement a bien été créée !',type: 'success'},function(){window.location.href = '${createLink(action: 'index')}';});}" value="Créer" />
 
 

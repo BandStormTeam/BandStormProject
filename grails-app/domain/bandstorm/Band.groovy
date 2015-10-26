@@ -11,10 +11,12 @@ class Band {
     String description
     String address
 
+    static hasMany = [tags : Tag]
+
     static constraints = {
-        name blank:false
+        name blank:false,maxSize: 35, minSize: 3
         dateCreated date: true
-        description blank: false
+        description blank: false,maxSize: 550
         address nullable: true, blank: true
     }
 }

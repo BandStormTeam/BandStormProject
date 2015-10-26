@@ -54,8 +54,8 @@
             <div class="container-fluid">
                 <h2>Mes Événements</h2>
                 <ul class="nav nav-tabs nav-justified">
-                    <li class="active"><a data-toggle="tab" href="#view">View</a></li>
-                    <li><a data-toggle="tab" href="#create">Create</a></li>
+                    <li class="active"><a data-toggle="tab" href="#view">Liste d'évènements</a></li>
+                    <li><a data-toggle="tab" href="#create">Créer un nouvel évènement</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -64,10 +64,10 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Event Name</th>
-                                    <th>Date Event</th>
-                                    <th>Created</th>
-                                    <th>Address</th>
+                                    <th>Nom</th>
+                                    <th>Date de l'évènement</th>
+                                    <th>Date de création</th>
+                                    <th>Adresse</th>
                                     <th>Description</th>
                                 </tr>
                                 </thead>
@@ -82,32 +82,32 @@
                                                 <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Event Details</h4>
+                                                    <h4 class="modal-title">Détail</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <dl class="dl-horizontal">
                                                         <g:if test="${eventInstance?.name}">
-                                                            <dt>Name</dt>
+                                                            <dt>Nom</dt>
                                                             <dd><g:fieldValue bean="${eventInstance}" field="name"/></dd>
                                                         </g:if>
 
                                                         <g:if test="${eventInstance?.dateEvent}">
-                                                            <dt>Date</dt>
+                                                            <dt>Date de l'évènement</dt>
                                                             <dd><g:fieldValue bean="${eventInstance}" field="dateEvent"/></dd>
                                                         </g:if>
 
                                                         <g:if test="${eventInstance?.dateCreated}">
-                                                            <dt>Created</dt>
+                                                            <dt>Date de création</dt>
                                                             <dd><g:fieldValue bean="${eventInstance}" field="dateCreated"/></dd>
                                                         </g:if>
 
                                                         <g:if test="${eventInstance?.address}">
-                                                            <dt>Address</dt>
+                                                            <dt>Adresse</dt>
                                                             <dd><g:fieldValue bean="${eventInstance}" field="address"/></dd>
                                                         </g:if>
 
                                                         <g:if test="${eventInstance?.description}">
-                                                            <dt>description</dt>
+                                                            <dt>Description</dt>
                                                             <dd><g:fieldValue bean="${eventInstance}" field="description"/></dd>
                                                         </g:if>
 
