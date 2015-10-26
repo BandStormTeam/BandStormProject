@@ -55,6 +55,15 @@ class UserController {
         respond new User(params)
     }
 
+    def activateAccount() {
+        User userInstance = User.findByUsername(params.username)
+        userService.setUserRole(userInstance)
+        if(userService.springSecurityService.isLoggedIn()) {
+            redirect(action: "logout")
+        }
+        render (view: "successCreation", model: [type: "activation"])
+    }
+
     /**
      * Return a list of bands corresponding whit keywords
      * @param keywords : inputs for the research
