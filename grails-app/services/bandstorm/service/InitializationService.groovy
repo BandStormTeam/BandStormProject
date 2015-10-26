@@ -34,7 +34,8 @@ class InitializationService {
         SecUserSecRole.create testUser2, adminRole, true
 
         for(int i=1; i<=10; i++){
-            def status = new Status(content: "My status "+i, lightCount: 0,author: testUser2).save()
+            new Status(content: "A super status for Abel "+i, lightCount: 0,author: testUser2).save()
+            new Status(content: "A super status for merry "+i, lightCount: 0,author: testUser).save()
         }
 
         def band1 = new Band(name: "Les Groovy and Grails",address: "Santa Monica", description: "Etablis non loin de Los Angeles, les Groovy and Grails repandent leur groove sur les plages de Californie.").save()

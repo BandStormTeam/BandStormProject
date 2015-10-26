@@ -1,6 +1,7 @@
 package bandstorm
 
 import bandstorm.dao.BandDaoService
+import bandstorm.dao.EventDAOService
 import bandstorm.dao.UserDaoService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
@@ -18,11 +19,11 @@ class UserController {
     def springSecurityService
     def logoutHandlers
     AuthenticationManager authenticationManager
-
+    StatusService statusService
     UserService userService
     UserDaoService userDaoService
-    StatusService statusService
     BandDaoService bandDaoService
+    EventDAOService eventDAOService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
@@ -39,8 +40,9 @@ class UserController {
         }
         
         def currentUser = springSecurityService.currentUser
-        
-      respond userInstance, model: [currentUser: currentUser]
+        def statusList = statusService.getStatusOfUser(userInstance)
+        respond userInstance, model: [currentUser: currentUser,
+                                     statusList: statusList]
     }
 
     def urlRedirect() {
