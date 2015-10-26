@@ -59,43 +59,52 @@
                 <div style="background-color:rgb(255,255,255);padding:15px;">
 
                     <ul class="nav nav-tabs">
-                        <li role="presentation" style="width:160px;text-align:center;" class="active"><a
-                                href="#">Actualité</a></li>
-                        <li role="presentation" style="width:160px;text-align:center;"><a href="#">Abonnement <span
-                                class="badge">42</span></a></li>
-                        <li role="presentation" style="width:160px;text-align:center;"><a href="#">Abonnés <span
-                                class="badge">492</span></a></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="statusTimeline"><g:link controller="user" action="userHome">Actualité</g:link></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><a href="#">Abonnements</a></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="followerTimeline"><g:link controller="user" action="showFollowers">Abonnés</g:link></li>
                     </ul>
+                        <g:if test="${followersList != null}">
+                            <g:javascript>$("#followerTimeline").addClass('active');</g:javascript>
+                            <g:if test="${followersList != []}">
+                                <g:each in="${followersList}" var="follower">
+                                    <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
+                                </g:each>
+                            </g:if>
+                            <g:else>
+                                <p style="margin-top: 10px;">Désolé, vous n'avez aucun abonné</p>
+                            </g:else>
+                        </g:if>
+                        <g:else>
+                            <g:javascript>$("#statusTimeline").addClass('active');</g:javascript>
+                            <g:each in="${statusList}" var="status">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#">
+                                            <img class="media-object" data-src="holder.js/64x64" alt="64x64"
+                                                 src="${resource(dir: 'images', file: 'r.jpg')}"
+                                                 data-holder-rendered="true" style="width: 64px; height: 64px;">
 
-                    <g:each in="${statusList}" var="status">
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64"
-                                         src="${resource(dir: 'images', file: 'r.jpg')}"
-                                         data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                        </a>
+                                    </div>
 
-                                </a>
-                            </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading"><a href="${createLink(action: 'show',controller: 'user', id: status.author.id)}">${status.author.username}</a></h4>
+                                        <i>Posté le ${status.dateCreated}</i>
+                                    </div>
+                                    <br>
+                                </div>
 
-                            <div class="media-body">
-                                <h4 class="media-heading"><a href="${createLink(action: 'show',controller: 'user', id: status.author.id)}">${status.author.username}</a></h4>
-                                <i>Posté le ${status.dateCreated}</i>
-                            </div>
-                            <br>
-                        </div>
+                                <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
+                                                                                           aria-hidden="true"></span> Light (${status.lightCount})
+                                </button>
+                                <br><br>
+                                <blockquote>
+                                    <p id="content${status.id}">${status.content}</p>
+                                </blockquote>
 
-                        <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
-                                                                                   aria-hidden="true"></span> Light (${status.lightCount})
-                        </button>
-                        <br><br>
-                        <blockquote>
-                            <p id="content${status.id}">${status.content}</p>
-                        </blockquote>
-
-                        </br>
-                    </g:each>
-
+                                </br>
+                            </g:each>
+                        </g:else>
                 </div><!-- /.blog-userHomePage -->
             </div><!-- /.blog-userHomePage -->
 

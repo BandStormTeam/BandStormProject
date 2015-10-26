@@ -212,4 +212,21 @@ class UserDaoServiceIntegrationSpec extends Specification {
         then: "the status is added to the user"
         user.posts.first() == status
     }
+
+    void "test findAllFollowersForUser method"() {
+        given: "a user with one follower"
+        User user1 = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
+        User user2 = new User(username: "user2", email: "user2@mail.com",
+                firstName: "jane", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "qsdfgh").save(flush: true)
+        userDaoService.followUser(user1,user2)
+
+        when: "I want to get user1 followers"
+        def followersList = userDaoService.findAllFollowersForUser(user2)
+
+        then: "I get a list with one user"
+        followersList != null
+        followersList.size() == 1
+        followersList.contains(user1)
+    }
 }

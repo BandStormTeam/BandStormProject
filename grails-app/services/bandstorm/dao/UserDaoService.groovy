@@ -64,6 +64,20 @@ class UserDaoService implements IGenericDao<User> {
     }
 
     /**
+     * Find a list of followers for an user
+     * @param myUser the given user
+     * @return a user list
+     */
+    List<User> findAllFollowersForUser(User myUser){
+        List<User> followers = []
+        def followList = Follow.findAllByFollowed(myUser)
+        followList.each {
+            followers.add(it.follower)
+        }
+        followers
+    }
+
+    /**
      * Get all users corresponding to keywords
      * @param keywords : a string input for the research
      * @param maxItemsForSearch : max item for pagination

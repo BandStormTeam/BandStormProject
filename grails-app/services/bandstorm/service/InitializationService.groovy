@@ -7,10 +7,13 @@ import bandstorm.Status
 import bandstorm.Tag
 import bandstorm.User
 import bandstorm.Event
+import bandstorm.dao.UserDaoService
 import grails.transaction.Transactional
 
 @Transactional
 class InitializationService {
+
+    UserDaoService userDaoService
 
     def populate() {
 
@@ -44,5 +47,7 @@ class InitializationService {
             def event = new Event(name:"My Event "+i, dateEvent: calendar.getTime(),address:"Palm street Nbr " + i, description:"my " + i + "th event. please participate").save()
             def tag = new Tag(name: "Tag" + i).save()
         }
+
+        userDaoService.followUser(testUser2,testUser)
     }
 }

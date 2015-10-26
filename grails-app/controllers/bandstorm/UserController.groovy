@@ -228,4 +228,10 @@ class UserController {
         userDaoService.unfollowUser(springSecurityService.currentUser, user)
         redirect(action: "show", params: params)
     }
+
+    def showFollowers(){
+        def user = springSecurityService.currentUser
+        def followersList = userDaoService.findAllFollowersForUser(user)
+        render (view: "userHome", model: [user: user, followersList: followersList])
+    }
 }
