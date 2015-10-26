@@ -16,8 +16,8 @@ class BandDaoServiceIntegrationSpec  extends Specification {
     void "test if getAllBandByKeywords is functionnal"() {
 
         given: "bands are ready to be search"
-        def band1 = new Band(name: "Les groovy and grails",description: "Un groupe de folie").save()
-        def band2 = new Band(name: "Les trois fromages",description: "J'ai un peu faim").save()
+        def band1 = new Band(name: "Les Groovy and Grails",address: "Santa Monica", description: "Etablis non loin de Los Angeles, les Groovy and Grails font entendre leur groove sur les plages de Californie.").save()
+        def band2 = new Band(name: "Les Trois Fromages",address: "Pis-Du-Lait", description: "Que vous soyez un amateur ou un expert fromager hors-pair, découvrez le fromage en musique avec Les Trois Fromages").save()
 
         when: "research of all bands containing the keywords"
         Map resultMap = bandDaoService.getAllBandsByKeywords("groovy",10,0)
