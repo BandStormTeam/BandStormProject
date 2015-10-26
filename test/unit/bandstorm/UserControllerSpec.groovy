@@ -376,4 +376,19 @@ class UserControllerSpec extends Specification {
         then: "the user is redirected to the index page"
         response.redirectedUrl == '/index'
     }
+
+    void "test showFollowers method"(){
+        given:"current user"
+        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.springSecurityService.currentUser >> new User()
+        controller.userDaoService = Mock(UserDaoService)
+        controller.userDaoService.findAllFollowersForUser(_) >> []
+
+        when: "showFollowers method is use"
+        controller.showFollowers()
+
+        then: ""
+        view == "/user/userHome"
+        model.followersList != null
+    }
 }
