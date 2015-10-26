@@ -34,8 +34,19 @@ class InitializationService {
             def status = new Status(content: "My status "+i, lightCount: 0,author: testUser2).save()
         }
 
-        def band1 = new Band(name: "Les groovy and grails",description: "Un groupe de folie").save()
-        def band2 = new Band(name: "Les trois fromages",description: "J'ai un peu faim").save()
+        def band1 = new Band(name: "Les Groovy and Grails",address: "Santa Monica", description: "Etablis non loin de Los Angeles, les Groovy and Grails repandent leur groove sur les plages de Californie.").save()
+        def band2 = new Band(name: "Les Trois Fromages",address: "Pis-Du-Lait", description: "Que vous soyez un amateur ou un expert hors-pair, venez decouvrir le fromage en musique avec Les Trois Fromages.").save()
+        def band3 = new Band(name: "Mammoth",address: "Vestmannaeyjar", description: "Voyagez jusqu'en Islande sur les pistes de Mammoth.").save()
+
+        testUser.addToGroupsFollowed(band1)
+        testUser.addToGroupsFollowed(band2)
+        testUser.addToGroupsFollowed(band3)
+        testUser.save()
+
+        testUser2.addToGroupsFollowed(band1)
+        testUser2.addToGroupsFollowed(band2)
+        testUser2.addToGroupsFollowed(band3)
+        testUser2.save()
 
         def calendar = Calendar.getInstance()
         for(int i=1; i<=10; i++){
