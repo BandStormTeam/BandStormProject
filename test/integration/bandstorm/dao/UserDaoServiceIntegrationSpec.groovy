@@ -212,4 +212,6 @@ class UserDaoServiceIntegrationSpec extends Specification {
         then: "the status is added to the user"
         user.posts.first() == status
     }
+
+
 }
