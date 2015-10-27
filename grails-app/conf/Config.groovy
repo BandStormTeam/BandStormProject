@@ -197,6 +197,20 @@ jqueryValidationUi {
 }
 
 
+grails {
+	mail {
+		host = "smtp.gmail.com"
+		port = 465
+		username = "bandstormteam@gmail.com"
+		password = "bandstormAdminS"
+		props = ["mail.smtp.auth":"true",
+				 "mail.smtp.socketFactory.port":"465",
+				 "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+				 "mail.smtp.socketFactory.fallback":"false"]
+	}
+}
+
+grails.plugins.twitterbootstrap.fixtaglib = true
 
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'bandstorm.SecUser'
@@ -204,8 +218,8 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'bandstorm.SecU
 grails.plugin.springsecurity.authority.className = 'bandstorm.SecRole'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                ['permitAll'],
-	'/index':           ['permitAll'],
-	'/index.gsp':       ['permitAll'],
+	'/index':           ["ROLE_USER","ROLE_ADMIN"],
+	'/index.gsp':       ["ROLE_USER","ROLE_ADMIN"],
 	'/assets/**':       ['permitAll'],
 	'/**/js/**':        ['permitAll'],
 	'/**/css/**':       ['permitAll'],

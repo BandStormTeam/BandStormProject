@@ -1,5 +1,7 @@
 package bandstorm.service
 
+import bandstorm.SecRole
+import bandstorm.SecUserSecRole
 import bandstorm.Status
 import bandstorm.User
 import bandstorm.dao.StatusDaoService
@@ -13,8 +15,10 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 @Transactional
 class UserService {
+    def springSecurityService
     AuthenticationManager authenticationManager
     def logoutHandlers
+    def mailService
     StatusDaoService statusDaoService
     UserDaoService userDaoService
 
@@ -27,15 +31,23 @@ class UserService {
     def logout(request, response) {
         Authentication auth = SecurityContextHolder.context.authentication
         if (auth) {
-            logoutHandlers.each { handler ->
-                handler.logout(request, response, auth)
+            logoutHandlers.each  { handler->
+                handler.logout(request,response,auth)
             }
         }
     }
 
-    def addStatusToUser(User user, Status status) {
-        user.addToPosts(status)
-        statusDaoService.create(status)
-        userDaoService.update(user)
+    def setUserRole(User userInstance) {
+        SecRole userRole = SecRole.findByAuthority('ROLE_USER')
+        SecUserSecRole.create userInstance, userRole, true
+    }
+
+    def contactUser(String email, String username, String url) {
+        mailService.sendMail {
+            to email
+            subject "Account validation"
+            html view: "/email/validation", model: [username: username, redirectUrl: url]
+
+        }
     }
 }

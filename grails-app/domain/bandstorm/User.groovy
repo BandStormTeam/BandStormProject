@@ -1,5 +1,7 @@
 package bandstorm
 
+import bandstorm.dao.UserDaoService
+
 /**
  * Domain class that represents users,
  * and different event, lights and groups related
@@ -16,6 +18,7 @@ class User extends SecUser {
     String urlAvatar
 
     static hasMany = [posts : Status, interests : Tag, participates : Event, manages : Event, groupsFollowed : Band ]
+
 
     static constraints = {
         username blank: false, nullable: false, minSize: 3
@@ -43,5 +46,20 @@ class User extends SecUser {
         this.birthDate = birthDate
         this.country = country
         this.urlAvatar = urlAvatar;
+    }
+
+    transient userDaoService
+
+    /**
+     * Check if a follow relation exist between two users
+     * @param follower User follower
+     * @return true if relation exist else false
+     */
+    def isFollowed(User follower){
+        boolean res = false
+        if(userDaoService.findFollowByFollowerAndFollowed(follower,this)){
+            res = true
+        }
+        res
     }
 }

@@ -20,13 +20,16 @@ class EventSpec extends Specification {
         Event event = new Event()
         event.name = "Festival des charrues volantes"
         event.address = "8 Avenue des Colombes 31400 Toulouse"
-        event.description = "Festival organisé sur le thème de la musique péruvienne à travers les mouvements musicaux"
+        event.description = "Festival organisï¿½ sur le thï¿½me de la musique pï¿½ruvienne ï¿½ travers les mouvements musicaux"
+        def calendar  = Calendar.getInstance()
+        calendar.set(2115,10,5)
+        event.dateEvent = calendar.getTime();
 
         when: ""
         def res = event.validate()
 
         then:""
-        res == true
+        res
 
         and: "the event has no errors"
         !event.hasErrors()
@@ -39,22 +42,23 @@ class EventSpec extends Specification {
         event.name = aName
         event.description = aDescription
         event.address = anAddress
+        event.dateEvent = adateCreated;
 
 
         when: "validating an event"
         def isValid = event.validate()
 
         then: "the event is not valid"
-        isValid == false
+        !isValid
 
         where:
-        aName |  anAddress | aDescription
-        "" | "8 Avenue des Colombes 31400 Toulouse" | "Festival organisé sur le thème de la musique péruvienne à travers les mouvements musicaux"
-        "Festival des charrues volantes Festival des charrues volantes Festival des charrues volantes" | "8 Avenue des Colombes 31400 Toulouse" | "Festival organisé sur le thème de la musique péruvienne à travers les mouvements musicaux"
-        "Fe" | "8 Avenue des Colombes 31400 Toulouse" | "Festival organisé sur le thème de la musique péruvienne à travers les mouvements musicaux"
-        "Festival des charrues volantes" | "8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse" | "Festival organisé sur le thème de la musique péruvienne à travers les mouvements musicaux"
-        "Festival des charrues volantes" | "ab" | "Festival organisé sur le thème de la musique péruvienne à travers les mouvements musicaux"
-        "Festival des charrues volantes" | "8 Avenue des Colombes 31400 Toulouse" | "F"
+        aName |  anAddress | aDescription | adateCreated
+        "" | "8 Avenue des Colombes 31400 Toulouse" | "Festival organisï¿½ sur le thï¿½me de la musique pï¿½ruvienne ï¿½ travers les mouvements musicaux" | null
+        "Festival des charrues volantes Festival des charrues volantes Festival des charrues volantes" | "8 Avenue des Colombes 31400 Toulouse" | "Festival organisï¿½ sur le thï¿½me de la musique pï¿½ruvienne ï¿½ travers les mouvements musicaux" | new Date()
+        "Fe" | "8 Avenue des Colombes 31400 Toulouse" | "Festival organisï¿½ sur le thï¿½me de la musique pï¿½ruvienne ï¿½ travers les mouvements musicaux" | null
+        "Festival des charrues volantes" | "8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse 8 Avenue des Colombes 31400 Toulouse" | "Festival organisï¿½ sur le thï¿½me de la musique pï¿½ruvienne ï¿½ travers les mouvements musicaux" |new Date()
+        "Festival des charrues volantes" | "ab" | "Festival organisï¿½ sur le thï¿½me de la musique pï¿½ruvienne ï¿½ travers les mouvements musicaux" | new Date()
+        "Festival des charrues volantes" | "8 Avenue des Colombes 31400 Toulouse" | "F"|new Date()
 
     }
 }

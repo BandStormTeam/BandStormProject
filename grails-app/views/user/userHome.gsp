@@ -3,7 +3,6 @@
 <meta name="layout" content="main"/>
 
 
-
 <div class="container" style="padding-top: 100px;">
 
     <div class="container">
@@ -14,35 +13,84 @@
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <g:form url="[resource: statusInstance,controller: 'status', action: 'save']" name="statusForm">
+                        <g:form url="[resource: statusInstance, controller: 'status', action: 'save']"
+                                name="statusForm">
 
                             <g:textField id="contentField"
                                          class="form-control ${hasErrors(bean: statusInstance, field: 'content', 'errors')}"
                                          placeholder="Partagez votre actualité." name="content"
-                                         value="${statusInstance.content}" style="height:60px;"></g:textField><bR>
+                                         value="${statusInstance?.content}" style="height:60px;"></g:textField><bR>
 
                             <g:textField id="urlField"
                                          class="form-control ${hasErrors(bean: statusInstance, field: 'url', 'errors')}"
-                                         placeholder="Un lien à partager ?" name="url" value="${statusInstance.url}"
+                                         placeholder="Un lien à partager ?" name="url" value="${statusInstance?.url}"
                                          style="height:30px;"></g:textField><bR>
 
-                            <g:hiddenField name="lightCount" value="${statusInstance.lightCount = 0}"/>
+                            <g:hiddenField name="lightCount" value="${statusInstance?.lightCount = 0}"/>
                             <div style="text-align: right">
-                                <g:submitToRemote name="publish" class="btn btn-success" action="save"
-                                                  controller="status" value="Publier" onComplete="clearFields()"/>
+                                <g:submitButton name="publish" class="btn btn-success" action="save"
+                                                controller="status" value="Publier" onClick="clearFields()"/>
                             </div>
+
 
                             <g:javascript>
                                 function clearFields() {
-                                    $("#contentField").fadeOut(500);
-                                    $("#urlField").fadeOut(500);
+
+                                    if (document.getElementById("contentField").value != "") {
+                                        $("#contentField").fadeOut(500);
+                                        $("#contentField").fadeIn(500);
+                                    }
+
+                                    if (document.getElementById("urlField").value != "") {
+                                        $("#urlField").fadeOut(500);
+                                        $("#urlField").fadeIn(500);
+                                    }
+
                                     setTimeout(function () {
                                         document.getElementById("contentField").value = "";
                                         document.getElementById("urlField").value = "";
                                     }, 300);
-                                    $("#contentField").fadeIn(500);
-                                    $("#urlField").fadeIn(500);
                                 }
+
+                                $(document).ready(function () {
+
+                                    var mypage = 1;
+                                    var inLoad = true;
+
+                                    var deviceAgent = navigator.userAgent.toLowerCase();
+                                    var agentID = deviceAgent.match(/(iphone|ipod|ipad)/);
+                                    var finish = false;
+
+                                    $.get('../status/connectedUserTimeline', function (data) {
+                                        $("#timeline").append(data);
+                                    });
+
+
+                                    $(window).on('scroll', function () {
+
+
+                                        if ((  ($(window).scrollTop() + $(window).height()) >= $(document).height() - 50
+                                                || agentID && ($(window).scrollTop() + $(window).height()) + 150 > $(document).height() ) && inLoad == true && !finish) {
+                                            inLoad = false;
+
+                                            $.when($.get("../status/connectedUserTimeline", {page: mypage}) ).then(function (data) {
+
+                                                if (data == "") {
+                                                    finish = true;
+                                                    $("#loading").hide();
+                                                }
+                                                else {
+                                                    $("#timeline").append(data);
+                                                    mypage++;
+                                                    inLoad = true;
+                                                }
+                                            });
+                                        }
+                                    });
+
+
+                                });
+
                             </g:javascript>
                         </g:form>
                     </div>
@@ -51,43 +99,34 @@
                 <div style="background-color:rgb(255,255,255);padding:15px;">
 
                     <ul class="nav nav-tabs">
-                        <li role="presentation" style="width:160px;text-align:center;" class="active"><a
-                                href="#">Actualité</a></li>
-                        <li role="presentation" style="width:160px;text-align:center;"><a href="#">Abonnement <span
-                                class="badge">42</span></a></li>
-                        <li role="presentation" style="width:160px;text-align:center;"><a href="#">Abonnés <span
-                                class="badge">492</span></a></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="statusTimeline"><g:link controller="user" action="userHome">Actualité</g:link></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><g:link controller="user" action="showFollowed">Abonnements</g:link></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="followerTimeline"><g:link controller="user" action="showFollowers">Abonnés</g:link></li>
                     </ul>
 
-                    <g:each in="${statusList}" var="status">
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="${resource(dir: 'images', file: 'r.jpg')}"
-                                         data-holder-rendered="true" style="width: 64px; height: 64px;">
+                    <g:if test="${followersList != null || followedList != null}">
 
-                                </a>
-                            </div>
-
-                            <div class="media-body">
-                                <h4 class="media-heading">Crazy <g:fieldValue bean="${user}" field="username"/></h4>
-                                <i>Posté le ${status.dateCreated}</i>
-                            </div>
-                            <br>
-                        </div>
-
-                        <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
-                                                                                   aria-hidden="true"></span> Light (${status.lightCount})
-                        </button>
-                        <br><br>
-                        <blockquote>
-                            <p id="content${status.id}">${status.content}</p>
-                        </blockquote>
-
-                        </br>
-                    </g:each>
-
-
+                        <g:if test="${followersList != null}">
+                            <g:javascript>$("#followerTimeline").addClass('active');</g:javascript>
+                            <g:if test="${followersList != []}">
+                                <g:each in="${followersList}" var="follower">
+                                    <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
+                                </g:each>
+                            </g:if>
+                        </g:if>
+                        <g:else>
+                            <g:javascript>$("#followedTimeline").addClass('active');</g:javascript>
+                                <g:each in="${followedList}" var="follower">
+                                    <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
+                                </g:each>
+                        </g:else>
+                    </g:if>
+                    <g:else>
+                        <g:javascript>$("#statusTimeline").addClass('active');</g:javascript>
+                        <br>
+                        <div id="timeline"> </div>
+                        <div id="loading" style="text-align: center;"><img src="${resource(dir:"images",file:"loading.gif")}"></div>
+                    </g:else>
                 </div><!-- /.blog-userHomePage -->
             </div><!-- /.blog-userHomePage -->
 
@@ -98,7 +137,7 @@
 
                     <h4>Crazy <g:fieldValue bean="${user}" field="username"/></h4>
 
-                    <p> <em>"Merry"</em> Christmas, May the season be fun joyful and especialy crazy!! :P<br><br>
+                    <p><em>"Merry"</em> Christmas, May the season be fun joyful and especialy crazy!! :P<br><br>
 
                     </p>
 
@@ -118,8 +157,10 @@
                     <h4>Elsewhere</h4>
                     <ol class="list-unstyled">
 
-                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
-                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a></li>
+                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
+                        </li>
+                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
+                        </li>
                     </ol>
                 </div>
             </div><!-- /.blog-sidebar -->

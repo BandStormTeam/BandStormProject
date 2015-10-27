@@ -9,24 +9,18 @@ import spock.lang.Specification
 @TestFor(Status)
 class StatusSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
     void "status is valid"() {
 
         when: "a new status is created"
-        Status status = new Status(url:url,content:content,lightCount:lightCount)
+        Status status = new Status(url:url,content:content,lightCount:lightCount, author: author)
 
         then: "the validation gives..."
         status.validate()
 
         where: "parameters are ok"
-        url                 | content           |lightCount
-        "www.google.fr"     | "Bonjour"         |555
-        ""                  | "l"               |99999
+        url                 | content           |lightCount | author
+        "www.google.fr"     | "Bonjour"         |555        | Mock(User)
+        ""                  | "l"               |99999      | Mock(User)
 
     }
 
@@ -34,17 +28,19 @@ class StatusSpec extends Specification {
     void "status is not valid"() {
 
         when: "a new status is created"
-        Status status = new Status(url:url,content:content,lightCount:lightCount)
+        Status status = new Status(url:url,content:content,lightCount:lightCount, author: author)
 
         then: "the validation gives..."
         !status.validate()
 
         where: "parameters are not ok"
-        url                     | content               |lightCount
-        "www.google.fr"         | "Bonjour"             |-2
-        "www.facebook.fr"       | "l"                   |100001
-        ""                      | "l"                   |100001
-        "www.facebook.fr"       | ""                    |1000
+        url                     | content               |lightCount | author
+        "www.google.fr"         | "Bonjour"             |-2         | Mock(User)
+        "www.facebook.fr"       | "l"                   |100001     | Mock(User)
+        ""                      | "l"                   |100001     | Mock(User)
+        "www.facebook.fr"       | ""                    |1000       | Mock(User)
+        "www.google.fr"         | "Bonjour"             |555        | null
+
 
 
     }

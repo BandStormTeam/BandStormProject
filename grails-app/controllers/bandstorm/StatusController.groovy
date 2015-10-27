@@ -1,26 +1,47 @@
 package bandstorm
 
+import bandstorm.dao.StatusDaoService
+import bandstorm.dao.UserDaoService
+import bandstorm.service.StatusService
 import bandstorm.service.UserService
 
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
-@Secured("permitAll")
+@Secured(["ROLE_USER","ROLE_ADMIN"])
 class StatusController {
 
     def springSecurityService
     UserService userService
-    UserController userController = new UserController()
+    StatusService statusService
+    UserDaoService userDaoService
+    StatusDaoService statusDaoService
     AuthenticationManager authenticationManager
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    @Secured("ROLE_ADMIN")
+    /**
+     * Retrun the timeline of connected user
+     * @param page : the page to show
+     * @return timeline
+     */
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
+    def connectedUserTimeline(Integer page){
+
+        if(!page){
+            page = 0;
+        }
+
+        User user = userService.springSecurityService.getCurrentUser()
+        List<Status> statusList = statusDaoService.getLastFollowedStatusOfUser(user,page)
+
+        render(view: "timeline", model: [user : user, statusList: statusList])
+    }
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Status.list(params), model: [statusInstanceCount: Status.count()]
@@ -41,30 +62,32 @@ class StatusController {
             return
         }
 
+        try {
+            User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
+            statusInstance.author = user
+        } catch (AuthenticationException) {
+        }
+
+        statusInstance.save(flush: true)
 
         if (statusInstance.hasErrors()) {
-            respond statusInstance.errors, view: 'create'
+            redirect(controller: "user", action: "reload")
             return
         }
 
-        //User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-
         addStatus(statusInstance)
 
-        statusInstance.save flush: true
-
-        redirect (controller: "user", action:"userHome")
     }
 
     def addStatus(Status status) {
         try {
-            User user = User.findByUsername("Abel")
-            userService.addStatusToUser(user, status)
-            System.out.println("TRACE : ")
-            System.out.println(user.getPosts().content)
+            User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
+            userDaoService.addStatusToUser(user, status)
+            sleep(1000)
+            redirect(controller: "user", action: "reload")
 
         } catch (AuthenticationException) {
-
+            redirect(controller: "user", action: "userHome")
         }
     }
 
