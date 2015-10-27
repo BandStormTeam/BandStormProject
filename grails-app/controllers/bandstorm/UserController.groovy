@@ -236,4 +236,10 @@ class UserController {
         def followersList = userDaoService.findAllFollowersForUser(user)
         render (view: "userHome", model: [user: user, followersList: followersList])
     }
+
+    def showFollowed(){
+        def user = springSecurityService.currentUser
+        def followedList = userDaoService.findAllFollowedForUser(user)
+        render (view: "userHome", model: [user: user, followedList: followedList])
+    }
 }

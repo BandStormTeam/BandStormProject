@@ -61,7 +61,7 @@ class InitializationService {
             def tag = new Tag(name: "Tag" + i).save()
         }
 
-        new Follow(followed: testUser2,follower: testUser).save(flush: true)
-        new Follow(followed: testUser,follower: testUser).save(flush: true)
+        userDaoService.followUser(testUser2,testUser)
+        userDaoService.followUser(testUser,testUser2)
     }
 }

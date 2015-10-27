@@ -100,21 +100,26 @@
 
                     <ul class="nav nav-tabs">
                         <li role="presentation" style="width:160px;text-align:center;" id="statusTimeline"><g:link controller="user" action="userHome">Actualité</g:link></li>
-                        <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><a href="#">Abonnements</a></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><g:link controller="user" action="showFollowed">Abonnements</g:link></li>
                         <li role="presentation" style="width:160px;text-align:center;" id="followerTimeline"><g:link controller="user" action="showFollowers">Abonnés</g:link></li>
                     </ul>
 
-                    <g:if test="${followersList != null}">
-                        <g:javascript>$("#followerTimeline").addClass('active');</g:javascript>
-                        <g:if test="${followersList != []}">
-                            <g:each in="${followersList}" var="follower">
-                                <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
-                            </g:each>
+                    <g:if test="${followersList != null || followedList != null}">
+
+                        <g:if test="${followersList != null}">
+                            <g:javascript>$("#followerTimeline").addClass('active');</g:javascript>
+                            <g:if test="${followersList != []}">
+                                <g:each in="${followersList}" var="follower">
+                                    <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
+                                </g:each>
+                            </g:if>
                         </g:if>
                         <g:else>
-                            <p style="margin-top: 10px;">Désolé, vous n'avez aucun abonné</p>
+                            <g:javascript>$("#followedTimeline").addClass('active');</g:javascript>
+                                <g:each in="${followedList}" var="follower">
+                                    <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
+                                </g:each>
                         </g:else>
-
                     </g:if>
                     <g:else>
                         <g:javascript>$("#statusTimeline").addClass('active');</g:javascript>
