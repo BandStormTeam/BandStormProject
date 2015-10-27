@@ -60,7 +60,7 @@
 
                     <ul class="nav nav-tabs">
                         <li role="presentation" style="width:160px;text-align:center;" id="statusTimeline"><g:link controller="user" action="userHome">Actualité</g:link></li>
-                        <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><a href="#">Abonnements</a></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><g:link controller="user" action="showFollowed">Abonnements</g:link></li>
                         <li role="presentation" style="width:160px;text-align:center;" id="followerTimeline"><g:link controller="user" action="showFollowers">Abonnés</g:link></li>
                     </ul>
                         <g:if test="${followersList != null}">
@@ -74,6 +74,17 @@
                                 <p style="margin-top: 10px;">Désolé, vous n'avez aucun abonné</p>
                             </g:else>
                         </g:if>
+                        <g:elseif test="${followedList != null}">
+                            <g:javascript>$("#followedTimeline").addClass('active');</g:javascript>
+                            <g:if test="${followedList != []}">
+                                <g:each in="${followedList}" var="followed">
+                                    <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: followed.id)}">${followed.username}</a></p><hr>
+                                </g:each>
+                            </g:if>
+                            <g:else>
+                                <p style="margin-top: 10px;">Désolé, vous n'avez aucun abonnement</p>
+                            </g:else>
+                        </g:elseif>
                         <g:else>
                             <g:javascript>$("#statusTimeline").addClass('active');</g:javascript>
                             <g:each in="${statusList}" var="status">

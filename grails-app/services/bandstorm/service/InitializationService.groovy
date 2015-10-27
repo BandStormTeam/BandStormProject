@@ -61,5 +61,6 @@ class InitializationService {
         }
 
         userDaoService.followUser(testUser2,testUser)
+        userDaoService.followUser(testUser,testUser2)
     }
 }

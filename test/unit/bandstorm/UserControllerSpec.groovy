@@ -393,8 +393,52 @@ class UserControllerSpec extends Specification {
         when: "showFollowers method is use"
         controller.showFollowers()
 
-        then: ""
+        then: "we get good view and model"
         view == "/user/userHome"
         model.followersList != null
+    }
+
+    void "test showFollowed method"(){
+        given:"current user"
+        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.springSecurityService.currentUser >> new User()
+        controller.userDaoService = Mock(UserDaoService)
+        controller.userDaoService.findAllFollowedForUser(_) >> []
+
+        when: "showFollowers method is use"
+        controller.showFollowed()
+
+        then: "we get good view and model"
+        view == "/user/userHome"
+        model.followedList != null
+    }
+
+    void "test followUser method"() {
+        given:"the user to follow and current user"
+        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.springSecurityService.currentUser >> new User()
+        User user = Mock(User)
+        controller.userDaoService = Mock(UserDaoService)
+        controller.userDaoService.followUser(_,_) >> new Follow()
+
+        when:"followUser method is use"
+        controller.followUser(user)
+
+        then:"we get the good redirect"
+        response.redirectedUrl == "/user/show"
+    }
+
+    void "test unfollowUser method"() {
+        given:"the user to unfollow and current user"
+        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.springSecurityService.currentUser >> new User()
+        User user = Mock(User)
+        controller.userDaoService = Mock(UserDaoService)
+
+        when:"unfollowUser method is use"
+        controller.unfollowUser(user)
+
+        then:"we get the good redirect"
+        response.redirectedUrl == "/user/show"
     }
 }
