@@ -45,7 +45,7 @@ class StatusDaoService implements IGenericDao<Status> {
                 }
             }
 
-            order("dateCreated")
+            order("dateCreated",'desc')
 
             maxResults(maxItemsForSearch)
             firstResult(offset)

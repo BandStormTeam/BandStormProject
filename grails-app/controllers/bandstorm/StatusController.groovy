@@ -24,6 +24,24 @@ class StatusController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    /**
+     * Retrun the timeline of connected user
+     * @param page : the page to show
+     * @return timeline
+     */
+    @Secured(["ROLE_USER","ROLE_ADMIN"])
+    def connectedUserTimeline(Integer page){
+
+        if(!page){
+            page = 0;
+        }
+
+        User user = userService.springSecurityService.getCurrentUser()
+        List<Status> statusList = statusDaoService.getLastFollowedStatusOfUser(user,page)
+
+        render(view: "timeline", model: [user : user, statusList: statusList])
+    }
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Status.list(params), model: [statusInstanceCount: Status.count()]

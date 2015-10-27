@@ -1,6 +1,8 @@
 package bandstorm
 
-
+import bandstorm.dao.StatusDaoService
+import bandstorm.service.UserService
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
 import org.springframework.http.HttpStatus
 import spock.lang.*
@@ -17,6 +19,29 @@ class StatusControllerSpec extends Specification {
         params["content"] = 'statusContent'
         params["lightCount"] = 10
         params["author"] = Mock(User)
+    }
+
+
+    void "Test the connectedUserTimeline action returns the correct model"() {
+
+        given: "The security service for user is created"
+        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
+        User user = Mock(User)
+
+
+        controller.userService = Mock(UserService)
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        controller.statusDaoService = Mock(StatusDaoService)
+        controller.statusDaoService.getLastFollowedStatusOfUser(_,_) >> new ArrayList<Status>()
+
+        when: "The index action is executed"
+        controller.connectedUserTimeline(0)
+
+        then: "The model is correct"
+        model.statusList != null
     }
 
     void "Test the index action returns the correct model"() {
