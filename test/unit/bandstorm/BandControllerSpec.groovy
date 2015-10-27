@@ -1,8 +1,13 @@
 package bandstorm
 
-
+import bandstorm.dao.BandDaoService
+import bandstorm.service.UserService
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
+import org.springframework.http.HttpStatus
 import spock.lang.*
+
+import java.text.SimpleDateFormat
 
 @TestFor(BandController)
 @Mock(Band)
@@ -18,11 +23,16 @@ class BandControllerSpec extends Specification {
     void "Test the index action returns the correct model"() {
 
         when: "The index action is executed"
+        UserService userService = Mock(UserService)
+        User user
+        userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
         controller.index()
+
 
         then: "The model is correct"
         !model.bandInstanceList
-        model.bandInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -38,24 +48,72 @@ class BandControllerSpec extends Specification {
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         def band = new Band()
-        band.validate()
+        controller.bandDaoService = Mock(BandDaoService)
+        controller.params.nameBand = "Y"
+        controller.params.addressBand = "Rue des arènes"
+        controller.params.descriptionBand = "T"
         controller.save(band)
 
-        then: "The create view is rendered again with the correct model"
-        model.bandInstance != null
-        view == 'create'
+        then: "No event is created"
+        Band.count() == 0
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
         band = new Band(params)
-
+        controller.params.nameBand = "a name"
+        controller.params.addressBand = "a longue addresse"
+        controller.params.descriptionBand = "a description"
+        UserService userService = Mock(UserService)
+        User user
+        userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+        controller.bandDaoService = Mock(BandDaoService) {
+            create(_) >> new Band(name: "Groovy and Grails" , address: "Santa Monica", description: "anyway it is good").save()
+        }
         controller.save(band)
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/band/show/1'
-        controller.flash.message != null
         Band.count() == 1
+    }
+
+    void "test save method with null parameter"() {
+        when:"we try to save a null object"
+        controller.save(null)
+
+        then: "the response value is not found"
+        response.status == HttpStatus.NOT_FOUND.value()
+    }
+
+    void "test save method on a complete band instance"() {
+        given: "an band that has no errors"
+        populateValidParams(params)
+        def aBand = new Band(params)
+        controller.params.nameBand = "The Band"
+        controller.params.addressBand = "A correct address"
+        controller.params.descriptionBand = "A good description"
+        views['/band/_form.gsp'] = 'mock contents'
+        controller.bandDaoService = Mock(BandDaoService) {
+            create(_) >> aBand
+        }
+
+        when: "we call the save method"
+        controller.save(aBand)
+
+        then: "we create the tags and add them to the event"
+        response.text == 'mock contents'
+    }
+
+    void "test save method with null parameter with form content type"() {
+
+        when: "we try to save a null object through a form"
+        request.contentType = FORM_CONTENT_TYPE
+        controller.save(null)
+
+        then: "the response status is notfound and the redirect is to the index page"
+        response.redirectedUrl == '/band/index'
+        flash.message != null
     }
 
     void "Test that the show action returns the correct model"() {
@@ -145,5 +203,15 @@ class BandControllerSpec extends Specification {
         Band.count() == 0
         response.redirectedUrl == '/band/index'
         flash.message != null
+    }
+
+    void "test index method with max param"() {
+
+        when : "the index action is called with a defined max param"
+        controller.index(200)
+
+        then: "the index view is rendered and params.max = 100"
+        params.max == 100
+
     }
 }

@@ -12,22 +12,36 @@
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="${resource(dir:"css/bootstrap",file:"bootstrap.min.css")}">
 	<link rel="stylesheet" href="${resource(dir:"css/bootstrap",file:"bootstrap-theme.min.css")}">
+	<link rel="stylesheet" href="${resource(dir:"css/sweetAlert",file:"sweetalert.css")}">
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="${resource(dir:"js",file:"jquery-1.11.3.min.js")}"></script>
 	<script src="${resource(dir:"js/bootstrap",file:"bootstrap.min.js")}"></script>
-
+	<script src="${resource(dir:"js/sweetAlert",file:"sweetalert.min.js")}"></script>
 
 
 	<style>
+
+	.centered {
+		margin-top: 70px;
+	}
+
 	body{
 		background-image: url("${resource(dir:"images",file:"m.jpg")}");
 		background-size:cover;
+		background-attachment: fixed;
 	}
 
 	.errors{
 		border-color: rgba(200,0,0,0.8) !important;
 		border-width: 2px;
+
+	}
+
+	.pagination li{
+		display: inline;
+		padding: 2px;
+
 	}
 	</style>
 
@@ -51,9 +65,21 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">BandStorm</a>
+			<a class="navbar-brand" href="<g:createLink controller="user" action="userHome"/>">BandStorm</a>
+
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
+			<sec:ifLoggedIn>
+				<div class="navbar-form navbar-left">
+
+					<div class="form-group">
+						<g:form  method="get" controller="user" action="searchUser">
+							<input type="text" placeholder="Trouvez un ami ou un groupe" class="form-control" name="keywords" value="${keywords}" style="width:400px;"/>
+							<input type="submit" class="btn btn-success" value="Rechercher" />
+						</g:form >
+					</div>
+				</div>
+			</sec:ifLoggedIn>
 			<div class="navbar-form navbar-right">
 
 				<sec:ifNotLoggedIn>
@@ -68,17 +94,19 @@
 					</g:form>
 				</sec:ifNotLoggedIn>
 				<sec:ifLoggedIn>
-					<a href="<g:createLink controller="user" action="show" />/${sec.loggedInUserInfo(field: 'id')}" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+					<a href="<g:createLink controller="user" action="show" />/${sec.loggedInUserInfo(field: 'id')}" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
 					<a href="<g:createLink controller="user" action="userHome"/>" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-globe" aria-hidden="true" ></span></a>
 
 
 					<div  class="dropdown" style="display: inline-block">
 						<button style="width:120px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							<span class="glyphicon glyphicon-user" aria-hidden="true"></span> <sec:username/>
+							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <sec:username/>
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 							<li><a href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
+							<li><a href="${createLink(controller: 'event', action: 'index')}">Mes événements</a></li>
+							<li><a href="${createLink(controller: 'band', action: 'index')}">Mes groupes</a></li>
 							<li><a href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
 						</ul>
 					</div>

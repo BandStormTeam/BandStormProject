@@ -70,6 +70,7 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
         runtime ":resources:1.2.8"
+        runtime ':twitter-bootstrap:3.3.5'
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0.1"
         //runtime ":cached-resources:1.1"
@@ -87,8 +88,14 @@ grails.project.dependency.resolution = {
         //spring security
         compile ':spring-security-core:2.0-RC5'
 
+        //mail support
+        compile ":mail:1.0.7"
+
         // Cobertura
-        test ":code-coverage:2.0.3-3"
+        // /!\ Don't use cobertura 2.0.*, there is a bug in plugin
+        // So, you can't use exclusions argument with argument 2.0
+        // it is required for TagLib's exclusion.
+        test ":code-coverage:1.2.7"
         compile ":codenarc:0.24.1"
         // Coveralls plugin
         build(':coveralls:0.1.3', ':rest-client-builder:1.0.3') {
@@ -102,11 +109,9 @@ grails.project.dependency.resolution = {
             // CI Service name (not required for Travis, automatically detected for 'travis-ci' and 'travis-pro')
             // service = 'other'
         }
+
     }
-    coverage {
-        enabledByDefault = false
-        xml = true
-    }
+
     codenarc.reportType='xml'
     codenarc.reportName='target/codenarc.xml'
 
@@ -117,4 +122,13 @@ grails.project.dependency.resolution = {
             title = 'Sample Report'             // Set the 'title' property of the (XML) Report
         }
     }
+
+}
+
+
+coverage {
+    exclusions = [
+            '**/*TagLib*/**',
+    ]
+    xml = true
 }

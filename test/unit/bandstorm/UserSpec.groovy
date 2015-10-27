@@ -1,5 +1,6 @@
 package bandstorm
 
+import bandstorm.dao.UserDaoService
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
@@ -8,6 +9,7 @@ import spock.lang.Specification
  */
 @TestFor(User)
 class UserSpec extends Specification {
+    UserDaoService userDaoService
 
     def "is Username valid"() {
 
@@ -141,4 +143,20 @@ class UserSpec extends Specification {
         null                | true
     }
 
+    def "test isFollowed method"() {
+        given: "a follower and a followed"
+        User follower = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty")
+        User followed = new User(username: "user2", email: "user2@mail.com",
+                firstName: "jane", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "qsdfgh")
+
+        followed.userDaoService = Mock(UserDaoService)
+        followed.userDaoService.findFollowByFollowerAndFollowed(_,_) >> Mock(Follow)
+
+        when:"I try to know if my user is follow by follower"
+        followed.isFollowed(follower)
+
+        then:"I get an answer"
+        1 * followed.userDaoService.findFollowByFollowerAndFollowed(follower,followed)
+    }
 }

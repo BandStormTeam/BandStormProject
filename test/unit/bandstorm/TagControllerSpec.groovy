@@ -2,6 +2,7 @@ package bandstorm
 
 
 import grails.test.mixin.*
+import org.springframework.http.HttpStatus
 import spock.lang.*
 
 @TestFor(TagController)
@@ -54,6 +55,25 @@ class TagControllerSpec extends Specification {
         response.redirectedUrl == '/tag/show/1'
         controller.flash.message != null
         Tag.count() == 1
+    }
+
+    void "test save method with null parameter"() {
+        when:"we try to save a null object"
+        controller.save(null)
+
+        then: "the response value is not found"
+        response.status == HttpStatus.NOT_FOUND.value()
+    }
+
+    void "test save method with null parameter with form content type"() {
+
+        when: "we try to save a null object through a form"
+        request.contentType = FORM_CONTENT_TYPE
+        controller.save(null)
+
+        then: "the response status is notfound and the redirect is to the index page"
+        response.redirectedUrl == '/tag/index'
+        flash.message != null
     }
 
     void "Test that the show action returns the correct model"() {
@@ -143,5 +163,15 @@ class TagControllerSpec extends Specification {
         Tag.count() == 0
         response.redirectedUrl == '/tag/index'
         flash.message != null
+    }
+
+    void "test index method with max param"() {
+
+        when : "the index action is called with a defined max param"
+        controller.index(200)
+
+        then: "the index view is rendered and params.max = 100"
+        params.max == 100
+
     }
 }

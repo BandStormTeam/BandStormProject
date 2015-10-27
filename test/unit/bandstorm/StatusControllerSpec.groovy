@@ -1,18 +1,47 @@
 package bandstorm
 
-
+import bandstorm.dao.StatusDaoService
+import bandstorm.service.UserService
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
+import org.springframework.http.HttpStatus
 import spock.lang.*
 
 @TestFor(StatusController)
 @Mock(Status)
 class StatusControllerSpec extends Specification {
 
+    UserController userController
+
     def populateValidParams(params) {
         assert params != null
         params["url"] = 'statusUrl'
         params["content"] = 'statusContent'
         params["lightCount"] = 10
+        params["author"] = Mock(User)
+    }
+
+
+    void "Test the connectedUserTimeline action returns the correct model"() {
+
+        given: "The security service for user is created"
+        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
+        User user = Mock(User)
+
+
+        controller.userService = Mock(UserService)
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        controller.statusDaoService = Mock(StatusDaoService)
+        controller.statusDaoService.getLastFollowedStatusOfUser(_,_) >> new ArrayList<Status>()
+
+        when: "The index action is executed"
+        controller.connectedUserTimeline(0)
+
+        then: "The model is correct"
+        model.statusList != null
     }
 
     void "Test the index action returns the correct model"() {
@@ -41,21 +70,37 @@ class StatusControllerSpec extends Specification {
         status.validate()
         controller.save(status)
 
-        then: "The create view is rendered again with the correct model"
-        model.statusInstance != null
-        view == 'create'
+        then: "The status is not added"
+        Status.count() == 0
+
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
         status = new Status(params)
-
         controller.save(status)
 
-        then: "A redirect is issued to the show action"
-        //response.redirectedUrl == '/status/show/1'
-        //controller.flash.message != null
+        then: "A status is added"
         Status.count() == 1
+    }
+
+    void "test save method with null parameter"() {
+        when:"we try to save a null object"
+        controller.save(null)
+
+        then: "the response value is not found"
+        response.status == HttpStatus.NOT_FOUND.value()
+    }
+
+    void "test save method with null parameter with form content type"() {
+
+        when: "we try to save a null object through a form"
+        request.contentType = FORM_CONTENT_TYPE
+        controller.save(null)
+
+        then: "the response status is notfound and the redirect is to the index page"
+        response.redirectedUrl == '/status/index'
+        flash.message != null
     }
 
     void "Test that the show action returns the correct model"() {
@@ -117,7 +162,6 @@ class StatusControllerSpec extends Specification {
         controller.update(status)
 
         then: "A redirect is issues to the show action"
-        //response.redirectedUrl == "/status/show/$status.id"
         flash.message != null
     }
 
@@ -145,5 +189,15 @@ class StatusControllerSpec extends Specification {
         Status.count() == 0
         response.redirectedUrl == '/status/index'
         flash.message != null
+    }
+
+    void "test index method with max param"() {
+
+        when : "the index action is called with a defined max param"
+        controller.index(200)
+
+        then: "the index view is rendered and params.max = 100"
+        params.max == 100
+
     }
 }
