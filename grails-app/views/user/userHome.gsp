@@ -51,6 +51,46 @@
                                         document.getElementById("urlField").value = "";
                                     }, 300);
                                 }
+
+                                $(document).ready(function () {
+
+                                    var mypage = 1;
+                                    var inLoad = true;
+
+                                    var deviceAgent = navigator.userAgent.toLowerCase();
+                                    var agentID = deviceAgent.match(/(iphone|ipod|ipad)/);
+                                    var finish = false;
+
+                                    $.get('../status/connectedUserTimeline', function (data) {
+                                        $("#timeline").append(data);
+                                    });
+
+
+                                    $(window).on('scroll', function () {
+
+
+                                        if ((  ($(window).scrollTop() + $(window).height()) >= $(document).height() - 50
+                                                || agentID && ($(window).scrollTop() + $(window).height()) + 150 > $(document).height() ) && inLoad == true && !finish) {
+                                            inLoad = false;
+
+                                            $.when($.get("../status/connectedUserTimeline", {page: mypage}) ).then(function (data) {
+
+                                                if (data == "") {
+                                                    finish = true;
+                                                    $("#loading").hide();
+                                                }
+                                                else {
+                                                    $("#timeline").append(data);
+                                                    mypage++;
+                                                    inLoad = true;
+                                                }
+                                            });
+                                        }
+                                    });
+
+
+                                });
+
                             </g:javascript>
                         </g:form>
                     </div>
@@ -63,48 +103,25 @@
                         <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><a href="#">Abonnements</a></li>
                         <li role="presentation" style="width:160px;text-align:center;" id="followerTimeline"><g:link controller="user" action="showFollowers">Abonnés</g:link></li>
                     </ul>
-                        <g:if test="${followersList != null}">
-                            <g:javascript>$("#followerTimeline").addClass('active');</g:javascript>
-                            <g:if test="${followersList != []}">
-                                <g:each in="${followersList}" var="follower">
-                                    <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
-                                </g:each>
-                            </g:if>
-                            <g:else>
-                                <p style="margin-top: 10px;">Désolé, vous n'avez aucun abonné</p>
-                            </g:else>
+
+                    <g:if test="${followersList != null}">
+                        <g:javascript>$("#followerTimeline").addClass('active');</g:javascript>
+                        <g:if test="${followersList != []}">
+                            <g:each in="${followersList}" var="follower">
+                                <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
+                            </g:each>
                         </g:if>
                         <g:else>
-                            <g:javascript>$("#statusTimeline").addClass('active');</g:javascript>
-                            <g:each in="${statusList}" var="status">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img class="media-object" data-src="holder.js/64x64" alt="64x64"
-                                                 src="${resource(dir: 'images', file: 'r.jpg')}"
-                                                 data-holder-rendered="true" style="width: 64px; height: 64px;">
-
-                                        </a>
-                                    </div>
-
-                                    <div class="media-body">
-                                        <h4 class="media-heading"><a href="${createLink(action: 'show',controller: 'user', id: status.author.id)}">${status.author.username}</a></h4>
-                                        <i>Posté le ${status.dateCreated}</i>
-                                    </div>
-                                    <br>
-                                </div>
-
-                                <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
-                                                                                           aria-hidden="true"></span> Light (${status.lightCount})
-                                </button>
-                                <br><br>
-                                <blockquote>
-                                    <p id="content${status.id}">${status.content}</p>
-                                </blockquote>
-
-                                </br>
-                            </g:each>
+                            <p style="margin-top: 10px;">Désolé, vous n'avez aucun abonné</p>
                         </g:else>
+
+                    </g:if>
+                    <g:else>
+                        <g:javascript>$("#statusTimeline").addClass('active');</g:javascript>
+                        <br>
+                        <div id="timeline"> </div>
+                        <div id="loading" style="text-align: center;"><img src="${resource(dir:"images",file:"loading.gif")}"></div>
+                    </g:else>
                 </div><!-- /.blog-userHomePage -->
             </div><!-- /.blog-userHomePage -->
 

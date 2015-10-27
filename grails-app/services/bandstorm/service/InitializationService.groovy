@@ -1,6 +1,7 @@
 package bandstorm.service
 
 import bandstorm.Band
+import bandstorm.Follow
 import bandstorm.SecRole
 import bandstorm.SecUserSecRole
 import bandstorm.Status
@@ -24,10 +25,10 @@ class InitializationService {
 
         Date birth = Date.parse("yyyy-MM-dd hh:mm:ss", "1992-04-03 1:23:45")
 
-        User testUser = new User(username:'merry', password:'password', email: 'myeam@somewhere.here', firstName:'jane', lastName: 'doe', birthDate: birth, country: 'IT')
+        User testUser = new User(username:'merry', password:'password', email: 'myeam@somewhere.here', firstName:'jane', lastName: 'doe', birthDate: birth,urlAvatar:'https://haitaar.files.wordpress.com/2010/05/music_by_littlegirl88.jpg', country: 'IT')
         testUser.save()
 
-        def testUser2 = new User(username:'Abel', password:'unlock', email: 'abl@somewhere.here', firstName:'jon', lastName: 'doe', birthDate: birth, country: 'IT')
+        def testUser2 = new User(username:'Abel', password:'unlock', email: 'abl@somewhere.here', firstName:'jon', lastName: 'doe', birthDate: birth,urlAvatar:'http://ecx.images-amazon.com/images/I/41HfGlY2XxL._SX450_.jpg', country: 'IT')
         testUser2.save()
 
         SecUserSecRole.create testUser, userRole, true
@@ -60,6 +61,7 @@ class InitializationService {
             def tag = new Tag(name: "Tag" + i).save()
         }
 
-        userDaoService.followUser(testUser2,testUser)
+        new Follow(followed: testUser2,follower: testUser).save(flush: true)
+        new Follow(followed: testUser,follower: testUser).save(flush: true)
     }
 }

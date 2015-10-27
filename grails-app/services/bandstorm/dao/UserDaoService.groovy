@@ -14,7 +14,7 @@ class UserDaoService implements IGenericDao<User> {
 
     @Override
     User create(User user) {
-        user.save()
+        user.save(flush: true)
         return user
     }
 
@@ -127,5 +127,6 @@ class UserDaoService implements IGenericDao<User> {
         user.addToPosts(status)
         user.save(flush:true)
     }
+
 
 }

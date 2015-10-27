@@ -35,6 +35,13 @@
 	.errors{
 		border-color: rgba(200,0,0,0.8) !important;
 		border-width: 2px;
+
+	}
+
+	.pagination li{
+		display: inline;
+		padding: 2px;
+
 	}
 	</style>
 
