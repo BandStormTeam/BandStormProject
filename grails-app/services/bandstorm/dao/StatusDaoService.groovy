@@ -46,6 +46,7 @@ class StatusDaoService implements IGenericDao<Status> {
                 followList.each { follow ->
                     eq("author",follow.followed)
                 }
+                eq("author",user)
             }
 
             order("dateCreated",'desc')
