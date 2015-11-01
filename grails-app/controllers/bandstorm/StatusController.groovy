@@ -11,6 +11,9 @@ import org.springframework.security.authentication.AuthenticationManager
 
 import static org.springframework.http.HttpStatus.*
 
+/**
+ * Status controller class
+ */
 @Transactional(readOnly = true)
 @Secured(["ROLE_USER","ROLE_ADMIN"])
 class StatusController {
@@ -42,19 +45,38 @@ class StatusController {
         render(view: "timeline", model: [user : user, statusList: statusList])
     }
 
+    /**
+     * Show the list of status
+     * @param max : max displayed status in this page
+     * @return the list of status
+     */
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Status.list(params), model: [statusInstanceCount: Status.count()]
     }
 
+    /**
+     * Show details for status
+     * @param statusInstance : status object
+     * @return details for status
+     */
     def show(Status statusInstance) {
         respond statusInstance
     }
 
+    /**
+     * Create a new status object
+     * @return news object status
+     */
     def create() {
         respond new Status(params)
     }
 
+    /**
+     * Save a status instance
+     * @param statusInstance : instance to save
+     * @return form for status
+     */
     @Transactional
     def save(Status statusInstance) {
         if (statusInstance == null) {
@@ -79,6 +101,11 @@ class StatusController {
 
     }
 
+    /**
+     * Add a status for the current user
+     * @param status : status to add
+     * @return redirection to home
+     */
     def addStatus(Status status) {
         try {
             User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
@@ -91,10 +118,20 @@ class StatusController {
         }
     }
 
+    /**
+     * Edit status instance
+     * @param statusInstance : status to edit
+     * @return status instance
+     */
     def edit(Status statusInstance) {
         respond statusInstance
     }
 
+    /**
+     * Update a status
+     * @param statusInstance : status object
+     * @return form for status
+     */
     @Transactional
     def update(Status statusInstance) {
         if (statusInstance == null) {
@@ -119,6 +156,11 @@ class StatusController {
 
     }
 
+    /**
+     * Delete a status
+     * @param statusInstance : status to delete
+     * @return confirmation of the deletion
+     */
     @Transactional
     def delete(Status statusInstance) {
 
@@ -138,6 +180,9 @@ class StatusController {
         }
     }
 
+    /**
+     * Error page, not found
+     */
     protected void notFound() {
         request.withFormat {
             form multipartForm {

@@ -5,6 +5,9 @@ import bandstorm.Status
 import bandstorm.User
 import grails.transaction.Transactional
 
+/**
+ * Dao service for status
+ */
 @Transactional
 class StatusDaoService implements IGenericDao<Status> {
 

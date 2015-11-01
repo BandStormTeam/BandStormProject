@@ -11,11 +11,18 @@ import bandstorm.Event
 import bandstorm.dao.UserDaoService
 import grails.transaction.Transactional
 
+/**
+ * Service for Initialisation
+ */
 @Transactional
 class InitializationService {
 
     UserDaoService userDaoService
 
+    /**
+     * Populate the base whit some examples
+     * @return
+     */
     def populate() {
 
         SecRole adminRole = new SecRole('ROLE_ADMIN')

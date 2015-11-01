@@ -1,5 +1,8 @@
 package bandstorm
 
+/**
+ * Role for Spring Security User
+ */
 class SecRole implements Serializable {
 
     private static final long serialVersionUID = 1

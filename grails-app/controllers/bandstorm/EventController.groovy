@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+/**
+ * Event controller class
+ */
 @Secured(["ROLE_USER","ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class EventController {
@@ -16,6 +19,11 @@ class EventController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    /**
+     * Show the list of user's events
+     * @param max : max displayed events by page
+     * @return the list of events
+     */
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         params.sort = "dateCreated"
@@ -26,14 +34,28 @@ class EventController {
         respond Event.list(params), model: [eventInstance: event,eventInstanceCount: Event.count()]
     }
 
+    /**
+     * Show details of an event
+     * @param eventInstance : event to show
+     * @return details for event
+     */
     def show(Event eventInstance) {
         respond eventInstance
     }
 
+    /**
+     * Create an event
+     * @return new event
+     */
     def create() {
         respond new Event(params)
     }
 
+    /**
+     * Save an event instance
+     * @param eventInstance : event to save
+     * @return event form
+     */
     @Transactional
     def save(Event eventInstance) {
         if (eventInstance == null) {
@@ -73,10 +95,20 @@ class EventController {
         render template: 'form', model: [eventInstance:eventInstance, status: "OK"]
     }
 
+    /**
+     * Edit an event
+     * @param eventInstance : event to edit
+     * @return an event
+     */
     def edit(Event eventInstance) {
         respond eventInstance
     }
 
+    /**
+     * Update an event
+     * @param eventInstance : event to update
+     * @return edition form for event
+     */
     @Transactional
     def update(Event eventInstance) {
         if (eventInstance == null) {
@@ -92,6 +124,11 @@ class EventController {
         eventDAOService.update(eventInstance)
     }
 
+    /**
+     * Delete an event
+     * @param eventInstance : event to delete
+     * @return page to confirm the deletion
+     */
     @Transactional
     def delete(Event eventInstance) {
 
@@ -111,6 +148,9 @@ class EventController {
         }
     }
 
+    /**
+     * Error page, not found
+     */
     protected void notFound() {
         request.withFormat {
             form multipartForm {

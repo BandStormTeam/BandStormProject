@@ -3,6 +3,9 @@ package bandstorm.dao
 import bandstorm.Event
 import grails.transaction.Transactional
 
+/**
+ * Dao service for events
+ */
 @Transactional
 class EventDAOService implements IGenericDao<Event> {
 
