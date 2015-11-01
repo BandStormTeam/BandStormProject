@@ -1,7 +1,7 @@
 package bandstorm
 
 /**
- * represents a category or user preference
+ * Represents a category or user preference
  */
 class Tag {
     String name;
