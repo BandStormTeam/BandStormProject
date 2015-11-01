@@ -11,6 +11,9 @@ import java.text.SimpleDateFormat
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+/**
+ * Controller class for Bands
+ */
 @Secured(["ROLE_USER", "ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class BandController {
@@ -19,6 +22,11 @@ class BandController {
     UserDaoService userDaoService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    /**
+     * Show the list of the followed bands for current user.
+     * @param max : max of displayed band in the page
+     * @return List of bands
+     */
     def index(Integer max) {
 
         params.max = Math.min(max ?: 10, 100)
@@ -34,14 +42,28 @@ class BandController {
 
     }
 
+    /**
+     * Show details for the selected band
+     * @param bandInstance : selected band
+     * @return band details
+     */
     def show(Band bandInstance) {
         respond bandInstance
     }
 
+    /**
+     * Create a band from the form
+     * @return band instance
+     */
     def create() {
         respond new Band(params)
     }
 
+    /**
+     * Save band from the form
+     * @param bandInstance : selected band
+     * @return band instance
+     */
     @Transactional
     def save(Band bandInstance) {
         if (bandInstance == null) {
@@ -92,10 +114,20 @@ class BandController {
 
     }
 
+    /**
+     * Edit a band instance
+     * @param bandInstance: selected band
+     * @return a band instance
+     */
     def edit(Band bandInstance) {
         respond bandInstance
     }
 
+    /**
+     * Update a band instance
+     * @param bandInstance: band instance to update
+     * @return band instance
+     */
     @Transactional
     def update(Band bandInstance) {
         if (bandInstance == null) {
@@ -119,6 +151,11 @@ class BandController {
         }
     }
 
+    /**
+     * Delete a band
+     * @param bandInstance : band to delete
+     * @return if the band is deleted
+     */
     @Transactional
     def delete(Band bandInstance) {
 
@@ -138,6 +175,9 @@ class BandController {
         }
     }
 
+    /**
+     * Show an error page, if not found.
+     */
     protected void notFound() {
         request.withFormat {
             form multipartForm {
