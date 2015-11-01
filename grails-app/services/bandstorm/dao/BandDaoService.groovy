@@ -5,7 +5,7 @@ import grails.transaction.Transactional
 
 @Transactional
 /**
- * Service Dao pour les Groupes
+ * Service Dao for Band
  */
 class BandDaoService {
 
