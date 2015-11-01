@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+/**
+ * Event controller class
+ */
 @Secured(["ROLE_USER","ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class EventController {
