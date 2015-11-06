@@ -9,11 +9,11 @@ Un utilisateur peut “lighter” les statuts (évènements, messages...)  des p
 
 ## Membres
 Les collaborateurs sont les suivants : 
-- BIRONNEAU Julian @johnSilver7
-- MAGRAS Steve — @smagras
-- ROLETTO Dylan @vlaks
-- de ROQUEMAUREL Antoine @aroquemaurel
-- ZACCARIA Zyat @SirAbel
+- BIRONNEAU Julian — [@johnSilver7](https://github.com/johnSilver7)
+- MAGRAS Steve — [@smagras](https://github.com/smagras)
+- ROLETTO Dylan — [@vlaks](https://github.com/vlaks)
+- de ROQUEMAUREL Antoine — [@aroquemaurel](https://github.com/aroquemaurel/)
+- ZACCARIA Zyat — [@SirAbel](https://github.com/SirAbel)
 
 
 
