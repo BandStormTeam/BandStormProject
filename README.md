@@ -7,6 +7,29 @@ Les utilisateurs peuvent proposer aux membres de leurs communautés des liens ve
 Chaque utilisateur possède un compte personnalisé. Il peut suivre des membres, des groupes et des communautés. Il a une barre de recherche à sa disposition.
 Un utilisateur peut “lighter” les statuts (évènements, messages...)  des personnes qu’il suit.
 
+## Membres
+Les collaborateurs sont les suivants : 
+- BIRONNEAU Julian @johnSilver7
+- MAGRAS Steve — @smagras
+- ROLETTO Dylan @vlaks
+- de ROQUEMAUREL Antoine @aroquemaurel
+- ZACCARIA Zyat @SirAbel
+
+
+
+## Environnement de développement
+|           Environment           |                Version                |
+|              ---                |                  ---                  |
+| Development Framework           | Grails 2.3.11                         |
+| IDE                             | IntelliJ 14.1.1                       |
+| Test framework                  | Spock                                 |
+| SGBDR                           | H2 (dev), PostgreSQL (prod)           |
+| Test coverage                   | Plugin coverage 2.0.3-3 (Cobertura)   |
+| Intégration continue            | Travis CI                             |
+| Version Controle System         | Git                                   |
+| Shared Git repository           | Github                                |
+
+
 ## Nouveaux développeurs
 Si vous souhaitez contribuez au projet, jetez un oeil au [workflow feature](workflow-feature.md)
 
