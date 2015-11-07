@@ -14,4 +14,18 @@ class Status {
         lightCount min : 0, max: 100000
         url nullable: true
     }
+
+    def isLighted(User u) {
+        Light.findAllByStatus(this).each {
+            if(it.user == u) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    def nbLight() {
+        return Light.findAllByStatus(this).size()
+    }
 }

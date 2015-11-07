@@ -23,6 +23,8 @@ class LightServiceIntegrationSpec extends Specification {
         Light.findByUser(user) != null
         Light.findByUser(user).status == status
         Light.findByUser(user).user == user
+        status.isLighted(user)
+        status.nbLight() == 1
     }
 
     void "Test if a status is lighting by a user "() {
@@ -42,6 +44,9 @@ class LightServiceIntegrationSpec extends Specification {
         !lightService.isLightingStatus(user, status2)
         !lightService.isLightingStatus(user2, status2)
         !lightService.isLightingStatus(user2, status)
+        status.isLighted(user)
+        !status.isLighted(use2)
+        status.nbLight() == 1
     }
 
     void "Test the good beahvior of user unlighting a status"() {
@@ -56,5 +61,7 @@ class LightServiceIntegrationSpec extends Specification {
 
         then: "The status is not lighting by the user"
         Light.findByUser(user) == null
+        !status.isLighted(user)
+        status.nbLight() == 0
     }
 }
