@@ -1,15 +1,12 @@
 package bandstorm
 
-import bandstorm.dao.BandDaoService
-import bandstorm.dao.UserDaoService
+import bandstorm.service.dao.BandDaoService
+import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional
 import org.springframework.security.core.context.SecurityContextHolder
 
-import javax.naming.AuthenticationException
-import java.text.SimpleDateFormat
-
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 /**
  * Controller class for Bands

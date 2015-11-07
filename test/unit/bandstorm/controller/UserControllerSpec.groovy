@@ -1,15 +1,17 @@
-package bandstorm
+package bandstorm.controller
 
-import bandstorm.dao.BandDaoService
+import bandstorm.*
 import bandstorm.service.LightService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
+import bandstorm.service.dao.BandDaoService
+import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.SpringSecurityService
-import bandstorm.dao.UserDaoService
-import grails.test.mixin.*
+import grails.test.mixin.Mock
+import grails.test.mixin.TestFor
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
-import spock.lang.*
+import spock.lang.Specification
 
 @TestFor(UserController)
 @Mock(User)

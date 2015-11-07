@@ -1,12 +1,13 @@
 package bandstorm
 
-import bandstorm.dao.EventDAOService
+import bandstorm.service.dao.EventDAOService
 import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional
 
 import java.text.SimpleDateFormat
 
-import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.NO_CONTENT
 
 /**
  * Event controller class

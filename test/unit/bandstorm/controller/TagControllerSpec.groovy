@@ -1,47 +1,19 @@
-package bandstorm
+package bandstorm.controller
 
-import bandstorm.dao.StatusDaoService
-import bandstorm.service.UserService
-import grails.plugin.springsecurity.SpringSecurityService
-import grails.test.mixin.*
+import bandstorm.Tag
+import bandstorm.TagController
+import grails.test.mixin.Mock
+import grails.test.mixin.TestFor
 import org.springframework.http.HttpStatus
-import spock.lang.*
+import spock.lang.Specification
 
-@TestFor(StatusController)
-@Mock(Status)
-class StatusControllerSpec extends Specification {
-
-    UserController userController
+@TestFor(TagController)
+@Mock(Tag)
+class TagControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        params["url"] = 'statusUrl'
-        params["content"] = 'statusContent'
-        params["lightCount"] = 10
-        params["author"] = Mock(User)
-    }
-
-
-    void "Test the connectedUserTimeline action returns the correct model"() {
-
-        given: "The security service for user is created"
-        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
-        User user = Mock(User)
-
-
-        controller.userService = Mock(UserService)
-        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
-            getCurrentUser() >> user
-        }
-
-        controller.statusDaoService = Mock(StatusDaoService)
-        controller.statusDaoService.getLastFollowedStatusOfUser(_,_) >> new ArrayList<Status>()
-
-        when: "The index action is executed"
-        controller.connectedUserTimeline(0)
-
-        then: "The model is correct"
-        model.statusList != null
+        params["name"] = 'tagName'
     }
 
     void "Test the index action returns the correct model"() {
@@ -50,8 +22,8 @@ class StatusControllerSpec extends Specification {
         controller.index()
 
         then: "The model is correct"
-        !model.statusInstanceList
-        model.statusInstanceCount == 0
+        !model.tagInstanceList
+        model.tagInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -59,29 +31,32 @@ class StatusControllerSpec extends Specification {
         controller.create()
 
         then: "The model is correctly created"
-        model.statusInstance != null
+        model.tagInstance != null
     }
 
     void "Test the save action correctly persists an instance"() {
 
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
-        def status = new Status()
-        status.validate()
-        controller.save(status)
+        def tag = new Tag()
+        tag.validate()
+        controller.save(tag)
 
-        then: "The status is not added"
-        Status.count() == 0
-
+        then: "The create view is rendered again with the correct model"
+        model.tagInstance != null
+        view == 'create'
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
-        status = new Status(params)
-        controller.save(status)
+        tag = new Tag(params)
 
-        then: "A status is added"
-        Status.count() == 1
+        controller.save(tag)
+
+        then: "A redirect is issued to the show action"
+        response.redirectedUrl == '/tag/show/1'
+        controller.flash.message != null
+        Tag.count() == 1
     }
 
     void "test save method with null parameter"() {
@@ -99,7 +74,7 @@ class StatusControllerSpec extends Specification {
         controller.save(null)
 
         then: "the response status is notfound and the redirect is to the index page"
-        response.redirectedUrl == '/status/index'
+        response.redirectedUrl == '/tag/index'
         flash.message != null
     }
 
@@ -112,11 +87,11 @@ class StatusControllerSpec extends Specification {
 
         when: "A domain instance is passed to the show action"
         populateValidParams(params)
-        def status = new Status(params)
-        controller.show(status)
+        def tag = new Tag(params)
+        controller.show(tag)
 
         then: "A model is populated containing the domain instance"
-        model.statusInstance == status
+        model.tagInstance == tag
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -128,11 +103,11 @@ class StatusControllerSpec extends Specification {
 
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
-        def status = new Status(params)
-        controller.edit(status)
+        def tag = new Tag(params)
+        controller.edit(tag)
 
         then: "A model is populated containing the domain instance"
-        model.statusInstance == status
+        model.tagInstance == tag
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -141,27 +116,28 @@ class StatusControllerSpec extends Specification {
         controller.update(null)
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/status/index'
+        response.redirectedUrl == '/tag/index'
         flash.message != null
 
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
-        def status = new Status()
-        status.validate()
-        controller.update(status)
+        def tag = new Tag()
+        tag.validate()
+        controller.update(tag)
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.statusInstance == status
+        model.tagInstance == tag
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        status = new Status(params).save(flush: true)
-        controller.update(status)
+        tag = new Tag(params).save(flush: true)
+        controller.update(tag)
 
         then: "A redirect is issues to the show action"
+        response.redirectedUrl == "/tag/show/$tag.id"
         flash.message != null
     }
 
@@ -171,23 +147,23 @@ class StatusControllerSpec extends Specification {
         controller.delete(null)
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/status/index'
+        response.redirectedUrl == '/tag/index'
         flash.message != null
 
         when: "A domain instance is created"
         response.reset()
         populateValidParams(params)
-        def status = new Status(params).save(flush: true)
+        def tag = new Tag(params).save(flush: true)
 
         then: "It exists"
-        Status.count() == 1
+        Tag.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        controller.delete(status)
+        controller.delete(tag)
 
         then: "The instance is deleted"
-        Status.count() == 0
-        response.redirectedUrl == '/status/index'
+        Tag.count() == 0
+        response.redirectedUrl == '/tag/index'
         flash.message != null
     }
 

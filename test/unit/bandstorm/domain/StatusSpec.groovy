@@ -1,5 +1,7 @@
-package bandstorm
+package bandstorm.domain
 
+import bandstorm.Status
+import bandstorm.User
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 

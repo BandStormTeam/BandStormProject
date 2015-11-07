@@ -1,6 +1,8 @@
-package bandstorm
+package bandstorm.domain
 
-import bandstorm.dao.UserDaoService
+import bandstorm.Follow
+import bandstorm.User
+import bandstorm.service.dao.UserDaoService
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 

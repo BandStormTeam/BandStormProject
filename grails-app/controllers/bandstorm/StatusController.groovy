@@ -1,10 +1,9 @@
 package bandstorm
 
-import bandstorm.dao.StatusDaoService
-import bandstorm.dao.UserDaoService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
-
+import bandstorm.service.dao.StatusDaoService
+import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager

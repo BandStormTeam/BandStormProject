@@ -1,4 +1,4 @@
-package bandstorm.dao
+package bandstorm.service.dao
 
 import bandstorm.Follow
 import bandstorm.Status

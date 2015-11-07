@@ -1,6 +1,5 @@
-package bandstorm.dao
+package bandstorm.service.dao
 import bandstorm.Event
-import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**

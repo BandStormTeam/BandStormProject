@@ -1,7 +1,4 @@
 package bandstorm
-
-import bandstorm.dao.UserDaoService
-
 /**
  * Domain class that represents users,
  * and different event, lights and groups related
