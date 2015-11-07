@@ -1,13 +1,15 @@
 <div class="media">
     <div class="media-left">
         <a href="${createLink(action: 'show',controller: 'user', id: status.author.id)}">
-            <g:render template="../user/avatar" model="[userInstance: status.author]"/>
+            <g:render template="../user/avatar" model="[userInstance: status.author, width:width]"/>
         </a>
     </div>
 
     <div class="media-body">
         <h4 class="media-heading"><a href="${createLink(action: 'show',controller: 'user', id: status.author.id)}">${status.author.username}</a></h4>
         <i>Posté le ${status.dateCreated}</i>
+        <p id="content${status.id}">${status.content}</p>
+
     </div>
     <br>
 </div>
@@ -22,10 +24,6 @@
     </button></a>
 </g:else>
 
-<br><br>
-<blockquote>
-    <p id="content${status.id}">${status.content}</p>
-</blockquote>
 
 <g:if test="${status.url != null}">
     <a target="_blank" href="${status.url}">See more...</a>
