@@ -337,4 +337,15 @@ class UserController {
         lightService.lightAStatus(springSecurityService.currentUser, s)
         redirect action: 'userHome', controller: 'user', namespace: null
     }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    def unlight(Status s) {
+        lightService.unlightAStatus(springSecurityService.currentUser, s)
+        redirect action: 'userHome', controller: 'user', namespace: null
+    }
+
 }

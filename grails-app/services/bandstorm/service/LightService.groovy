@@ -25,13 +25,7 @@ class LightService {
      * @param status The status to lighting
      */
     def unlightAStatus(User user, Status status) {
-        Status[] buffStatus = Status.findAllByUser(user)
-
-        buffStatus.each( {
-           if(it == status) {
-               it.delete();
-           }
-        });
+        Light.findByUserAndStatus(user, status)?.delete(flush: true)
     }
 
 
@@ -49,5 +43,9 @@ class LightService {
             }
         });
         return false;
+    }
+
+    Light findByUserAndStatus(User u, Status s) {
+        return Light.findByUserAndStatus(u, s);
     }
 }

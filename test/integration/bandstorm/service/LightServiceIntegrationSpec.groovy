@@ -1,7 +1,8 @@
+package bandstorm.service;
+
 import bandstorm.Light
 import bandstorm.Status
 import bandstorm.User
-import bandstorm.service.LightService
 import spock.lang.Specification
 
 /**
@@ -45,7 +46,7 @@ class LightServiceIntegrationSpec extends Specification {
         !lightService.isLightingStatus(user2, status2)
         !lightService.isLightingStatus(user2, status)
         status.isLighted(user)
-        !status.isLighted(use2)
+        !status.isLighted(user2)
         status.nbLight() == 1
     }
 
@@ -63,5 +64,27 @@ class LightServiceIntegrationSpec extends Specification {
         Light.findByUser(user) == null
         !status.isLighted(user)
         status.nbLight() == 0
+    }
+
+    void "Test to obtains Light model with status and user"() {
+        given: "A user and a status"
+        User user = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
+        User user2 = new User(username: "user2", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
+        Status status = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user).save(flush: true)
+        Status status2 = new Status(url: "www.google.fr",content: "a content",lightCount: 0,author: user).save(flush: true)
+
+        when: "the user light the status"
+        lightService.lightAStatus(user, status)
+
+        then: "We can have the a light model"
+        lightService.findByUserAndStatus(user, status) != null
+        lightService.findByUserAndStatus(user, status).user == user
+        lightService.findByUserAndStatus(user, status).status == status
+
+        lightService.findByUserAndStatus(user2, status) == null
+        lightService.findByUserAndStatus(user, status2) == null
+        lightService.findByUserAndStatus(user2, status2) == null
     }
 }

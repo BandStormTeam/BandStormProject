@@ -8,6 +8,7 @@ class Status {
     Date dateCreated
     Date lastUpdated
     User author
+    transient lightService
 
     static constraints = {
         content maxSize: 300,minSize: 1, nullable: false
@@ -16,13 +17,7 @@ class Status {
     }
 
     def isLighted(User u) {
-        Light.findAllByStatus(this).each {
-            if(it.user == u) {
-                return true
-            }
-        }
-
-        return false
+        return lightService.findByUserAndStatus(u, this) != null
     }
 
     def nbLight() {
