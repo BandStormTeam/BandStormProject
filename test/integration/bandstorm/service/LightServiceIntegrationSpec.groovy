@@ -1,4 +1,4 @@
-package bandstorm.service;
+package bandstorm.service
 
 import bandstorm.Light
 import bandstorm.Status

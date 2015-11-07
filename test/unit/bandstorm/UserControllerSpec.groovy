@@ -1,6 +1,7 @@
 package bandstorm
 
 import bandstorm.dao.BandDaoService
+import bandstorm.service.LightService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.SpringSecurityService
@@ -429,4 +430,33 @@ class UserControllerSpec extends Specification {
         then:"we get the good redirect"
         response.redirectedUrl == "/user/show"
     }
+
+    void "test the lighting method"() {
+        given: "The user and the status to light"
+        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.springSecurityService.currentUser >> new User()
+        Status s = Mock(Status)
+        controller.lightService = Mock(LightService)
+
+        when: "Light the status"
+        controller.light(s)
+
+        then:"We have the good redirection"
+        response.redirectedUrl == "/user/userHome"
+    }
+
+    void "test the unlighting method"() {
+        given: "The user and the status to light"
+        controller.springSecurityService = Mock(SpringSecurityService)
+        controller.springSecurityService.currentUser >> new User()
+        Status s = Mock(Status)
+        controller.lightService = Mock(LightService)
+
+        when: "Light the status"
+        controller.unlight(s)
+
+        then:"We have the good redirection"
+        response.redirectedUrl == "/user/userHome"
+    }
+
 }
