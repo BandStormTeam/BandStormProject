@@ -4,6 +4,7 @@ import bandstorm.service.dao.BandDaoService
 import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
@@ -14,10 +15,10 @@ import static org.springframework.http.HttpStatus.*
 @Secured(["ROLE_USER", "ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class BandController {
-
     BandDaoService bandDaoService
     UserDaoService userDaoService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    AuthenticationManager authenticationManager
 
     /**
      * Show the list of the followed bands for current user.
@@ -32,18 +33,6 @@ class BandController {
         calendar.set(2015,Calendar.SEPTEMBER, 01)
         Band band = new Band(name: "", description: "", address: "")
         respond Band.list(params), model: [bandInstance: band,bandInstanceCount: Band.count()]
-
-        /*params.max = Math.min(max ?: 10, 100)
-        params.sort = "name"
-
-        try {
-            User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-            respond user.groupsFollowed.toList(), model: [bandInstanceCount: user.groupsFollowed.toList().size()]
-        }
-        catch (AuthenticationException) {
-        }*/
-
-
     }
 
     /**
@@ -52,6 +41,10 @@ class BandController {
      * @return band details
      */
     def show(Band bandInstance) {
+        if(bandInstance == null) {
+            return response.sendError(404)
+        }
+
         respond bandInstance
     }
 
