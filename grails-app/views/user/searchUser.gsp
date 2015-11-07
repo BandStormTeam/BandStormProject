@@ -28,14 +28,7 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">
-                                    <g:link controller="user" action="show"  id="${user.id}" style="text-decoration: none;">
-
-                                        <button class="btn btn-default btn-xs dropdown-toggle" type="button">
-                                            Voir le profil
-                                        </button>
-                                    </g:link>
-
-                                    ${user.username}
+                                    <g:link controller="user" action="show"  id="${user.id}" style="text-decoration: none;">${user.username}</g:link>
                                 </h4>
                                 <p>
                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${user.firstName} ${user.lastName}<br>
@@ -50,8 +43,6 @@
                     </div>
                 </div>
             </div><!-- /.blog-userHomePage -->
-
-
         </div><!-- /.row -->
 
 
