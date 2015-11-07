@@ -16,7 +16,7 @@ class SearchController {
      * @return list of Band
      */
     @Secured("ROLE_USER")
-    def searchBand(String keywords,Integer max,Integer offset) {
+    def band(String keywords,Integer max,Integer offset) {
         if (!max) {
             max = 10
         }
@@ -29,7 +29,7 @@ class SearchController {
 
         def searchResult = bandDaoService.getAllBandsByKeywords(keywords,max,offset)
 
-        render(view: "searchBand", model:[bandList:searchResult.bandList ,keywords:keywords,bandCount:searchResult.bandCount] )
+        render(view: "band", model:[bandList:searchResult.bandList ,keywords:keywords,bandCount:searchResult.bandCount] )
     }
 
     /**
@@ -38,7 +38,7 @@ class SearchController {
      * @return list of User
      */
     @Secured("ROLE_USER")
-    def searchUser(String keywords,Integer max,Integer offset) {
+    def user(String keywords,Integer max,Integer offset) {
 
         if (!max) {
             max = 10
@@ -52,6 +52,28 @@ class SearchController {
 
         def searchResult = userDaoService.getAllUsersByKeywords(keywords,max,offset)
 
-        render(view: "searchUser", model:[userList:searchResult.userList ,keywords:keywords,userCount:searchResult.totalOfUser] )
+        render(view: "user", model:[userList:searchResult.userList ,keywords:keywords,userCount:searchResult.totalOfUser] )
+    }
+
+    /**
+     * Return a list of events corresponding whit keywords
+     * @param keywords : inputs for the research
+     * @return list of events
+     */
+    @Secured("ROLE_USER")
+    def event(String keywords, Integer max, Integer offset) {
+        if (!max) {
+            max = 10
+        }
+        if (!offset) {
+            offset = 0
+        }
+        if (!keywords) {
+            keywords = ""
+        }
+
+        def searchResult = eventDAOService.getAllEventsByKeywords(keywords, max, offset)
+
+        render(view: "event", model:[eventList:searchResult.eventList, keywords:keywords, eventCount:searchResult.eventCount] )
     }
 }

@@ -28,7 +28,7 @@ class SearchControllerSpec extends Specification {
         }
 
         when: "The searchBand action is executed"
-        controller.searchBand("Bob",10,0)
+        controller.band("Bob",10,0)
 
         then: "The bandList is correct and keywords too"
         model.bandList
@@ -37,7 +37,6 @@ class SearchControllerSpec extends Specification {
     }
 
     void "Test the searchUser action returns a user list"() {
-
         given: "UserService exist"
         List userList = new ArrayList<User>()
         userList.push(new User(firstName:"John"))
@@ -51,7 +50,7 @@ class SearchControllerSpec extends Specification {
         }
 
         when: "The searchUser action is executed"
-        controller.searchUser("John",10,0)
+        controller.user("John",10,0)
 
         then: "The userList is correct and keywords too"
         model.userList
