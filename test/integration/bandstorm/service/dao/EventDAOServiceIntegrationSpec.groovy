@@ -11,7 +11,7 @@ class EventDAOServiceIntegrationSpec extends Specification {
 
     def "setup"() {
         calendar = Calendar.getInstance()
-        calendar.set(2115,10,5)
+        calendar.set(2115,12,5)
     }
 
     void "test EventDaoService creation method"(){
@@ -53,5 +53,29 @@ class EventDAOServiceIntegrationSpec extends Specification {
 
         then: "The event is correctly delete"
         Event.findById(event.id) == null
+    }
+
+    void "test if getAllEventsByKeywords is functionnal"() {
+
+        given: "events are ready to be search"
+        Event event1 =  new Event(name:"My Event ", dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate")
+        Event event2 =  new Event(name:"My Event ", dateEvent: calendar.getTime(), address:"my long address", description:"my 1st event. please participate")
+        event1 = eventDAOService.create(event1)
+        event2 = eventDAOService.create(event2)
+        List<Event> eventList
+
+        when: "research of all bands containing the keywords"
+        Map resultMap = eventDAOService.getAllEventsByKeywords("Eve",10,0)
+        eventList = resultMap.eventList
+
+        then: "event1 contains the keywords"
+        eventList.size == 10
+
+        when: "research of all events containing the keywords"
+        resultMap = eventDAOService.getAllEventsByKeywords("Eve",10,0)
+        eventList = resultMap.eventList
+
+        then: "event2 does not contain keywords"
+        !eventList.contains(event2)
     }
 }

@@ -68,6 +68,5 @@ class BandDaoServiceIntegrationSpec extends Specification {
 
         then: "band2 does not contain keywords"
         !bandList.contains(band2)
-
     }
 }

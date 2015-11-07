@@ -32,18 +32,11 @@ class BandDaoService {
             firstResult(offset)
         }
 
-        def resultsCount = Band.createCriteria().count() {
-            or {
-                keywords.split(" ").each { keyword ->
-                    ilike("name", "%" + keyword + "%")
-                    ilike("description", "%" + keyword + "%")
-                }
-            }
-        }
 
         def result = new HashMap()
-        result.bandCount = resultsCount.toInteger()
+
         result.bandList = resultsList.toList()
+        result.bandCount = result.bandList.size()
 
         return result;
     }

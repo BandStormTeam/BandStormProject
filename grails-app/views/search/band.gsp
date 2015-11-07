@@ -5,14 +5,9 @@
 
 
 <div class="container" style="padding-top: 100px;">
-
     <div class="container">
-
         <div class="row">
-
-            <g:include view="layouts/searchFilter.gsp"></g:include>
-
-
+            <g:render template="filters"></g:render>
             <div class="col-sm-8 blog-main" style="background-color:rgb(255,255,255);padding:15px;margin-left: 10px;">
 
                 <h2>Recherche pour "${keywords}"</h2>
@@ -29,7 +24,7 @@
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#" data-toggle="modal" data-target="#myModal">${band.name}</a></h4>
                                 <g:render template="/band/modal" model="[bandInstance: band]"></g:render>
-
+                                    ${band.name}</h4>
                                 <p>
                                     ${band.description}
                                 </p>
@@ -42,13 +37,8 @@
                     </div>
                 </div>
             </div><!-- /.blog-userHomePage -->
-
-
         </div><!-- /.row -->
-
-
     </div>
-
 </div>
 
 </body>
