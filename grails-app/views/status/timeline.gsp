@@ -16,9 +16,10 @@
         <br>
     </div>
 
-    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
+    <a href="${createLink(controller: 'user', action: 'light', statusId:status.id)}"><button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
                                                                aria-hidden="true"></span> Light (${status.lightCount})
-    </button>
+    </button></a>
+
     <br><br>
     <blockquote>
         <p id="content${status.id}">${status.content}</p>
