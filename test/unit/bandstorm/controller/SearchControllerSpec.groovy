@@ -1,9 +1,11 @@
 package bandstorm.controller
 
 import bandstorm.Band
+import bandstorm.Event
 import bandstorm.SearchController
 import bandstorm.User
 import bandstorm.service.dao.BandDaoService
+import bandstorm.service.dao.EventDAOService
 import bandstorm.service.dao.UserDaoService
 import grails.test.mixin.TestFor
 import spock.lang.Specification
@@ -33,7 +35,6 @@ class SearchControllerSpec extends Specification {
         then: "The bandList is correct and keywords too"
         model.bandList
         model.keywords == "Bob"
-
     }
 
     void "Test the searchUser action returns a user list"() {
@@ -56,4 +57,27 @@ class SearchControllerSpec extends Specification {
         model.userList
         model.keywords == "John"
 
-    }}
+    }
+
+    void "Test the searchEvent action returns an event list"() {
+
+        given: "EventDaoService exist"
+        List eventList = new ArrayList<Band>()
+        eventList.push(Mock(Event))
+
+        Map searchResult = new HashMap()
+        searchResult.eventList = eventList
+        searchResult.eventsCount = 10
+
+        controller.eventDAOService = Mock(EventDAOService) {
+            getAllEventsByKeywords(_,_,_) >> searchResult
+        }
+
+        when: "The eventBand action is executed"
+        controller.event("Event", 10, 0)
+
+        then: "The eventList is correct and keywords too"
+        model.eventList
+        model.keywords == "Event"
+    }
+}
