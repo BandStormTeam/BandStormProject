@@ -16,9 +16,17 @@
         <br>
     </div>
 
-    <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
-                                                               aria-hidden="true"></span> Light (${status.lightCount})
-    </button>
+    <g:if test="${status.isLighted(user)}">
+    <a href="${createLink(controller: 'user', action: 'unlight', id:status.id)}"><button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-fire"
+                                                               aria-hidden="true"></span> Unlight (${status.nbLight()})
+    </button></a>
+    </g:if>
+    <g:else>
+        <a href="${createLink(controller: 'user', action: 'light', id:status.id)}"><button type="button" class="btn btn-default btn-xs">
+            <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Light (${status.nbLight()})
+        </button></a>
+    </g:else>
+
     <br><br>
     <blockquote>
         <p id="content${status.id}">${status.content}</p>

@@ -40,8 +40,6 @@ class StatusSpec extends Specification {
         ""                      | "l"                   |100001     | Mock(User)
         "www.facebook.fr"       | ""                    |1000       | Mock(User)
         "www.google.fr"         | "Bonjour"             |555        | null
-
-
-
     }
+
 }
