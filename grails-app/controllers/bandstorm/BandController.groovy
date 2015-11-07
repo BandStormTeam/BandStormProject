@@ -4,6 +4,7 @@ import bandstorm.service.dao.BandDaoService
 import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.springframework.http.HttpStatus.*
@@ -17,6 +18,7 @@ class BandController {
     BandDaoService bandDaoService
     UserDaoService userDaoService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    AuthenticationManager authenticationManager
 
     /**
      * Show the list of the followed bands for current user.
@@ -43,8 +45,7 @@ class BandController {
             return response.sendError(404)
         }
 
-        def currentUser = springSecurityService.currentUser
-        respond bandInstance, model: [currentUser: currentUser]
+        respond bandInstance
     }
 
     /**
