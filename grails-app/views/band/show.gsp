@@ -1,4 +1,3 @@
-
 <%@ page import="bandstorm.Band" %>
 <!DOCTYPE html>
 <html>
