@@ -65,7 +65,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<g:createLink controller="user" action="userHome"/>">BandStorm</a>
+			<a class="navbar-brand" href="<g:createLink controller="user" action="home"/>">BandStorm</a>
 
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
@@ -90,12 +90,12 @@
 						<div class="form-group">
 							<g:passwordField type="password" placeholder="password" class="form-control" name="password"/>
 						</div>
-						<g:actionSubmit  class="btn btn-success" action="userHome" value="Connexion" />
+						<g:actionSubmit  class="btn btn-success" action="home" value="Connexion" />
 					</g:form>
 				</sec:ifNotLoggedIn>
 				<sec:ifLoggedIn>
 					<a href="<g:createLink controller="user" action="show" />/${sec.loggedInUserInfo(field: 'id')}" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
-					<a href="<g:createLink controller="user" action="userHome"/>" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-globe" aria-hidden="true" ></span></a>
+					<a href="<g:createLink controller="user" action="home"/>" type="button" class="btn btn-default" style="display: inline-block"><span class="glyphicon glyphicon-globe" aria-hidden="true" ></span></a>
 
 
 					<div  class="dropdown" style="display: inline-block">

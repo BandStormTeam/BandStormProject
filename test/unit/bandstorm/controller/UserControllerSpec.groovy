@@ -37,7 +37,7 @@ class UserControllerSpec extends Specification {
         controller.index()
 
         then: "The redirection is correct"
-        response.redirectedUrl == '/user/userHome'
+        response.redirectedUrl == '/user/home'
     }
 
 
@@ -325,7 +325,7 @@ class UserControllerSpec extends Specification {
         flash.message != null
     }
 
-    void "test userHome method"() {
+    void "test home method"() {
         given: "a valid user instance"
         def user = new User(params)
 
@@ -338,11 +338,11 @@ class UserControllerSpec extends Specification {
         populateValidParams(params)
 
 
-        when: "the userHome method is called with a user without a role"
-        controller.userHome()
+        when: "the home method is called with a user without a role"
+        controller.home()
 
-        then: "the authentification fails so the user is not redirected to the userHome view"
-        view != 'userHome'
+        then: "the authentification fails so the user is not redirected to the home view"
+        view != 'home'
     }
 
     void "test url redirect method when user is logged in"() {
@@ -355,8 +355,8 @@ class UserControllerSpec extends Specification {
         }
         controller.urlRedirect()
 
-        then: "the userHome action is called"
-        response.redirectedUrl == '/user/userHome'
+        then: "the home action is called"
+        response.redirectedUrl == '/user/home'
 
     }
 
@@ -385,7 +385,7 @@ class UserControllerSpec extends Specification {
         controller.showFollowers()
 
         then: "we get good view and model"
-        view == "/user/userHome"
+        view == "/user/home"
         model.followersList != null
     }
 
@@ -400,7 +400,7 @@ class UserControllerSpec extends Specification {
         controller.showFollowed()
 
         then: "we get good view and model"
-        view == "/user/userHome"
+        view == "/user/home"
         model.followedList != null
     }
 
@@ -444,7 +444,7 @@ class UserControllerSpec extends Specification {
         controller.light(s)
 
         then:"We have the good redirection"
-        response.redirectedUrl == "/user/userHome"
+        response.redirectedUrl == "/user/home"
     }
 
     void "test the unlighting method"() {
@@ -458,7 +458,7 @@ class UserControllerSpec extends Specification {
         controller.unlight(s)
 
         then:"We have the good redirection"
-        response.redirectedUrl == "/user/userHome"
+        response.redirectedUrl == "/user/home"
     }
 
 }
