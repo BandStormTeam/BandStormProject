@@ -25,8 +25,15 @@ class BandController {
      * @return List of bands
      */
     def index(Integer max) {
-
         params.max = Math.min(max ?: 10, 100)
+        params.sort = "dateCreated"
+        params.order = "desc"
+        def calendar = Calendar.getInstance()
+        calendar.set(2015,Calendar.SEPTEMBER, 01)
+        Band band = new Band(name: "", description: "", address: "")
+        respond Band.list(params), model: [bandInstance: band,bandInstanceCount: Band.count()]
+
+        /*params.max = Math.min(max ?: 10, 100)
         params.sort = "name"
 
         try {
@@ -34,7 +41,7 @@ class BandController {
             respond user.groupsFollowed.toList(), model: [bandInstanceCount: user.groupsFollowed.toList().size()]
         }
         catch (AuthenticationException) {
-        }
+        }*/
 
 
     }

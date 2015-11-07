@@ -27,7 +27,7 @@ class EventController {
      */
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        params.sort = "dateCreated"
+        params.sort = "name"
         params.order = "desc"
         def calendar = Calendar.getInstance()
         calendar.set(2015,Calendar.SEPTEMBER, 01)
