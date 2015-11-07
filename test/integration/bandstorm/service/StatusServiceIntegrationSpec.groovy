@@ -1,7 +1,7 @@
-package bandstorm
+package bandstorm.service
 
-import bandstorm.service.StatusService
-import grails.test.mixin.TestFor
+import bandstorm.Status
+import bandstorm.User
 import spock.lang.Specification
 
 

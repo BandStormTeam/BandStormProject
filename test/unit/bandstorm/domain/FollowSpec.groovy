@@ -1,5 +1,7 @@
-package bandstorm
+package bandstorm.domain
 
+import bandstorm.Follow
+import bandstorm.User
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 import spock.lang.Unroll

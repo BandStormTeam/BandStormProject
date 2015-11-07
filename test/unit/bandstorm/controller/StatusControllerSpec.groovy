@@ -1,38 +1,62 @@
-package bandstorm
+package bandstorm.controller
 
-import bandstorm.dao.BandDaoService
+import bandstorm.Status
+import bandstorm.StatusController
+import bandstorm.User
+import bandstorm.UserController
 import bandstorm.service.UserService
+import bandstorm.service.dao.StatusDaoService
 import grails.plugin.springsecurity.SpringSecurityService
-import grails.test.mixin.*
+import grails.test.mixin.Mock
+import grails.test.mixin.TestFor
 import org.springframework.http.HttpStatus
-import spock.lang.*
+import spock.lang.Specification
 
-import java.text.SimpleDateFormat
+@TestFor(StatusController)
+@Mock(Status)
+class StatusControllerSpec extends Specification {
 
-@TestFor(BandController)
-@Mock(Band)
-class BandControllerSpec extends Specification {
+    UserController userController
 
     def populateValidParams(params) {
         assert params != null
-        params["name"] = "totoBand"
-        params["description"] = "a description"
-        params["address"] = "my adress"
+        params["url"] = 'statusUrl'
+        params["content"] = 'statusContent'
+        params["lightCount"] = 10
+        params["author"] = Mock(User)
+    }
+
+
+    void "Test the connectedUserTimeline action returns the correct model"() {
+
+        given: "The security service for user is created"
+        Date birthDate = Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45")
+        User user = Mock(User)
+
+
+        controller.userService = Mock(UserService)
+        controller.userService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        controller.statusDaoService = Mock(StatusDaoService)
+        controller.statusDaoService.getLastFollowedStatusOfUser(_,_) >> new ArrayList<Status>()
+
+        when: "The index action is executed"
+        controller.connectedUserTimeline(0)
+
+        then: "The model is correct"
+        model.statusList != null
     }
 
     void "Test the index action returns the correct model"() {
 
         when: "The index action is executed"
-        UserService userService = Mock(UserService)
-        User user
-        userService.springSecurityService >> Mock(SpringSecurityService) {
-            getCurrentUser() >> user
-        }
         controller.index()
 
-
         then: "The model is correct"
-        !model.bandInstanceList
+        !model.statusInstanceList
+        model.statusInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -40,42 +64,29 @@ class BandControllerSpec extends Specification {
         controller.create()
 
         then: "The model is correctly created"
-        model.bandInstance != null
+        model.statusInstance != null
     }
 
     void "Test the save action correctly persists an instance"() {
 
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
-        def band = new Band()
-        controller.bandDaoService = Mock(BandDaoService)
-        controller.params.nameBand = "Y"
-        controller.params.addressBand = "Rue des arènes"
-        controller.params.descriptionBand = "T"
-        controller.save(band)
+        def status = new Status()
+        status.validate()
+        controller.save(status)
 
-        then: "No event is created"
-        Band.count() == 0
+        then: "The status is not added"
+        Status.count() == 0
+
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
-        band = new Band(params)
-        controller.params.nameBand = "a name"
-        controller.params.addressBand = "a longue addresse"
-        controller.params.descriptionBand = "a description"
-        UserService userService = Mock(UserService)
-        User user
-        userService.springSecurityService >> Mock(SpringSecurityService) {
-            getCurrentUser() >> user
-        }
-        controller.bandDaoService = Mock(BandDaoService) {
-            create(_) >> new Band(name: "Groovy and Grails" , address: "Santa Monica", description: "anyway it is good").save()
-        }
-        controller.save(band)
+        status = new Status(params)
+        controller.save(status)
 
-        then: "A redirect is issued to the show action"
-        Band.count() == 1
+        then: "A status is added"
+        Status.count() == 1
     }
 
     void "test save method with null parameter"() {
@@ -86,25 +97,6 @@ class BandControllerSpec extends Specification {
         response.status == HttpStatus.NOT_FOUND.value()
     }
 
-    void "test save method on a complete band instance"() {
-        given: "an band that has no errors"
-        populateValidParams(params)
-        def aBand = new Band(params)
-        controller.params.nameBand = "The Band"
-        controller.params.addressBand = "A correct address"
-        controller.params.descriptionBand = "A good description"
-        views['/band/_form.gsp'] = 'mock contents'
-        controller.bandDaoService = Mock(BandDaoService) {
-            create(_) >> aBand
-        }
-
-        when: "we call the save method"
-        controller.save(aBand)
-
-        then: "we create the tags and add them to the event"
-        response.text == 'mock contents'
-    }
-
     void "test save method with null parameter with form content type"() {
 
         when: "we try to save a null object through a form"
@@ -112,7 +104,7 @@ class BandControllerSpec extends Specification {
         controller.save(null)
 
         then: "the response status is notfound and the redirect is to the index page"
-        response.redirectedUrl == '/band/index'
+        response.redirectedUrl == '/status/index'
         flash.message != null
     }
 
@@ -125,11 +117,11 @@ class BandControllerSpec extends Specification {
 
         when: "A domain instance is passed to the show action"
         populateValidParams(params)
-        def band = new Band(params)
-        controller.show(band)
+        def status = new Status(params)
+        controller.show(status)
 
         then: "A model is populated containing the domain instance"
-        model.bandInstance == band
+        model.statusInstance == status
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -141,11 +133,11 @@ class BandControllerSpec extends Specification {
 
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
-        def band = new Band(params)
-        controller.edit(band)
+        def status = new Status(params)
+        controller.edit(status)
 
         then: "A model is populated containing the domain instance"
-        model.bandInstance == band
+        model.statusInstance == status
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -154,28 +146,27 @@ class BandControllerSpec extends Specification {
         controller.update(null)
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/band/index'
+        response.redirectedUrl == '/status/index'
         flash.message != null
 
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
-        def band = new Band()
-        band.validate()
-        controller.update(band)
+        def status = new Status()
+        status.validate()
+        controller.update(status)
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.bandInstance == band
+        model.statusInstance == status
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        band = new Band(params).save(flush: true)
-        controller.update(band)
+        status = new Status(params).save(flush: true)
+        controller.update(status)
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/band/show/$band.id"
         flash.message != null
     }
 
@@ -185,23 +176,23 @@ class BandControllerSpec extends Specification {
         controller.delete(null)
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/band/index'
+        response.redirectedUrl == '/status/index'
         flash.message != null
 
         when: "A domain instance is created"
         response.reset()
         populateValidParams(params)
-        def band = new Band(params).save(flush: true)
+        def status = new Status(params).save(flush: true)
 
         then: "It exists"
-        Band.count() == 1
+        Status.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        controller.delete(band)
+        controller.delete(status)
 
         then: "The instance is deleted"
-        Band.count() == 0
-        response.redirectedUrl == '/band/index'
+        Status.count() == 0
+        response.redirectedUrl == '/status/index'
         flash.message != null
     }
 

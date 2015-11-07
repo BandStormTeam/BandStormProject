@@ -1,11 +1,11 @@
 package bandstorm
 
-import bandstorm.dao.BandDaoService
-import bandstorm.dao.EventDAOService
-import bandstorm.dao.UserDaoService
 import bandstorm.service.LightService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
+import bandstorm.service.dao.BandDaoService
+import bandstorm.service.dao.EventDAOService
+import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
@@ -39,7 +39,7 @@ class UserController {
      */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
     def index(Integer max) {
-        redirect action: 'userHome', controller: 'user', namespace: null
+        redirect action: 'home', controller: 'user', namespace: null
     }
 
     /**
@@ -61,11 +61,11 @@ class UserController {
 
     /**
      * Redirect to user home if connected
-     * @return redirection to index or userhome
+     * @return redirection to index or home
      */
     def urlRedirect() {
         if(userService.springSecurityService.isLoggedIn()) {
-            redirect (action: "userHome")
+            redirect (action: "home")
         } else {
             redirect(uri: "/index")
         }
@@ -168,13 +168,13 @@ class UserController {
      * User homepage, show the news(status) of an user
      * @return the homepage of the user
      */
-    def userHome() {
+    def home() {
         if (!userService.springSecurityService.isLoggedIn()) {
             try {
                 userService.logIn(params?.username, params?.password)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 def statusList = statusService.getStatusForTimeline()
-                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+                render(view: "home", model: [user : user, statusList: statusList, statusCount: statusList.size()])
             } catch (AuthenticationException) {
                 flash.message = "Invalid username or password"
                 redirect(uri: "/")
@@ -182,7 +182,7 @@ class UserController {
         } else {
             User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
             def statusList = statusService.getStatusForTimeline()
-            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+            render(view: "home", model: [user : user, statusList: statusList, statusCount: statusList.size()])
         }
     }
 
@@ -193,7 +193,7 @@ class UserController {
     def reload() {
         User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
         def statusList = statusService.getStatusForTimeline()
-        render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+        render(view: "home", model: [user : user, statusList: statusList, statusCount: statusList.size()])
     }
 
     /**
@@ -315,7 +315,7 @@ class UserController {
     def showFollowers() {
         def user = springSecurityService.currentUser
         def followersList = userDaoService.findAllFollowersForUser(user)
-        render (view: "userHome", model: [user: user, followersList: followersList])
+        render (view: "home", model: [user: user, followersList: followersList])
     }
 
     /**
@@ -325,7 +325,7 @@ class UserController {
     def showFollowed() {
         def user = springSecurityService.currentUser
         def followedList = userDaoService.findAllFollowedForUser(user)
-        render (view: "userHome", model: [user: user, followedList: followedList])
+        render (view: "home", model: [user: user, followedList: followedList])
     }
 
     /**
@@ -335,7 +335,7 @@ class UserController {
      */
     def light(Status s) {
         lightService.lightAStatus(springSecurityService.currentUser, s)
-        redirect action: 'userHome', controller: 'user', namespace: null
+        redirect action: 'home', controller: 'user', namespace: null
     }
 
     /**
@@ -345,7 +345,7 @@ class UserController {
      */
     def unlight(Status s) {
         lightService.unlightAStatus(springSecurityService.currentUser, s)
-        redirect action: 'userHome', controller: 'user', namespace: null
+        redirect action: 'home', controller: 'user', namespace: null
     }
 
 }

@@ -99,7 +99,7 @@
                 <div style="background-color:rgb(255,255,255);padding:15px;">
 
                     <ul class="nav nav-tabs">
-                        <li role="presentation" style="width:160px;text-align:center;" id="statusTimeline"><g:link controller="user" action="userHome">Actualité</g:link></li>
+                        <li role="presentation" style="width:160px;text-align:center;" id="statusTimeline"><g:link controller="user" action="home">Actualité</g:link></li>
                         <li role="presentation" style="width:160px;text-align:center;" id="followedTimeline"><g:link controller="user" action="showFollowed">Abonnements</g:link></li>
                         <li role="presentation" style="width:160px;text-align:center;" id="followerTimeline"><g:link controller="user" action="showFollowers">Abonnés</g:link></li>
                     </ul>

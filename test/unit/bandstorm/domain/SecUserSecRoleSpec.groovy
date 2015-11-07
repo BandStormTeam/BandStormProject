@@ -1,5 +1,9 @@
-package bandstorm
+package bandstorm.domain
 
+import bandstorm.SecRole
+import bandstorm.SecUserSecRole
+import bandstorm.User
+import grails.test.mixin.TestFor
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
@@ -8,6 +12,7 @@ import spock.lang.Specification
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
  */
 @TestMixin(GrailsUnitTestMixin)
+@TestFor(SecUserSecRole)
 class SecUserSecRoleSpec extends Specification {
 
     void "test SecUserRole methods"() {
@@ -25,9 +30,9 @@ class SecUserSecRoleSpec extends Specification {
 
         then: "valid return value"
         value instanceof Integer
-        resultEqual == false
-        resultRemove == false
-        test.validate() == false
+        !resultEqual
+        !resultRemove
+        !test.validate()
         secUserSecRole.equals(secUserSecRole)
         !secUserSecRole.equals(null)
     }

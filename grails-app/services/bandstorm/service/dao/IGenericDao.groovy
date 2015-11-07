@@ -1,4 +1,4 @@
-package bandstorm.dao
+package bandstorm.service.dao
 
 /**
  * Interface for generic DAO

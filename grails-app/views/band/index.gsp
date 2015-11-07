@@ -126,7 +126,7 @@
                         </tbody>
                     </table>
 
-                    <g:paginate total="${bandInstanceCount}" />
+                    <g:paginate total="${bandInstanceCount?:0}" />
 
                 </div>
             </div>

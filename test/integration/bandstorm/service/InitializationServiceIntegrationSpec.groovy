@@ -1,9 +1,6 @@
 package bandstorm.service
 
-import bandstorm.SecRole
-import bandstorm.SecUserSecRole
-import bandstorm.User
-import spock.lang.*
+import spock.lang.Specification
 
 /**
  *
