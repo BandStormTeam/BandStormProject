@@ -120,7 +120,7 @@
                                     <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
                                 </g:each>
                         </g:else>
-                    </g:if>
+                     </g:if>
                     <g:else>
                         <g:javascript>$("#statusTimeline").addClass('active');</g:javascript>
                         <br>
