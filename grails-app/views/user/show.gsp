@@ -13,14 +13,15 @@
 
                 <div style="background-color:rgb(255,255,255);padding:15px;">
 
-                    <ul class="nav nav-tabs">
+              <!-- TODO display folowing and folowers…
+              <ul class="nav nav-tabs">
                         <li role="presentation" style="width:160px;text-align:center;" class="active"><a
                                 href="#">Actualité</a></li>
                         <li role="presentation" style="width:160px;text-align:center;"><a href="#">Abonnement <span
                                 class="badge">42</span></a></li>
                         <li role="presentation" style="width:160px;text-align:center;"><a href="#">Abonnés <span
                                 class="badge">492</span></a></li>
-                    </ul>
+                    </ul>-->
 
                     <g:each in="${statusList}" var="st">
                         <g:render template="/status/display-status" model="[status: st, width:"80px"]"></g:render>
