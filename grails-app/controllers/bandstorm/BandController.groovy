@@ -14,7 +14,6 @@ import static org.springframework.http.HttpStatus.*
 @Secured(["ROLE_USER", "ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class BandController {
-
     BandDaoService bandDaoService
     UserDaoService userDaoService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -32,18 +31,6 @@ class BandController {
         calendar.set(2015,Calendar.SEPTEMBER, 01)
         Band band = new Band(name: "", description: "", address: "")
         respond Band.list(params), model: [bandInstance: band,bandInstanceCount: Band.count()]
-
-        /*params.max = Math.min(max ?: 10, 100)
-        params.sort = "name"
-
-        try {
-            User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-            respond user.groupsFollowed.toList(), model: [bandInstanceCount: user.groupsFollowed.toList().size()]
-        }
-        catch (AuthenticationException) {
-        }*/
-
-
     }
 
     /**
@@ -52,7 +39,12 @@ class BandController {
      * @return band details
      */
     def show(Band bandInstance) {
-        respond bandInstance
+        if(bandInstance == null) {
+            return response.sendError(404)
+        }
+
+        def currentUser = springSecurityService.currentUser
+        respond bandInstance, model: [currentUser: currentUser]
     }
 
     /**

@@ -75,47 +75,7 @@
                         <g:each in="${bandInstanceList}" var="bandInstance">
                             <tr>
                                 <td><a type="button" data-toggle="modal" data-target="#myModal">${fieldValue(bean: bandInstance, field: "name")}</a></td>
-                                <!-- Modal -->
-                                <div class="modal fade" id="myModal" role="dialog">
-                                    <div class="modal-dialog">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Détail</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <dl class="dl-horizontal">
-                                                    <g:if test="${bandInstance?.name}">
-                                                        <dt>Nom</dt>
-                                                        <dd><g:fieldValue bean="${bandInstance}" field="name"/></dd>
-                                                    </g:if>
-
-                                                    <g:if test="${bandInstance?.dateCreated}">
-                                                        <dt>Date de création</dt>
-                                                        <dd><g:fieldValue bean="${bandInstance}" field="dateCreated"/></dd>
-                                                    </g:if>
-
-                                                    <g:if test="${bandInstance?.address}">
-                                                        <dt>Lieu</dt>
-                                                        <dd><g:fieldValue bean="${bandInstance}" field="address"/></dd>
-                                                    </g:if>
-
-                                                    <g:if test="${bandInstance?.description}">
-                                                        <dt>Description</dt>
-                                                        <dd><g:fieldValue bean="${bandInstance}" field="description"/></dd>
-                                                    </g:if>
-
-                                                </dl>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
+                                <g:render template="modal" model="[bandInstance: bandInstance]"></g:render>
                                 <td><g:formatDate date="${bandInstance.dateCreated}" /></td>
 
                                 <td>${fieldValue(bean: bandInstance, field: "address")}</td>
