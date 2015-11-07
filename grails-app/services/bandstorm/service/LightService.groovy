@@ -35,14 +35,7 @@ class LightService {
      * @param status
      */
     def isLightingStatus(User user, Status status) {
-        Status[] buffStatus = Status.findAllByUser(user)
-
-        buffStatus.each( {
-            if(it == status) {
-                return true;
-            }
-        });
-        return false;
+        Light.findByUserAndStatus(user, status) != null
     }
 
     Light findByUserAndStatus(User u, Status s) {
