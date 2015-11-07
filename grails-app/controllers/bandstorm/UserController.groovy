@@ -3,6 +3,7 @@ package bandstorm
 import bandstorm.dao.BandDaoService
 import bandstorm.dao.EventDAOService
 import bandstorm.dao.UserDaoService
+import bandstorm.service.LightService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
 import grails.plugin.springsecurity.annotation.Secured
@@ -27,6 +28,7 @@ class UserController {
     UserDaoService userDaoService
     BandDaoService bandDaoService
     EventDAOService eventDAOService
+    LightService lightService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
@@ -37,8 +39,7 @@ class UserController {
      */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userInstanceCount: User.count()]
+        redirect action: 'userHome', controller: 'user', namespace: null
     }
 
     /**
@@ -97,14 +98,14 @@ class UserController {
      * @return list of Band
      */
     @Secured("ROLE_USER")
-    def searchBand(String keywords,Integer max,Integer offset){
-        if (!max){
+    def searchBand(String keywords,Integer max,Integer offset) {
+        if (!max) {
             max = 10
         }
-        if (!offset){
+        if (!offset) {
             offset = 0
         }
-        if (!keywords){
+        if (!keywords) {
             keywords = ""
         }
 
@@ -119,15 +120,15 @@ class UserController {
      * @return list of User
      */
     @Secured("ROLE_USER")
-    def searchUser(String keywords,Integer max,Integer offset){
+    def searchUser(String keywords,Integer max,Integer offset) {
 
-        if (!max){
+        if (!max) {
             max = 10
         }
-        if (!offset){
+        if (!offset) {
             offset = 0
         }
-        if (!keywords){
+        if (!keywords) {
             keywords = ""
         }
 
@@ -142,8 +143,8 @@ class UserController {
      * @return form for user profil
      */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
-    def profilSettings(User userInstance){
-        if (userInstance == null){
+    def profilSettings(User userInstance) {
+        if (userInstance == null) {
             userInstance = User.findByUsername(userService.springSecurityService.getCurrentUser())
         }
         respond userInstance
@@ -155,9 +156,9 @@ class UserController {
      * @return for for user password
      */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
-    def passwordSettings(User userInstance){
+    def passwordSettings(User userInstance) {
 
-        if (userInstance == null){
+        if (userInstance == null) {
             userInstance = userService.springSecurityService.getCurrentUser()
         }
         respond userInstance
@@ -292,7 +293,7 @@ class UserController {
      * @param user : user to follow
      * @return page of the user
      */
-    def followUser(User user){
+    def followUser(User user) {
         def follow = userDaoService.followUser(springSecurityService.currentUser, user)
         redirect(action: "show", params: params)
     }
@@ -302,7 +303,7 @@ class UserController {
      * @param user : user to unfollow
      * @return page of the user
      */
-    def unfollowUser(User user){
+    def unfollowUser(User user) {
         userDaoService.unfollowUser(springSecurityService.currentUser, user)
         redirect(action: "show", params: params)
     }
@@ -311,7 +312,7 @@ class UserController {
      * Show the followers of an user
      * @return list of followers
      */
-    def showFollowers(){
+    def showFollowers() {
         def user = springSecurityService.currentUser
         def followersList = userDaoService.findAllFollowersForUser(user)
         render (view: "userHome", model: [user: user, followersList: followersList])
@@ -321,9 +322,19 @@ class UserController {
      * Show users followed by user
      * @return list of followed
      */
-    def showFollowed(){
+    def showFollowed() {
         def user = springSecurityService.currentUser
         def followedList = userDaoService.findAllFollowedForUser(user)
         render (view: "userHome", model: [user: user, followedList: followedList])
+    }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    def light(Status s) {
+        lightService.lightAStatus(springSecurityService.currentUser, s)
+        redirect action: 'userHome', controller: 'user', namespace: null
     }
 }

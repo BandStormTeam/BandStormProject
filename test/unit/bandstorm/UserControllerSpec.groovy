@@ -33,9 +33,8 @@ class UserControllerSpec extends Specification {
         when: "The index action is executed"
         controller.index()
 
-        then: "The model is correct"
-        !model.userInstanceList
-        model.userInstanceCount == 0
+        then: "The redirection is correct"
+        response.redirectedUrl == '/user/userHome'
     }
 
 
@@ -341,17 +340,6 @@ class UserControllerSpec extends Specification {
 
         then: "the authentification fails so the user is not redirected to the userHome view"
         view != 'userHome'
-
-    }
-
-    void "test index method with max param"() {
-
-        when : "the index action is called with a defined max param"
-        controller.index(200)
-
-        then: "the index view is rendered and params.max = 100"
-        params.max == 100
-
     }
 
     void "test url redirect method when user is logged in"() {
