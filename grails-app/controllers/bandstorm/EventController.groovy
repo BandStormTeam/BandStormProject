@@ -41,6 +41,10 @@ class EventController {
      * @return details for event
      */
     def show(Event eventInstance) {
+        if(eventInstance == null) {
+            return response.sendError(404)
+        }
+
         respond eventInstance
     }
 
