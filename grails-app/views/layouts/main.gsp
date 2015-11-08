@@ -75,7 +75,7 @@
 					<div class="form-group">
 						<g:form  method="get" controller="search" action="user">
 							<input type="text" placeholder="Trouvez un ami ou un groupe" class="form-control" name="keywords" value="${keywords}" style="width:400px;"/>
-							<input type="submit" class="btn btn-success" value="Rechercher" />
+							<input type="submit" id="search-btn" class="btn btn-success" value="Rechercher" />
 						</g:form >
 					</div>
 				</div>
@@ -85,10 +85,10 @@
 				<sec:ifNotLoggedIn>
 					<g:form  method="post" controller="user">
 						<div class="form-group">
-							<g:textField type="text" placeholder="username" class="form-control" name="username"/>
+							<g:textField type="text" id="username-login" placeholder="username" class="form-control" name="username"/>
 						</div>
 						<div class="form-group">
-							<g:passwordField type="password" placeholder="password" class="form-control" name="password"/>
+							<g:passwordField type="password" id="password-login" placeholder="password" class="form-control" name="password"/>
 						</div>
 						<g:actionSubmit  class="btn btn-success" action="home" value="Connexion" />
 					</g:form>
@@ -104,10 +104,10 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<li><a href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
-							<li><a href="${createLink(controller: 'event', action: 'index')}">Mes événements</a></li>
-							<li><a href="${createLink(controller: 'band', action: 'index')}">Mes groupes</a></li>
-							<li><a href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
+							<li><a id="settingsBtn" $("[name='keywords']").value("A")href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
+							<li><a id="eventsBtn" href="${createLink(controller: 'event', action: 'index')}">Mes événements</a></li>
+							<li><a id="bandsBtn" href="${createLink(controller: 'band', action: 'index')}">Mes groupes</a></li>
+							<li><a id="deconnection" href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
 						</ul>
 					</div>
 
