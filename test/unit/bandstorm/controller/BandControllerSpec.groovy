@@ -2,17 +2,21 @@ package bandstorm.controller
 
 import bandstorm.Band
 import bandstorm.BandController
+import bandstorm.GroupMember
 import bandstorm.User
 import bandstorm.service.UserService
 import bandstorm.service.dao.BandDaoService
+import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import org.springframework.http.HttpStatus
 import spock.lang.Specification
 
+import java.security.acl.Group
+
 @TestFor(BandController)
-@Mock(Band)
+@Mock([Band, GroupMember])
 class BandControllerSpec extends Specification {
 
     def populateValidParams(params) {
@@ -214,6 +218,24 @@ class BandControllerSpec extends Specification {
 
         then: "the index view is rendered and params.max = 100"
         params.max == 100
+    }
+
+    void "test join method"() {
+        given: "A Band"
+        Band b = Mock(Band)
+        User user = Mock(User)
+        user.save()
+        controller.userDaoService = Mock(UserDaoService)
+        controller.userDaoService.springSecurityService >> Mock(SpringSecurityService) {
+            getCurrentUser() >> user
+        }
+
+        when: "The join action is executed"
+        controller.join(b)
+
+        then: "The current user has joined"
+        Mock(GroupMember).count() == 0
+        response.redirectedUrl == '/user/home'
 
     }
 }

@@ -1,5 +1,6 @@
 package bandstorm
 
+import bandstorm.service.UserService
 import bandstorm.service.dao.BandDaoService
 import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
@@ -15,6 +16,9 @@ import static org.springframework.http.HttpStatus.*
 @Secured(["ROLE_USER", "ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class BandController {
+    def springSecurityService
+    UserService userService
+
     BandDaoService bandDaoService
     UserDaoService userDaoService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -109,6 +113,24 @@ class BandController {
         render template: 'form', model: [bandInstance: bandInstance, status: "OK"]
 
 
+    }
+
+    /**
+     * Current user want to join a band
+     * @param bandInstance
+     */
+    def join(Band bandInstance) {
+        if(bandInstance == null) {
+            return response.sendError(404)
+        }
+
+        try {
+            User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
+            bandDaoService.joinBand(user, bandInstance)
+        } catch (AuthenticationException) {
+        }
+
+        redirect action: 'home', controller: 'user', namespace: null
     }
 
     /**

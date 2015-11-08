@@ -151,24 +151,16 @@
                 </div>
 
                 <div class="sidebar-module">
-                    <h4>Derniers événements</h4>
+                    <h4>Ses groupes</h4>
                     <ol class="list-unstyled">
-                        <li><a href="#">[16 Mars 2013] Concert a roterdam</a></li>
-                        <li><a href="#">[16 Mars 2013] Concert a roterdam</a></li>
-                        <li><a href="#">[16 Mars 2013] Concert a roterdam</a></li>
+                        <g:each in="${user.getBands()}" var="b">
+                            <li><a href="${createLink(action: 'show',controller: 'band', id: b.id)}">${b.name}</a></li>
+                        </g:each>
                     </ol>
                 </div>
                 <bR>
 
                 <div class="sidebar-module">
-                    <h4>Elsewhere</h4>
-                    <ol class="list-unstyled">
-
-                        <li><a href="#">https://twitter.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
-                        </li>
-                        <li><a href="#">https://facebook.com/Crazy_<g:fieldValue bean="${user}" field="username"/></a>
-                        </li>
-                    </ol>
                 </div>
             </div><!-- /.blog-sidebar -->
 

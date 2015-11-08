@@ -1,5 +1,6 @@
 package bandstorm.service.dao
 import bandstorm.Band
+import bandstorm.User
 import spock.lang.Specification
 
 /**
@@ -68,5 +69,22 @@ class BandDaoServiceIntegrationSpec extends Specification {
 
         then: "band2 does not contain keywords"
         !bandList.contains(band2)
+    }
+
+    void "test if a user join band"() {
+        given: "A user and a band"
+        def band1 = new Band(name: "Les groovy and grails",description: "Un groupe de folie").save()
+        User user = new User(username: "user1", email: "user1@mail.com",
+                firstName: "jon", lastName: "doe",
+                birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"),
+                country: "somewhere",
+                password: "azerty").save(flush: true)
+
+        when: "The user join the band"
+        bandDaoService.joinBand(user, band1)
+
+        then: "User is in the band"
+        user.isInBand(band1)
+        user.getBands().contains(band1)
     }
 }
