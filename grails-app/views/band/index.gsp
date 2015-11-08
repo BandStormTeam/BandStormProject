@@ -74,7 +74,7 @@
                         <tbody>
                         <g:each in="${bandInstanceList}" var="bandInstance">
                             <tr>
-                                <td><a type="button" data-toggle="modal" data-target="#myModal">${fieldValue(bean: bandInstance, field: "name")}</a></td>
+                                <td><a type="button" data-toggle="modal" data-target="#myModal${bandInstance.id}">${fieldValue(bean: bandInstance, field: "name")}</a></td>
                                 <g:render template="modal" model="[bandInstance: bandInstance]"></g:render>
                                 <td><g:formatDate date="${bandInstance.dateCreated}" /></td>
 

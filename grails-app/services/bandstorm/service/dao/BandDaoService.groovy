@@ -1,6 +1,8 @@
 package bandstorm.service.dao
 
 import bandstorm.Band
+import bandstorm.GroupMember
+import bandstorm.User
 import grails.transaction.Transactional
 
 @Transactional
@@ -39,6 +41,11 @@ class BandDaoService {
         result.bandCount = result.bandList.size()
 
         return result;
+    }
+
+    void joinBand(User u, Band b) {
+        GroupMember g = new GroupMember(band: b, user: u);
+        g.save(flush: true)
     }
 
     @Override

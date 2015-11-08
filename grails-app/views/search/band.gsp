@@ -22,7 +22,7 @@
                                 </a>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading"><a href="#" data-toggle="modal" data-target="#myModal">${band.name}</a></h4>
+                                <h4 class="media-heading"><a href="#" data-toggle="modal" data-target="#myModal${band.id}">${band.name}</a></h4>
                                 <g:render template="/band/modal" model="[bandInstance: band]"></g:render>
                                     ${band.name}</h4>
                                 <p>

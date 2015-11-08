@@ -41,6 +41,12 @@
                 </div>
 
                 <div class="sidebar-module">
+                    <h4>Ses groupes</h4>
+                    <ol class="list-unstyled">
+                        <g:each in="${userInstance.getBands()}" var="b">
+                            <li><a href="${createLink(action: 'show',controller: 'band', id: b.id)}">${b.name}</a></li>
+                        </g:each>
+                    </ol>
                 </div>
                 <bR>
 
