@@ -113,12 +113,20 @@
                                     <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
                                 </g:each>
                             </g:if>
+                            <g:else>
+                                <p>Désolé, vous n'avez aucun abonné.</p>
+                            </g:else>
                         </g:if>
                         <g:else>
                             <g:javascript>$("#followedTimeline").addClass('active');</g:javascript>
+                            <g:if test="${followedList != []}">
                                 <g:each in="${followedList}" var="follower">
                                     <p style="margin-top: 10px; font-size: large" ><a href="${createLink(action: 'show',controller: 'user', id: follower.id)}">${follower.username}</a></p><hr>
                                 </g:each>
+                            </g:if>
+                            <g:else>
+                                <p>Désolé, vous n'avez aucun abonnement.</p>
+                            </g:else>
                         </g:else>
                      </g:if>
                     <g:else>
