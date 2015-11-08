@@ -21,7 +21,7 @@
 
             <div class="col-sm-3  blog-sidebar" style="background-color:rgb(255,255,255);padding:15px;">
                 <div class="sidebar-module sidebar-module-inset">
-                    <g:render template="../user/avatar" model="[userInstance: userInstance, width: "200px"]"/>
+                    <g:render template="../user/avatar" model="[userInstance: userInstance, width: '200px']"/>
                     <h4>${userInstance.username} <small>${userInstance.firstName} ${userInstance.lastName}</small></h4>
                     <ul style="list-style-type: none">
                         <li><i class="glyphicon glyphicon-calendar"></i>&nbsp;Né le <g:formatDate format="dd/MM/yyyy" date="${userInstance.birthDate}"/></li>
