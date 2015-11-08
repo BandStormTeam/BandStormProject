@@ -12,7 +12,7 @@
 
     <div class="row">
 
-        <h2 style="color: white;"> Bienvenue ${userInstance.email}</h2>
+        <h2 style="color: white;"> Bienvenue ${userInstance.username}</h2>
         <br>
         <div class="col-xs-2">
 

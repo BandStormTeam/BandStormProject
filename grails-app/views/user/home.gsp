@@ -140,8 +140,7 @@
 
             <div class="col-sm-3  blog-sidebar" style="background-color:rgb(255,255,255);padding:15px;">
                 <div class="sidebar-module sidebar-module-inset">
-                    <img src="${resource(dir: 'images', file: 'r.jpg')}" data-holder-rendered="true" style="width: 75%;"
-                         style="display:inline-block !important;">
+                    <g:render template="../user/avatar" model="[userInstance: user, width: '200px']"/>
 
                     <h4>Crazy <g:fieldValue bean="${user}" field="username"/></h4>
 
