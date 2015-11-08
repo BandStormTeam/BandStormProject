@@ -58,6 +58,7 @@ class BandControllerSpec extends Specification {
         controller.params.nameBand = "Y"
         controller.params.addressBand = "Rue des ar�nes"
         controller.params.descriptionBand = "T"
+        controller.params.bandTags = "Toto;Stuff"
         controller.save(band)
 
         then: "No event is created"
@@ -66,17 +67,14 @@ class BandControllerSpec extends Specification {
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
-        band = new Band(params)
-        controller.params.nameBand = "a name"
-        controller.params.addressBand = "a longue addresse"
-        controller.params.descriptionBand = "a description"
+        band = Mock(Band)
         UserService userService = Mock(UserService)
         User user
         userService.springSecurityService >> Mock(SpringSecurityService) {
             getCurrentUser() >> user
         }
         controller.bandDaoService = Mock(BandDaoService) {
-            create(_) >> new Band(name: "Groovy and Grails" , address: "Santa Monica", description: "anyway it is good").save()
+            create(_) >> new Band(name: "Groovy and Grails" , address: "Santa Monica testouille", description: "anyway it is good").save(flush:true)
         }
         controller.save(band)
 
@@ -223,6 +221,7 @@ class BandControllerSpec extends Specification {
     void "test join method"() {
         given: "A Band"
         Band b = Mock(Band)
+        Band b2 = Mock(Band)
         User user = Mock(User)
         user.save()
         controller.userDaoService = Mock(UserDaoService)
@@ -236,6 +235,5 @@ class BandControllerSpec extends Specification {
         then: "The current user has joined"
         Mock(GroupMember).count() == 0
         response.redirectedUrl == '/user/home'
-
     }
 }
