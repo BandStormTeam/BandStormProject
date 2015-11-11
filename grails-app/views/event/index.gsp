@@ -72,10 +72,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <g:each in="${eventInstanceList}" var="eventInstance">
+                                <g:each in="${eventInstanceList}" var="eventInstance" status="i">
                                     <tr>
-                                        <td><a type="button" data-toggle="modal" data-target="#myModal">${fieldValue(bean: eventInstance, field: "name")}</a></td>
-                                        <g:render template="/event/modal" model="[eventInstance: eventInstance]"></g:render>
+                                        <td><a type="button" data-toggle="modal" data-target="#myModal${i}">${fieldValue(bean: eventInstance, field: "name")}</a></td>
+                                        <g:render template="/event/modal" model="[eventInstance: eventInstance, status:i]"></g:render>
 
                                         <td><g:formatDate date="${eventInstance.dateEvent}"/></td>
 
