@@ -44,14 +44,14 @@ M1 Informatique -- Développement Logiciel
 \vspace{-10px}
 }
 
-\date[ ~ ~ ~ 29 / 04 / 2015] % (facultatif, peut être une abr\'eviation du nom de la conf\'erence)
-{Mercredi 29 Avril 2015}
+\date[ ~ ~ ~ 13 / 11 / 2015] % (facultatif, peut être une abr\'eviation du nom de la conf\'erence)
+{Vendredi 13 Novembre 2015}
 
 
 
 \AtBeginSection[] {
 \begin{frame}<beamer>{Plan}
-	\tableofcontents[currentsection]
+	\tableofcontents[currentsection,subsectionstyle=hide]
 \end{frame}
 }
 
@@ -64,14 +64,22 @@ M1 Informatique -- Développement Logiciel
 		\titlepage
 	\end{frame}
 
-	%\input{contents/intro.tex}
-
 	\sidetoc{yes}
-	\section{Le projet} % Intro + Projet &=&  4'
-	\section{La méthodologie} %  Méthodo = 8'
-	\section{Les résultats} % Résultats = 5'
+	\DylanSpeak
+	\begin{frame}
+		\tableofcontents[subsectionstyle=hide]
+	\end{frame}
+	\section{Gestion de projet} % Intro + Projet &=&  4'
+	\input{contents/projectManagement.tex}
+
+	\section{Processus de développement} %  Méthodo = 8'
+	\input{contents/process.tex}
+
+	\section{Résultats} % Résultats = 5'
+	\input{contents/results.tex}
 
 	\section{} % 3'
+	\input{contents/conclude.tex}
 
 	% Slide for questions
 	\sidetoc{no}
