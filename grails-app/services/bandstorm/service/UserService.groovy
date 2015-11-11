@@ -21,7 +21,6 @@ class UserService {
     AuthenticationManager authenticationManager
     def logoutHandlers
     def mailService
-    StatusDaoService statusDaoService
     UserDaoService userDaoService
 
     /**

@@ -19,8 +19,6 @@ import static org.springframework.http.HttpStatus.NO_CONTENT
 @Secured("permitAll")
 class UserController {
     def springSecurityService
-    def logoutHandlers
-    AuthenticationManager authenticationManager
     StatusService statusService
     UserService userService
     UserDaoService userDaoService
