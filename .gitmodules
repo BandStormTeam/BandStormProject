@@ -1,0 +1,3 @@
+[submodule "documents/beamer-theme"]
+	path = documents/beamer-theme
+	url = https://github.com/aroquemaurel/beamer-theme

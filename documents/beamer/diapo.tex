@@ -1,0 +1,93 @@
+\documentclass{beamer}
+\usepackage{listings}
+\usepackage{mdframed}
+\usepackage{tikz}
+\usepackage{pdfpages}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage[overlay,absolute]{textpos}
+
+\newcommand{\firstlogo}{mdl.png}
+\newcommand{\secondlogo}{ups.jpg}
+\newcommand{\footsubject}{BandStorm, Le réseau social pour les amateurs de musique} 
+\newcommand{\rgbcolortheme}{55,71,79}
+
+\makeatletter
+\hypersetup{pdfpagemode=FullScreen}
+
+\mode<presentation> {
+	\usepackage{../beamer-theme/beamerthemeUNLTheme}
+}
+
+\title[] % (facultatif, \`a utiliser uniquement si le titre de l'article est trop long)
+{BandStorm, le réseau social pour les amateurs de musique}
+\subtitle {IVVQ}
+
+\newcommand{\authors}{%
+Julian \bsc{Bironneau}\newline
+Antoine de \bsc{Roquemaurel}\newline 
+Steve \bsc{Magras}\newline
+Dylan \bsc{Roletto}\newline
+Zaccaria \bsc{Zyat}\newline
+\newline~\newline{}\url{https://m2dl-bandstorm.herokuapp.com}
+}
+\input{speakers.tex}
+\institute[] 
+{
+Universit\'e Toulouse III -- Paul Sabatier \\
+M1 Informatique -- Développement Logiciel 
+\vspace{-10px}
+}
+
+\date[ ~ ~ ~ 29 / 04 / 2015] % (facultatif, peut être une abr\'eviation du nom de la conf\'erence)
+{Mercredi 29 Avril 2015}
+
+
+
+\AtBeginSection[] {
+\begin{frame}<beamer>{Plan}
+	\tableofcontents[currentsection]
+\end{frame}
+}
+
+\setbeamerfont*{section in sidebar}{size=\fontsize{8px}{2.3em}\selectfont }
+\setbeamerfont*{subsection in sidebar}{size=\fontsize{5px}{1.5em}\selectfont }
+\begin{document}
+	\sidetoc{no}
+	\NooneSpeak{}
+	\begin{frame}
+		\titlepage
+	\end{frame}
+
+	%\input{contents/intro.tex}
+
+	\sidetoc{yes}
+	\section{Le projet} % Intro + Projet &=&  4'
+	\section{La méthodologie} %  Méthodo = 8'
+	\section{Les résultats} % Résultats = 5'
+
+	\section{} % 3'
+
+	% Slide for questions
+	\sidetoc{no}
+	\NooneSpeak{}
+	\begin{frame}{Avez-vous des questions ?}
+		\begin{figure}[H]
+			\centering
+	%		\includegraphics[width=5cm]{interrogation.png}
+		\end{figure}
+	\end{frame}
+	\vspace*{-7mm}    
+	\begin{frame}[plain]{Product Backlog}
+		\hspace*{-35mm}
+	%	\includegraphics[width=13.8cm]{backlog.pdf}
+	\end{frame}
+	\begin{frame}
+		\titlepage
+	\end{frame}
+\end{document}
