@@ -1,0 +1,154 @@
+\documentclass[12pt,a4paper,oneside]{book}
+\usepackage{lmodern}
+\usepackage[svgnames]{xcolor} % Required to specify font color
+\input{../LaTexTemplate/templates/couleurs.tex}
+\usepackage{makeidx}
+\usepackage[utf8]{inputenc} 
+\usepackage{marvosym}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage[top=1.7cm, bottom=1.7cm, left=1.7cm, right=1.7cm]{geometry}
+\usepackage{verbatim}
+\usepackage[urlbordercolor={1 1 1}, linkbordercolor={1 1 1}, linkcolor=vert1, urlcolor=bleu, colorlinks=true]{hyperref}
+\usepackage{tikz} %Vectoriel
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{multido}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage[francais]{minitoc}
+\usepackage[final]{pdfpages} 
+\usepackage{pgfgantt}
+\usepackage{graphicx} % Required for box manipulation
+\usepackage{makeidx}
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{epstopdf}
+
+
+\newcommand{\titre}{Documentation de BandStorm}
+\newcommand{\logoFooter}{~}
+\newcommand{\logo}{mdl.png}
+\newcommand{\titreFooter}{Documentation -- BandStorm} 
+\newcommand{\subtitle}{\textbf{I}ntégration, \textbf{V}érification, \textbf{V}alidation, \textbf{Q}ualification} 
+\newcommand{\auteur}{BERBIE Florent, DE ROQUEMAUREL Antoine}
+\newcommand{\semestre}{S9}
+\newcommand{\annee}{2015}
+\newcommand{\pole}{}
+\newcommand{\formation}{}
+\newcommand{\sigle}{}
+
+\makeindex
+
+\input{../LaTexTemplate/templates/listings.tex}
+\input{../LaTexTemplate/templates/classroomsTemplates/l3/cours.tex}
+\input{../LaTexTemplate/templates/remarquesExempleAttention.tex}
+\input{../LaTexTemplate/templates/polices.tex}
+\input{../LaTexTemplate/templates/affichageChapitre.tex}
+\input{../LaTexTemplate/templates/cover/couverture.tex}
+\makeatother
+
+
+\begin{document}
+	\thispagestyle{empty} % Removes page numbers
+	\titleBC
+
+	\setcounter{tocdepth}{1}
+	\setcounter{secnumdepth}{3}
+	\setcounter{minitocdepth}{1}
+	
+	\tableofcontents
+	\chapter{Le projet}
+	\section{Le projet Bandstorm}
+	Bandstorm est un projet qui a pour but de réaliser un réseau social pour des amateurs de musique. Celui-ci a pour objectif de mettre en relations des utilisateurs par le biais de communautés. Ces communautés sont constitués en fonction de préférences musicales.
+	\section{Les informations utiles\ldots}
+%Coveralls
+%Heroku + Logins
+%Travis
+%Sonar
+%Github + github utilisateur
+	\section{Fonctionnalités}
+	Notre application possède de multiples fonctionnalités qui vont être détaillées ci-dessous.
+	Chaque utilisateur de BandStorm possède un compte personnel sécurisé par un système de login.
+	
+	\begin{itemize}
+		\item Les utilisateurs ont la possibilité de suivre d’autres utilisateurs.
+		\item Les utilisateurs peuvent créer, rejoindre et visualiser un groupe.
+		\item Les utilisateurs peuvent créer et visualiser un évênement.
+		\item Les utilisateurs ont la possibilité de rechercher des entités via une barre de recherche (utilisateurs, groupes, évênements).
+		\item Les utilisateurs peuvent poster des statuts.
+		\item Les utilisateurs peuvent visualiser les statuts de leurs abonnements.
+		\item Les utilisateurs ont la possibilité de “lighter” (aimer) un statut.
+		\item Les utilisateurs ont la possibilité de changer leurs informations personnelles.
+	\end{itemize}	
+	
+	\chapter{Le \textit{workflow} de développement}
+	Afin de faciliter le travail collaboratif et l’intégration de nos développements respectifs, nous avons utilisé Git et Github. 
+	Via un workflow en branches par fonctionnalités, nous avons pu développer celles-ci en parallèles. 
+	
+	Lorsqu'un développeur choisi de répondre à une issue, il va créer une nouvelle branche, nommée suivant la convention suivante
+	\texttt{sprintN/noIssue-recapitulatifIssue}.
+	
+	Lorsque le développeur estime avoir terminé sa fonctionnalité, il doit ouvrir une \textit{Pull Request}, celle-ci nous permet d’effectuer de la revue de code. La fonctionnalité ne sera fusionnée avec la branche de niveau inférieur que lorsque l'équipe estime avoir terminé l’issue.
+	
+	Plus de détails notre \textit{workflow} est disponible ici : 
+	https://github.com/BandStormTeam/BandStormProject/blob/master/workflow-feature.md
+	
+	\section{Tests et couverture}
+	Lors du développement d’un projet complexe, il est indispensable de tester correctement le projet afin de pouvoir le vérifier et le valider. Ainsi, dans le cadre de BandStorm nous avons définis des pourcentages de couverture de tests à respecter impérativement; Le bon respect de ces chiffres contribuent à effectuer un projet de qualité. 
+	
+	Cette couverture doit être de 80\%, 
+	\begin{itemize}
+		\item 100\% pour les classes du domaine.
+		\item 80\% pour les contrôleurs.
+		\item 80\% pour les services.
+	\end{itemize}	
+	
+	Les classes du domaine, services et contrôleurs devront être couverts par des tests unitaires. Les services de type DAO devront être couverts par des tests d’intégrations.
+	
+	Afin d’avoir des tests les plus exhaustifs possibles, nous avons également mis en place des tests fonctionnels en utilisant Geb. Ces tests nous permettent de vérifier le bon fonctionnement global de notre application.
+	
+	\section{Intégration continue}
+	Nous avons utilisés Travis CI afin d’intégrer et de vérifier cette intégration de manière continue. Notre serveur d’intégration effectue plusieurs actions : 
+	Compilation du projet 
+	Lancement des tests unitaires
+	Lancement des tests d’intégration
+	Calcul de la couverture de code
+	Éventuel déploiement sur heroku (uniquement master)
+	Le build ne peut être correcte que si l’ensemble de ces actions se sont bien effectuées. 
+	À noter que Travis CI ne lance pas les tests fonctionnels. En effet, les tests fonctionnels nécessitent un serveur graphique ainsi que le démarrage d’un navigateur, la version gratuite de Travis-CI ne semble pas répondre à nos attentes. Il pourrait être intéressant d’installer un serveur d’intégration continue sur une machine personnelle tel que Jenkins ou Gitlab-CI.
+	
+	Les tests fonctionnels étant les tests les plus proches d’un utilisateur permettrait ainsi de pouvoir effectuer de la non-régression de façon systématique et automatique.
+	
+	\section{Déploiement continue}
+	La vérification de la bonne intégration de notre application ne suffit pas à avoir un processus de mise en production fiable. Il est indispensable de vérifier le bon déploiement de l’application sur un serveur autre que celui de production avant. C’est dans ce but que nous utilisons Heroku. La La branche master de l'application est déployée de façon continue et automatique sur heroku.
+	
+	\section{Analyse statique de code}
+	our avoir un code de qualité, il est faut également prendre en compte la maintenance que celui-ci va couter. Cette maintenance peut être réduite en développant avec des conventions claires précises et mesurables. 
+	Ainsi, nous avons utilisé codenarc qui permet de vérifier les règles de nos conventions d’écritures. 
+	
+	SonarQube quant-à lui permet d’une part de centraliser toutes les informations nécessaires, tout en conservant un historique de celles-ci, mais il nous permet également d’avoir de nouvelles métriques tel que le nombre de ligne de code, le pourcentage de commentaire ou la complexité cyclomatique de notre projet. 
+	
+	\chapter{Agilité}
+	\section{Sprints}	
+	Pendant toutes la durée du projet, l’équipe à suivi les principes du processus agile Scrum. La durée du projet a été découpée en trois sprints d’une durée de deux semaines chacun. Un sprint 0 a été réalisé afin de mettre en place l’architecture, le processus de développement et la première version du Backlog.
+	
+	Il a été décidé que la répartition des roles de Product owner et de Scrum Master changent à chaque Sprint afin que tout le monde puisse essayer chacun des roles.
+	
+	Une revue et une retrospective ont été effectuées à la fin de chaque Sprint.
+	Le tableau ci-dessous rescence les différents sprints associés aux roles et aux date de revues et retrospectives.
+	
+	\section{Planning Poker et vélocité}
+	Pour attribuer un nombre de points aux issues, l’équipe Scrum à utilisé le planning poker. Celui-ci a été effectué grace à un outil disponibile gratuitement sur internet, Pointing Poker (https://www.pointingpoker.com/).
+	
+	Après avoir terminé un sprint, il nous était donc possible de calculer la vélocité de celui-ci. Le plugin ZenHub nous a permis de représenter facilement et de manière graphique la courbe Burn-Down de notre vélocité. 
+	
+	Ci-dessous, le burn-down représentant le premier sprint:
+	
+	\section{Objectifs des sprints}
+	\section{Définition de fini}
+	\section{Releases}
+	
+	\chapter{Architecture}
+
+\end{document}

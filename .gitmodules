@@ -1,3 +1,6 @@
 [submodule "documents/beamer-theme"]
 	path = documents/beamer-theme
 	url = https://github.com/aroquemaurel/beamer-theme
+[submodule "documents/LaTexTemplate"]
+	path = documents/LaTexTemplate
+	url = https://github.com/aroquemaurel/LaTexTemplate
