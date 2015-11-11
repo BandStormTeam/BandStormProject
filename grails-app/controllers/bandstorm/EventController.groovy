@@ -18,7 +18,7 @@ class EventController {
 
     EventDAOService eventDAOService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
     /**
      * Show the list of user's events
@@ -138,8 +138,12 @@ class EventController {
     def delete(Event eventInstance) {
 
         if (eventInstance == null) {
-            notFound()
-            return
+            if(params.id) {
+                eventInstance = Event.get(params.id)
+            } else {
+                notFound()
+                return
+            }
         }
 
         eventDAOService.delete(eventInstance)
