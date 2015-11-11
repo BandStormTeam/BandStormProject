@@ -104,7 +104,7 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<li><a id="settingsBtn" $("[name='keywords']").value("A")href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
+							<li><a id="settingsBtn" $("[name='keywords']").value("A") href="${createLink(controller: 'user', action: 'profilSettings')}">Paramétrage</a></li>
 							<li><a id="eventsBtn" href="${createLink(controller: 'event', action: 'index')}">Mes événements</a></li>
 							<li><a id="bandsBtn" href="${createLink(controller: 'band', action: 'index')}">Mes groupes</a></li>
 							<li><a id="deconnection" href="${createLink(controller: 'user', action: 'logout')}">Déconnexion</a></li>
