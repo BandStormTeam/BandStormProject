@@ -128,3 +128,4 @@ local.properties
 
 classes
 *.ser
+.slcache

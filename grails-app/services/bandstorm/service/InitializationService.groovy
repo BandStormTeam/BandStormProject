@@ -1,21 +1,21 @@
 package bandstorm.service
 
-import bandstorm.Band
-import bandstorm.Follow
-import bandstorm.SecRole
-import bandstorm.SecUserSecRole
-import bandstorm.Status
-import bandstorm.Tag
-import bandstorm.User
-import bandstorm.Event
-import bandstorm.dao.UserDaoService
+import bandstorm.*
+import bandstorm.service.dao.UserDaoService
 import grails.transaction.Transactional
 
+/**
+ * Service for Initialisation
+ */
 @Transactional
 class InitializationService {
 
     UserDaoService userDaoService
 
+    /**
+     * Populate the base whit some examples
+     * @return
+     */
     def populate() {
 
         SecRole adminRole = new SecRole('ROLE_ADMIN')

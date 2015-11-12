@@ -72,57 +72,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <g:each in="${eventInstanceList}" var="eventInstance">
+                                <g:each in="${eventInstanceList}" var="eventInstance" status="i">
                                     <tr>
-                                        <td><a type="button" data-toggle="modal" data-target="#myModal">${fieldValue(bean: eventInstance, field: "name")}</a></td>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="myModal" role="dialog">
-                                            <div class="modal-dialog">
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Détail</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <dl class="dl-horizontal">
-                                                        <g:if test="${eventInstance?.name}">
-                                                            <dt>Nom</dt>
-                                                            <dd><g:fieldValue bean="${eventInstance}" field="name"/></dd>
-                                                        </g:if>
-
-                                                        <g:if test="${eventInstance?.dateEvent}">
-                                                            <dt>Date de l'évènement</dt>
-                                                            <dd><g:fieldValue bean="${eventInstance}" field="dateEvent"/></dd>
-                                                        </g:if>
-
-                                                        <g:if test="${eventInstance?.dateCreated}">
-                                                            <dt>Date de création</dt>
-                                                            <dd><g:fieldValue bean="${eventInstance}" field="dateCreated"/></dd>
-                                                        </g:if>
-
-                                                        <g:if test="${eventInstance?.address}">
-                                                            <dt>Adresse</dt>
-                                                            <dd><g:fieldValue bean="${eventInstance}" field="address"/></dd>
-                                                        </g:if>
-
-                                                        <g:if test="${eventInstance?.description}">
-                                                            <dt>Description</dt>
-                                                            <dd><g:fieldValue bean="${eventInstance}" field="description"/></dd>
-                                                        </g:if>
-
-                                                        <g:if test="${eventInstance?.tags}">
-                                                            <dt>Tags</dt>
-                                                            <dd><g:fieldValue bean="${eventInstance}" field="address"/></dd>
-                                                        </g:if>
-                                                    </dl>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <td><a type="button" data-toggle="modal" data-target="#myModal${i}">${fieldValue(bean: eventInstance, field: "name")}</a></td>
+                                        <g:render template="/event/modal" model="[eventInstance: eventInstance, status:i]"></g:render>
 
                                         <td><g:formatDate date="${eventInstance.dateEvent}"/></td>
 

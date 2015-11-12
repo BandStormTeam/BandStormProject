@@ -1,10 +1,9 @@
 package bandstorm
 
-import bandstorm.dao.BandDaoService
-import bandstorm.dao.EventDAOService
-import bandstorm.dao.UserDaoService
+import bandstorm.service.LightService
 import bandstorm.service.StatusService
 import bandstorm.service.UserService
+import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
@@ -13,26 +12,35 @@ import org.springframework.security.core.context.SecurityContextHolder
 import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.NO_CONTENT
 
+/**
+ * User controller class
+ */
 @Transactional(readOnly = true)
 @Secured("permitAll")
 class UserController {
     def springSecurityService
-    def logoutHandlers
-    AuthenticationManager authenticationManager
     StatusService statusService
     UserService userService
     UserDaoService userDaoService
-    BandDaoService bandDaoService
-    EventDAOService eventDAOService
+    LightService lightService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
+    /**
+     * Retrun the list of user
+     * @param max : max of user to show in the page
+     * @return a list of user
+     */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userInstanceCount: User.count()]
+        redirect action: 'home', controller: 'user', namespace: null
     }
 
+    /**
+     * Show the page of an user
+     * @param userInstance : user object
+     * @return details for the user and his news
+     */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
     def show(User userInstance) {
         if(userInstance == null) {
@@ -45,18 +53,30 @@ class UserController {
                                      statusList: statusList]
     }
 
+    /**
+     * Redirect to user home if connected
+     * @return redirection to index or home
+     */
     def urlRedirect() {
         if(userService.springSecurityService.isLoggedIn()) {
-            redirect (action: "userHome")
+            redirect (action: "home")
         } else {
             redirect(uri: "/index")
         }
     }
 
+    /**
+     * Create an new user
+     * @return a new user
+     */
     def create() {
         respond new User(params)
     }
 
+    /**
+     * Activation of an user
+     * @return the activation page
+     */
     def activateAccount() {
         User userInstance = User.findByUsername(params.username)
         userService.setUserRole(userInstance)
@@ -66,75 +86,45 @@ class UserController {
         render (view: "successCreation", model: [type: "activation"])
     }
 
-    /**
-     * Return a list of bands corresponding whit keywords
-     * @param keywords : inputs for the research
-     * @return list of Band
-     */
-    @Secured("ROLE_USER")
-    def searchBand(String keywords,Integer max,Integer offset){
-        if (!max){
-            max = 10
-        }
-        if (!offset){
-            offset = 0
-        }
-        if (!keywords){
-            keywords = ""
-        }
-
-        def searchResult = bandDaoService.getAllBandsByKeywords(keywords,max,offset)
-
-        render(view: "searchBand", model:[bandList:searchResult.bandList ,keywords:keywords,bandCount:searchResult.bandCount] )
-    }
 
     /**
-     * Return a list of users corresponding whit keywords
-     * @param keywords : inputs for the research
-     * @return list of User
+     * The page for edition of a profil
+     * @param userInstance : user object
+     * @return form for user profil
      */
-    @Secured("ROLE_USER")
-    def searchUser(String keywords,Integer max,Integer offset){
-
-        if (!max){
-            max = 10
-        }
-        if (!offset){
-            offset = 0
-        }
-        if (!keywords){
-            keywords = ""
-        }
-
-        def searchResult = userDaoService.getAllUsersByKeywords(keywords,max,offset)
-
-        render(view: "searchUser", model:[userList:searchResult.userList ,keywords:keywords,userCount:searchResult.totalOfUser] )
-    }
-
     @Secured(["ROLE_USER","ROLE_ADMIN"])
-    def profilSettings(User userInstance){
-        if (userInstance == null){
+    def profilSettings(User userInstance) {
+        if (userInstance == null) {
             userInstance = User.findByUsername(userService.springSecurityService.getCurrentUser())
         }
         respond userInstance
     }
 
+    /**
+     * Page for edition of the password
+     * @param userInstance : user to edit
+     * @return for for user password
+     */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
-    def passwordSettings(User userInstance){
+    def passwordSettings(User userInstance) {
 
-        if (userInstance == null){
+        if (userInstance == null) {
             userInstance = userService.springSecurityService.getCurrentUser()
         }
         respond userInstance
     }
 
-    def userHome() {
+    /**
+     * User homepage, show the news(status) of an user
+     * @return the homepage of the user
+     */
+    def home() {
         if (!userService.springSecurityService.isLoggedIn()) {
             try {
                 userService.logIn(params?.username, params?.password)
                 User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 def statusList = statusService.getStatusForTimeline()
-                render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+                render(view: "home", model: [user : user, statusList: statusList, statusCount: statusList.size()])
             } catch (AuthenticationException) {
                 flash.message = "Invalid username or password"
                 redirect(uri: "/")
@@ -142,21 +132,34 @@ class UserController {
         } else {
             User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
             def statusList = statusService.getStatusForTimeline()
-            render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+            render(view: "home", model: [user : user, statusList: statusList, statusCount: statusList.size()])
         }
     }
 
+    /**
+     * Homepage of the user page after the adding of status
+     * @return homepage of the user
+     */
     def reload() {
         User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
         def statusList = statusService.getStatusForTimeline()
-        render(view: "userHome", model: [user : user, statusList: statusList, statusCount: statusList.size()])
+        render(view: "home", model: [user : user, statusList: statusList, statusCount: statusList.size()])
     }
 
+    /**
+     * Logout the user
+     * @return landing page
+     */
     def logout() {
         userService.logout(request, response)
         redirect(uri : "/")
     }
 
+    /**
+     * Save the instance of a user
+     * @param userInstance : user to save
+     * @return edition form for a user
+     */
     def save(User userInstance) {
         if (userInstance == null) {
             notFound()
@@ -175,6 +178,12 @@ class UserController {
         render (view: "successCreation", model: [username: userInstance.username, type:"success"])
     }
 
+    /**
+     * Update an user
+     * @param userInstance: user to uodate
+     * @param page: page to show
+     * @return the page to show
+     */
     @Secured(["ROLE_USER","ROLE_ADMIN"])
     def update(User userInstance,String page) {
         if (userInstance == null) {
@@ -192,6 +201,11 @@ class UserController {
         redirect(action: page)
     }
 
+    /**
+     * Delete an user
+     * @param userInstance : user to delete
+     * @return message of deletion
+     */
     @Transactional
     def delete(User userInstance) {
 
@@ -211,6 +225,9 @@ class UserController {
         }
     }
 
+    /**
+     * Error page, not found
+     */
     protected void notFound() {
         request.withFormat {
             form multipartForm {
@@ -221,25 +238,64 @@ class UserController {
         }
     }
 
-    def followUser(User user){
+    /**
+     * Follow an user
+     * @param user : user to follow
+     * @return page of the user
+     */
+    def followUser(User user) {
         def follow = userDaoService.followUser(springSecurityService.currentUser, user)
         redirect(action: "show", params: params)
     }
 
-    def unfollowUser(User user){
+    /**
+     * Unfollow an user
+     * @param user : user to unfollow
+     * @return page of the user
+     */
+    def unfollowUser(User user) {
         userDaoService.unfollowUser(springSecurityService.currentUser, user)
         redirect(action: "show", params: params)
     }
 
-    def showFollowers(){
+    /**
+     * Show the followers of an user
+     * @return list of followers
+     */
+    def showFollowers() {
         def user = springSecurityService.currentUser
         def followersList = userDaoService.findAllFollowersForUser(user)
-        render (view: "userHome", model: [user: user, followersList: followersList])
+        render (view: "home", model: [user: user, followersList: followersList])
     }
 
-    def showFollowed(){
+    /**
+     * Show users followed by user
+     * @return list of followed
+     */
+    def showFollowed() {
         def user = springSecurityService.currentUser
         def followedList = userDaoService.findAllFollowedForUser(user)
-        render (view: "userHome", model: [user: user, followedList: followedList])
+        render (view: "home", model: [user: user, followedList: followedList])
     }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    def light(Status s) {
+        lightService.lightAStatus(springSecurityService.currentUser, s)
+        redirect action: 'home', controller: 'user', namespace: null
+    }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    def unlight(Status s) {
+        lightService.unlightAStatus(springSecurityService.currentUser, s)
+        redirect action: 'home', controller: 'user', namespace: null
+    }
+
 }

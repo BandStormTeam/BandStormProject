@@ -1,7 +1,4 @@
 package bandstorm
-
-import bandstorm.dao.UserDaoService
-
 /**
  * Domain class that represents users,
  * and different event, lights and groups related
@@ -55,11 +52,25 @@ class User extends SecUser {
      * @param follower User follower
      * @return true if relation exist else false
      */
-    def isFollowed(User follower){
+    def isFollowed(User follower) {
         boolean res = false
         if(userDaoService.findFollowByFollowerAndFollowed(follower,this)){
             res = true
         }
         res
+    }
+
+    def isInBand(Band b) {
+        return GroupMember.findByUserAndBand(this, b) != null
+    }
+
+    List<Band> getBands() {
+        List<Band> ret = new ArrayList<>()
+
+        GroupMember.findAllByUser(this).each {
+            ret << it.band
+        }
+
+        return ret
     }
 }

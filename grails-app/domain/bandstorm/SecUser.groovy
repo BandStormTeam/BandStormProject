@@ -1,5 +1,9 @@
 package bandstorm
 
+/**
+ * Spring Security User, this class contain the mains params for
+ * identification of a user.
+ */
 class SecUser implements Serializable {
 
     private static final long serialVersionUID = 1

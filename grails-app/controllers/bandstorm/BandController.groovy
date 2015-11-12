@@ -1,47 +1,70 @@
 package bandstorm
 
-import bandstorm.dao.BandDaoService
-import bandstorm.dao.UserDaoService
+import bandstorm.service.UserService
+import bandstorm.service.dao.BandDaoService
+import bandstorm.service.dao.UserDaoService
 import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 
-import javax.naming.AuthenticationException
-import java.text.SimpleDateFormat
-
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
+/**
+ * Controller class for Bands
+ */
 @Secured(["ROLE_USER", "ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class BandController {
+    def springSecurityService
+    UserService userService
 
     BandDaoService bandDaoService
     UserDaoService userDaoService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    AuthenticationManager authenticationManager
 
+    /**
+     * Show the list of the followed bands for current user.
+     * @param max : max of displayed band in the page
+     * @return List of bands
+     */
     def index(Integer max) {
-
         params.max = Math.min(max ?: 10, 100)
-        params.sort = "name"
-
-        try {
-            User user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-            respond user.groupsFollowed.toList(), model: [bandInstanceCount: user.groupsFollowed.toList().size()]
-        }
-        catch (AuthenticationException) {
-        }
-
-
+        params.sort = "dateCreated"
+        params.order = "desc"
+        def calendar = Calendar.getInstance()
+        calendar.set(2015,Calendar.SEPTEMBER, 01)
+        Band band = new Band(name: "", description: "", address: "")
+        respond Band.list(params), model: [bandInstance: band,bandInstanceCount: Band.count()]
     }
 
+    /**
+     * Show details for the selected band
+     * @param bandInstance : selected band
+     * @return band details
+     */
     def show(Band bandInstance) {
+        if(bandInstance == null) {
+            return response.sendError(404)
+        }
+
         respond bandInstance
     }
 
+    /**
+     * Create a band from the form
+     * @return band instance
+     */
     def create() {
         respond new Band(params)
     }
 
+    /**
+     * Save band from the form
+     * @param bandInstance : selected band
+     * @return band instance
+     */
     @Transactional
     def save(Band bandInstance) {
         if (bandInstance == null) {
@@ -92,10 +115,38 @@ class BandController {
 
     }
 
+    /**
+     * Current user want to join a band
+     * @param bandInstance
+     */
+    def join(Band bandInstance) {
+        if(bandInstance == null) {
+            return response.sendError(404)
+        }
+
+        try {
+            User user = User.findByUsername(userService.springSecurityService.getCurrentUser())
+            bandDaoService.joinBand(user, bandInstance)
+        } catch (AuthenticationException) {
+        }
+
+        redirect action: 'home', controller: 'user', namespace: null
+    }
+
+    /**
+     * Edit a band instance
+     * @param bandInstance: selected band
+     * @return a band instance
+     */
     def edit(Band bandInstance) {
         respond bandInstance
     }
 
+    /**
+     * Update a band instance
+     * @param bandInstance: band instance to update
+     * @return band instance
+     */
     @Transactional
     def update(Band bandInstance) {
         if (bandInstance == null) {
@@ -119,6 +170,11 @@ class BandController {
         }
     }
 
+    /**
+     * Delete a band
+     * @param bandInstance : band to delete
+     * @return if the band is deleted
+     */
     @Transactional
     def delete(Band bandInstance) {
 
@@ -138,6 +194,9 @@ class BandController {
         }
     }
 
+    /**
+     * Show an error page, if not found.
+     */
     protected void notFound() {
         request.withFormat {
             form multipartForm {

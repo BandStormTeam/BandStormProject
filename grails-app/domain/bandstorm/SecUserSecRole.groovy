@@ -2,9 +2,11 @@ package bandstorm
 
 import grails.gorm.DetachedCriteria
 import groovy.transform.ToString
-
 import org.apache.commons.lang.builder.HashCodeBuilder
 
+/**
+ * Association class for user and role of spring security.
+ */
 @ToString(cache = true, includeNames = true, includePackage = false)
 class SecUserSecRole implements Serializable {
 

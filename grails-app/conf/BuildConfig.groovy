@@ -54,6 +54,10 @@ grails.project.dependency.resolution = {
         build 'org.apache.httpcomponents:httpcore:4.3.2'
         build 'org.apache.httpcomponents:httpclient:4.3.2'
         build 'org.apache.httpcomponents:httpmime:4.3.3'
+        test "org.gebish:geb-spock:0.12.2"
+        test "org.seleniumhq.selenium:selenium-remote-driver:2.45.0"
+        test "org.seleniumhq.selenium:selenium-firefox-driver:2.45.0"
+        compile 'org.codehaus.groovy:groovy-backports-compat23:2.4.5'
     }
 
     plugins {
@@ -91,11 +95,14 @@ grails.project.dependency.resolution = {
         //mail support
         compile ":mail:1.0.7"
 
+		compile ":h2:0.2.6"
+
         // Cobertura
         // /!\ Don't use cobertura 2.0.*, there is a bug in plugin
         // So, you can't use exclusions argument with argument 2.0
         // it is required for TagLib's exclusion.
         test ":code-coverage:1.2.7"
+        test("org.grails.plugins:geb:0.12.2")
         compile ":codenarc:0.24.1"
         // Coveralls plugin
         build(':coveralls:0.1.3', ':rest-client-builder:1.0.3') {
@@ -129,6 +136,7 @@ grails.project.dependency.resolution = {
 coverage {
     exclusions = [
             '**/*TagLib*/**',
+            '**/*SecUser*/**'
     ]
     xml = true
 }
