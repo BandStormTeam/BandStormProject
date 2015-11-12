@@ -1,14 +1,13 @@
 package bandstorm.service
 
 import bandstorm.User
-import bandstorm.service.UserService
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.AuthenticationException
+import spock.lang.Specification
 
 /**
  * Created by aroquemaurel on 12/11/15.
  */
-class UserServiceIntegration {
+class UserServiceIntegrationSpec extends Specification {
     UserService userService
 
     void "login test"() {
@@ -33,22 +32,13 @@ class UserServiceIntegration {
         ret
     }
 
-    void "logout test"() {
-        when: "We are logged and we try to logout"
-        boolean ret = true
-        userService.logIn("merry", "password")
-        userService.logout()
-        then: "We do not have error"
-        ret
-    }
-
     void "test the setting of userrole"() {
         when: "we set a userrole"
         userService.setUserRole(new User(username: "user1", email: "user1@mail.com",
                 firstName: "jon", lastName: "doe", birthDate: Date.parse("yyyy-MM-dd hh:mm:ss", "2014-04-03 1:23:45"), country: "somewhere", password: "azerty").save(flush: true)
         )
         then: "the user has a role"
-        
+
     }
 
     void "test the contact of a user"() {
@@ -58,5 +48,4 @@ class UserServiceIntegration {
         then: "We do not have erro"
         true
     }
-
 }
