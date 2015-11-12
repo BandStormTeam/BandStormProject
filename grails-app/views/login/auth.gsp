@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-xs-6"></div>
     <div class="col-xs-6" style="color:white;">
-      <h1>Suit tes musiciens favoris et leurs évènements.</h1><bR>
+      <h1>Suis tes musiciens favoris et leurs évènements.</h1><bR>
 
       <g:form controller="user" action="save" novalidate="novalidate"  >
         <g:textField required="required" class="form-control" type="input"  placeholder="Pseudo" name="username" >  </g:textField><bR>

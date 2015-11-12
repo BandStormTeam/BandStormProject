@@ -61,22 +61,23 @@
 	\tableofcontents
 	\chapter{Le projet}
 	\section{Le projet Bandstorm}
-	Bandstorm est un projet qui a pour but de réaliser un réseau social pour des amateurs de musique. Celui-ci a pour objectif de mettre en relations des utilisateurs par le biais de communautés. Ces communautés sont constitués en fonction de préférences musicales.
+	Bandstorm est un projet qui a pour but de réaliser un réseau social pour des amateurs de musique. Celui-ci a pour objectif de mettre en relation des utilisateurs par le biais de
+	communautés. Ces communautés sont constituées en fonction de préférences musicales.
 
 %Heroku + Logins
 %Sonar
 %Github + github utilisateur
-	\section{Les informations utiles\ldots}
+	\section{Les informations utiles}
 	\subsection{Github}
 	\begin{description}
 		\item[Lien du dépôt] \url{https://github.com/BandStormTeam/BandStormProject}~\\
 		\item[Liens vers les profils]~
 			\begin{description}
-				\item[Steve Magras] \url{https://github.com/smagras}
-				\item[Zaccaria Zyat] \url{https://github.com/SirAbel}
-				\item[Antoine de Roquemaurel] \url{https://github.com/aroquemaurel}
 				\item[Julian Bironneau] \url{https://github.com/johnSilver7}
+				\item[Antoine de Roquemaurel] \url{https://github.com/aroquemaurel}
+				\item[Steve Magras] \url{https://github.com/smagras}
 				\item[Dylan Roletto] \url{https://github.com/vlaks} 
+				\item[Zaccaria Zyat] \url{https://github.com/SirAbel}
 			\end{description}
 	\end{description}
 
@@ -85,7 +86,7 @@
 		\item[Travis-CI] \url{https://travis-ci.org/BandStormTeam/BandStormProject }
 		\item[Heroku] \url{https://m2dl-bandstorm.herokuapp.com/}~\\
 			\begin{exemple}
-				Il est possible de se connecter avec l'utilisateur merry et le mot de passe password.
+				Il est possible de se connecter avec l'utilisateur <<merry>> et le mot de passe <<password>>.
 			\end{exemple}
 	\end{description}
 
@@ -106,7 +107,7 @@
 	\begin{itemize}
 		\item Les utilisateurs ont la possibilité de suivre d’autres utilisateurs.
 		\item Les utilisateurs peuvent créer, rejoindre et visualiser un groupe.
-		\item Les utilisateurs peuvent créer et visualiser un évênement.
+		\item Les utilisateurs peuvent créer et visualiser un évènement.
 		\item Les utilisateurs ont la possibilité de rechercher des entités via une barre de recherche (utilisateurs, groupes, évênements).
 		\item Les utilisateurs peuvent poster des statuts.
 		\item Les utilisateurs peuvent visualiser les statuts de leurs abonnements.
@@ -116,22 +117,23 @@
 	
 	\chapter{Le \textit{workflow} de développement}
 	Afin de faciliter le travail collaboratif et l'intégration de nos développements respectifs, nous avons utilisé Git et Github. 
-	Via un \textit{workflow} en branches par fonctionnalités, nous avons pu développer celles-ci en parallèles. 
+	Via un \textit{workflow} en branches par fonctionnalités, nous avons pu développer celles-ci en parallèles 
 	
-	Lorsqu'un développeur choisi de répondre à une issue, il va créer une nouvelle branche, nommée suivant la convention suivante
+	Lorsqu'un développeur choisi de répondre à une \textit{issue}, il va créer une nouvelle branche, nommée suivant la convention suivante
 	\texttt{sprintN/noIssue-recapitulatifIssue}.
 	
-	Lorsque le développeur estime avoir terminé sa fonctionnalité, il ouvre une \textit{Pull Request}, celle-ci nous permet d'effectuer de la revue de code. La fonctionnalité ne sera fusionnée avec la branche de niveau inférieur que lorsque l'équipe estime avoir terminé l'issue.
+	Lorsque le développeur estime avoir terminé sa fonctionnalité, il ouvre une \textit{Pull Request}, celle-ci nous permet d'effectuer de la revue de code. La fonctionnalité ne sera fusionnée
+	avec la branche de niveau inférieur que lorsque l'équipe estime avoir terminé l'\textit{issue}.
 	\begin{figure}[H]
 		\includegraphics[width=15.5cm]{../beamer/images/Process/BranchingWorkflow.eps}
 		\caption{\textit{Workflow} en \textit{feature} branches}
 	\end{figure}
-	Plus de détails notre \textit{workflow} est disponible ici
+	Pour plus de détails, notre \textit{workflow} est disponible ici
 	: \newline
 	\url{https://github.com/BandStormTeam/BandStormProject/blob/master/workflow-feature.md}
 	
 	\section{Tests et couverture}
-	Lors du développement d'un projet complexe, il est indispensable de tester correctement le projet afin de pouvoir le vérifier et le valider. Ainsi, dans le cadre de BandStorm nous avons définis des pourcentages de couverture de tests à respecter impérativement; Le bon respect de ces chiffres contribuent à effectuer un projet de qualité. 
+	Lors du développement d'un projet complexe, il est indispensable de tester correctement le projet afin de pouvoir le vérifier et le valider. Ainsi, dans le cadre de BandStorm nous avons définis des pourcentages de couverture de tests à respecter impérativement; Le bon respect de ces chiffres contribue à effectuer un projet de qualité. 
 	
 	Cette couverture doit être de 80\% en ligne de code, 
 	\begin{itemize}
@@ -145,7 +147,7 @@
 	Afin d’avoir des tests les plus exhaustifs possibles, nous avons également mis en place des tests fonctionnels en utilisant Geb. Ces tests nous permettent de vérifier le bon fonctionnement global de notre application.
 	
 	\section{Intégration continue}
-	Nous avons utilisés Travis-CI afin d’intégrer et de vérifier cette intégration de manière continue. Notre serveur d’intégration effectue plusieurs actions : 
+	Nous avons utilisé \texttt{Travis-CI} afin d’intégrer et de vérifier cette intégration de manière continue. Notre serveur d’intégration effectue plusieurs actions : 
 	\begin{itemize}
 		\item Compilation du projet 
 		\item Lancement des tests unitaires
@@ -153,7 +155,7 @@
 		\item Calcul de la couverture de code
 		\item Éventuel déploiement sur heroku (uniquement master)
 	\end{itemize}
-	Le build ne peut être correcte que si l'ensemble de ces actions se sont bien effectuées. 
+	Le\textit{ build }ne peut être correct  que si l'ensemble de ces actions est bien effectué. 
 
 	\begin{exemple}
 	À noter que Travis CI ne lance pas les tests fonctionnels. En effet, les tests fonctionnels nécessitent un serveur graphique
@@ -162,25 +164,33 @@
 	machine personnelle tel que Jenkins ou Gitlab-CI, nous n'aurions pas cette limite de serveur X.
 	\end{exemple}
 
-	Les tests fonctionnels étant les tests les plus proches d’un utilisateur permettrait ainsi de pouvoir effectuer de la non-régression de façon systématique et automatique.
+	Les tests fonctionnels étant les tests les plus proches d’un utilisateur permettraient ainsi de pouvoir effectuer de la non-régression de façon systématique et automatique.
 	
 	\section{Déploiement continu}
-	La vérification de la bonne intégration de notre application ne suffit pas à avoir un processus de mise en production fiable. Il est indispensable de vérifier le bon déploiement de l'application sur un serveur autre que celui de production. C'est dans ce but que nous utilisons Heroku. La La branche master de l'application est déployée de façon continue et automatique.
+	La vérification de la bonne intégration de notre application ne suffit pas à avoir un processus de mise en production fiable. Il est indispensable de vérifier le bon déploiement de l'application sur un serveur autre que celui de production. C'est dans ce but que nous utilisons Heroku. La branche\textit{ master }de l'application est déployée de façon continue et automatique.
 	
 	\section{Analyse statique de code}
-	Pour avoir un code de qualité, il est faut également prendre en compte la maintenance que celui-ci va couter. Cette maintenance peut être réduite en développant avec des conventions claires précises et mesurables. 
-	Ainsi, nous avons utilisé codenarc qui permet de vérifier les règles de nos conventions d’écritures. 
+	Pour avoir un code de qualité, il est faut également prendre en compte la maintenance que celui-ci va coûter. Cette maintenance peut être réduite en développant avec des conventions
+	claires, précises et mesurables. 
+	Ainsi, nous avons utilisé Codenarc qui permet de vérifier les règles de nos conventions d’écritures. 
 	
-	SonarQube quant à lui permet d’une part de centraliser toutes les informations nécessaires, tout en conservant un historique de celles-ci, mais il nous permet également d’avoir de nouvelles métriques tel que le nombre de ligne de code, le pourcentage de commentaire ou la complexité cyclomatique de notre projet. 
+	SonarQube quant à lui permet d’une part de centraliser toutes les informations nécessaires, tout en conservant un historique de celles-ci, mais il nous permet également d’avoir de nouvelles
+	métriques tel que le nombre de ligne de code, le pourcentage de commentaires ou la complexité cyclomatique de notre projet. 
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=18cm]{../beamer/images/Results/methodo/sonar.png}
+		\caption{Tableau de bord SonarQube}
+	\end{figure}
 	
 	\chapter{Agilité}
 	\section{Sprints}	
-	Pendant toutes la durée du projet, l’équipe à suivi les principes du processus agile Scrum. La durée du projet a été découpée en trois sprints d’une durée de deux semaines chacun. Un sprint 0 a été réalisé afin de mettre en place l’architecture, le processus de développement et la première version du Backlog.
+	Pendant toute la durée du projet, l’équipe a suivi les principes du processus agile << Scrum >>. La durée du projet a été découpée en trois sprints d’une durée de deux semaines chacun. Un sprint 0 a été réalisé afin de mettre en place l’architecture, le processus de développement et la première version du Backlog.
 	
-	Il a été décidé que la répartition des rôles de \textit{Product owner }et de \textit{Scrum Master }changent à chaque Sprint afin que tout le monde puisse essayer chacun des roles.
+	Il a été décidé que la répartition des rôles de \textit{Product owner }et de \textit{Scrum\textit{ master }}changent à chaque Sprint afin que tout le monde puisse essayer au moins un des rôles.
 	
 	Une revue et une rétrospective ont été effectuées à la fin de chaque Sprint.\\
-	Le tableau ci-dessous recense les différents sprints associés aux rôles et aux date de revues et rétrospectives.
+	Le tableau ci-dessous recense les différents sprints associés aux rôles et aux dates de revues et rétrospectives.
 
 	\hspace{-40px}
 	\begin{tabular}{|c|c|c|c|}
@@ -191,7 +201,7 @@
 		\hline
 		Product Owner & Julian Bironneau &Dylan Roletto& Zaccaria Zyat\\
 		\hline
-		Scrum Master & Steve Magras & Antoine de Roquemaurel &Julian Bironneau\\
+		Scrum\textit{ master }& Steve Magras & Antoine de Roquemaurel &Julian Bironneau\\
 		\hline
 		Dates revues & 14/10/2015& 28/10/2015& 12/11/2015\\
 		\hline
@@ -200,12 +210,13 @@
 	\end{tabular}
 	
 	\section{Planning Poker et vélocité}
-	Pour attribuer un nombre de points aux issues, l'équipe a effectué des planning poker. Ceci au travers d'un outil disponible
+	Pour attribuer un nombre de points aux \textit{issues}, l'équipe a effectué des \textit{planning poker}. Ceci au travers d'un outil disponible
 	gratuitement sur internet, \textit{Pointing Poker}\newline (\url{https://www.pointingpoker.com/}).
 	
-	Après avoir terminé un sprint, il nous était donc possible de calculer la vélocité de celui-ci. Le plugin ZenHub nous a permis de représenter facilement et de manière graphique la courbe Burn-Down de notre vélocité. 
-	
-	Ci-dessous, le burn-down représentant le premier sprint:
+	Après avoir terminé un sprint, il nous était donc possible de calculer la vélocité de celui-ci. Le plugin ZenHub nous a permis de représenter facilement et de manière graphique la courbe
+	\textit{burn-down} de notre vélocité. 
+\newpage	
+	Ci-dessous, le \textit{burn-down} représentant le premier sprint:
 	\begin{figure}[H]
 		\includegraphics[width=18cm]{../beamer/images/Results/methodo/burndown.png}
 		\caption{Burndown chart du premier Sprint}
@@ -228,23 +239,24 @@
 
 \begin{description}
 	\item[Sprint 1] Avoir les fonctionnalités basiques d’identification d’un réseau social. 
-	\item[Sprint 2] Permettre aux membres de bandstorm de pouvoir intéragir sur le site.
-	\item[Sprint 3] Corriger les bogues et de rajouter des fonctionnalités d'intéractions entre les utilisateurs. 
+	\item[Sprint 2] Permettre aux membres de BandStorm de pouvoir intéragir sur le site.
+	\item[Sprint 3] Corriger les bogues et de rajouter des fonctionnalités d'interactions entre les utilisateurs. 
 \end{description}
 
-	\section{Définition de fini}
-	On détermine qu'un \textit{user stories} est terminée lorsque : 
+\newpage
+	\section{Définition de <<fini>>}
+	On détermine qu'une \textit{user story} est terminée lorsque : 
 
 	\begin{itemize}
 		\item Les tests unitaires et d’intégrations sont passés
 		\item 100\% de couverture de code pour les classes du modèle
-		\item 80\% de couverture de code pour les classes controleurs
-		\item 80\% de couverture de code pour les classes services et dao
+		\item 80\% de couverture de code pour les classes contrôleurs
+		\item 80\% de couverture de code pour les classes services et DAO 
 		\item Les tests d’acceptation sont passés
-		\item La pull request est revue par le product owner
-		\item Le build est passé sur Travis CI
-		\item Les critères codenarc sont respectés 
-		\item Correction des criticals et majors sur SonarQube
+		\item La \textit{pull request} est revue par le \textit{product owner}
+		\item Le\textit{ build }est passé sur Travis CI
+		\item Les critères Codenarc sont respectés 
+		\item Correction des \textit{criticals} et \textit{majors} sur SonarQube
 		\item La javadoc est rédigée 
 	\end{itemize}
 
@@ -253,11 +265,11 @@
 	effectués au cours du projet. Le projet doit être livré à Franck Silvestre le 12/11/2015 et être déployé sur le serveur Heroku.
 
 	\chapter{Architecture}
-	Bandstorm s'appuyant sur le framework grails, une grande partie de l'architecture et de l'organisation est structurée par
+	BandStorm s'appuyant sur le framework grails, une grande partie de l'architecture et de l'organisation est structurée par
 	celui-ci. Ainsi, nous utilisons le modèle MVC, c'est-à-dire la séparation des contrôleurs vis-à-vis des vues HTML et des
 	modèles. 
 
-	Ci-dessous est disponible le diagramme de classes des modèles de notre application.
+	Ci-dessous le diagramme de classes des modèles de notre application.
 	\begin{figure}[H]
 		\hspace{-33px}
 		\includegraphics[width=20cm]{classes.png}
