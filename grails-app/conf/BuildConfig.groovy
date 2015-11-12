@@ -95,6 +95,8 @@ grails.project.dependency.resolution = {
         //mail support
         compile ":mail:1.0.7"
 
+		compile ":h2:0.2.6"
+
         // Cobertura
         // /!\ Don't use cobertura 2.0.*, there is a bug in plugin
         // So, you can't use exclusions argument with argument 2.0

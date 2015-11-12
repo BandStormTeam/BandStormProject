@@ -58,7 +58,6 @@ class BandControllerSpec extends Specification {
         controller.params.nameBand = "Y"
         controller.params.addressBand = "Rue des ar�nes"
         controller.params.descriptionBand = "T"
-        controller.params.bandTags = "Toto;Stuff"
         controller.save(band)
 
         then: "No event is created"
