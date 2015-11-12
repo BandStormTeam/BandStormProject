@@ -52,7 +52,7 @@
 
 \begin{document}
 	\thispagestyle{empty} % Removes page numbers
-%	\titleBC
+	\titleBC
 
 	\setcounter{tocdepth}{1}
 	\setcounter{secnumdepth}{3}
@@ -122,7 +122,10 @@
 	\texttt{sprintN/noIssue-recapitulatifIssue}.
 	
 	Lorsque le développeur estime avoir terminé sa fonctionnalité, il ouvre une \textit{Pull Request}, celle-ci nous permet d'effectuer de la revue de code. La fonctionnalité ne sera fusionnée avec la branche de niveau inférieur que lorsque l'équipe estime avoir terminé l'issue.
-	
+	\begin{figure}[H]
+		\includegraphics[width=15.5cm]{../beamer/images/Process/BranchingWorkflow.eps}
+		\caption{\textit{Workflow} en \textit{feature} branches}
+	\end{figure}
 	Plus de détails notre \textit{workflow} est disponible ici
 	: \newline
 	\url{https://github.com/BandStormTeam/BandStormProject/blob/master/workflow-feature.md}
@@ -184,7 +187,7 @@
 		\hline
 		& \textbf{Sprint 1 }& \textbf{Sprint 2 }& \textbf{Sprint 3}\\
 		\hline
-		Dates & 30/09/2015 -> 13/10/2015 & 14/10/2015 -> 27/10/2015 & 28/10/2015 -> 11/11/2015\\
+		Dates & 30/09/2015 $\rightarrow$ 13/10/2015 & 14/10/2015 $\rightarrow$ 27/10/2015 & 28/10/2015 $\rightarrow$ 11/11/2015\\
 		\hline
 		Product Owner & Julian Bironneau &Dylan Roletto& Zaccaria Zyat\\
 		\hline
@@ -195,16 +198,18 @@
 		Dates rétrospectives & 14/10/2015& 28/10/2015 &12/11/2015 \\
 		\hline
 	\end{tabular}
-	%% TODO tablal
 	
 	\section{Planning Poker et vélocité}
 	Pour attribuer un nombre de points aux issues, l'équipe a effectué des planning poker. Ceci au travers d'un outil disponible
-	gratuitement sur internet, \textit{Pointing Poker} (\url{https://www.pointingpoker.com/}).
+	gratuitement sur internet, \textit{Pointing Poker}\newline (\url{https://www.pointingpoker.com/}).
 	
 	Après avoir terminé un sprint, il nous était donc possible de calculer la vélocité de celui-ci. Le plugin ZenHub nous a permis de représenter facilement et de manière graphique la courbe Burn-Down de notre vélocité. 
 	
 	Ci-dessous, le burn-down représentant le premier sprint:
-	%% TODO burn-down	
+	\begin{figure}[H]
+		\includegraphics[width=18cm]{../beamer/images/Results/methodo/burndown.png}
+		\caption{Burndown chart du premier Sprint}
+	\end{figure}
 	Les résultats obtenus pour la vélocité de ce projet sont indiqués dans le tableau ci-dessous:
 
 	\begin{tabular}{|c|c|c|c|}
@@ -215,7 +220,8 @@
 		\hline
 		Sprint 2, v0.2 &44& 44& 13\\
 		\hline
-		Sprint 3, v1.0 &23& 20& 15
+		Sprint 3, v1.0 &23& 20& 15\\
+		\hline
 	\end{tabular}
 	\section{Objectifs des sprints}
 	Les sprints ont été guidés par les objectifs de sprints ci-dessous:
@@ -227,7 +233,7 @@
 \end{description}
 
 	\section{Définition de fini}
-	On détermine qu'un user stories est terminée lorsque : 
+	On détermine qu'un \textit{user stories} est terminée lorsque : 
 
 	\begin{itemize}
 		\item Les tests unitaires et d’intégrations sont passés
@@ -246,7 +252,15 @@
 	Après avoir effectué les trois sprints, une release a été plannifée. Cette release est le résultat de tous les travaux
 	effectués au cours du projet. Le projet doit être livré à Franck Silvestre le 12/11/2015 et être déployé sur le serveur Heroku.
 
-	
 	\chapter{Architecture}
+	Bandstorm s'appuyant sur le framework grails, une grande partie de l'architecture et de l'organisation est structurée par
+	celui-ci. Ainsi, nous utilisons le modèle MVC, c'est-à-dire la séparation des contrôleurs vis-à-vis des vues HTML et des
+	modèles. 
 
+	Ci-dessous est disponible le diagramme de classes des modèles de notre application.
+	\begin{figure}[H]
+		\hspace{-33px}
+		\includegraphics[width=20cm]{classes.png}
+		\caption{Diagramme de classe de BandStorm}
+	\end{figure}
 \end{document}
